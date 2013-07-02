@@ -1,10 +1,19 @@
-# yuntang-platform 
-
+# yuntang-platform
 
 云唐平台 - 为web开发而生
 
+## Install
+
+    $ git clone https://github.com/itang/yuntang-platform.git
+    $ cd yuntang-platform && chmod +x install.sh
+    $ ./install.sh
+
 ## Usage
 
+run:
+
+    $ cd example
+    $ lein ring server
 
 
 ## License
