@@ -1,0 +1,5 @@
+<div class="container">
+  {{#user}} 激活成功! <a href="/signin?username={{username}}">登录</a> {{/user}} 
+  
+  {{^user}} 激活失败! <a href="/">首页</a> <a href="/">重新发送激活码</a> {{/user}}
+</div>

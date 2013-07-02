@@ -1,0 +1,15 @@
+<nav id="navigation" class="collapse">
+<ul>
+{{#menus}}
+   <li>
+   <span title="{{description}}"> <i class="icon-home"></i> <span
+        class="nav-title">{{name}}</span></span>
+         <ul class="inner-nav">
+         {{#children}}
+          <li><a href="{{funcpoint.url}}" target="{{attrs.target}}"><i class="{{attrs.classname}}"></i> {{name}}</a></li>
+         {{/children}}
+         </ul>
+   </li>
+{{/menus}}
+</ul>
+</nav>

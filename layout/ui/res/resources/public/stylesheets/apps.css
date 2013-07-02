@@ -1,0 +1,29 @@
+body {
+    /*padding-top: 60px;*/
+    padding-bottom: 40px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+#frame_container {
+    margin-right: 0;
+    padding-right: 0;
+    height: 580px;
+    border: 1px gray solid;
+}
+
+#frameWindow {
+    width: 100%;
+}
+
+a.sitelink:hover {
+    color: #ff580a;
+    text-decoration: none;
+    background: #ddd;
+}
+
+input#address-bar {
+    width: 600px;
+}

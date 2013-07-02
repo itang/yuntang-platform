@@ -1,0 +1,17 @@
+<div>
+  <button id="btn-sayhello">Say Hello1</button>
+  <button onclick="sayHello()">Say Hello2</button>
+</div>
+<div id="cljs-info"></div>
+
+{{#with-js}}
+<script type="text/javascript">
+  function sayHello() {
+    example.hello.hello();
+  }
+
+  $(function() {
+    example.hello.init();
+  });
+</script>
+{{/with-js}}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html ng-app="wapp">
+<head>
+<meta charset="utf-8">
+<title>{{title}}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="/public/mooncake/bootstrap/css/bootstrap.min.css" media="all">
+<link rel="stylesheet" href="/public/libs/pnotify/jquery.pnotify.default.css" media="screen">
+<link rel="stylesheet" href="/public/mooncake/plugins/uniform/css/uniform.default.css" media="screen">
+{{{more-css}}}
+<!-- Main Layout Stylesheet -->
+<link rel="stylesheet" href="/public/mooncake/assets/css/fonts/icomoon/style.css" media="screen">
+<link rel="stylesheet" href="/public/mooncake/assets/css/mooncake.min.css" media="screen">
+<link rel="stylesheet" href="/public/mooncake/assets/css/plugins/plugins.min.css" media="screen">
+<link rel="stylesheet" href="/public/mooncake/assets/css/customizer.css" media="screen">
+<link rel="stylesheet" href="/public/mooncake/assets/css/demo.css" media="screen">
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="/public/libs/html5.js"></script>
+<![endif]-->
+</head>
+<body data-show-sidebar-toggle-button="true" data-fixed-sidebar="true">
+
+  <div id="customizer">
+    <div id="showButton">
+      <i class="icon-cogs"></i>
+    </div>
+    <div id="layoutMode">
+      <label class="checkbox"><input type="checkbox" class="uniform" name="layout-mode" value="boxed">
+        Boxed</label>
+    </div>
+  </div>
+
+  <!--
+  <div id="style-changer">
+    <a href="#"></a>
+  </div> -->
+
+  <div id="wrapper">
+    <header id="header" class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="brand-wrap pull-left">
+            <div class="brand-img">
+              <a class="brand" href="#"> <img src="/public/mooncake/assets/images/logo.png" alt=""
+                style="width: 117px; height: 21px;">
+              </a>
+            </div>
+          </div>
+
+          <div id="header-right" class="clearfix">
+            <div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+              <i class="icon-caret-down"></i>
+            </div>
+            <div id="header-search">
+              <span id="search-toggle" data-toggle="dropdown"> <i class="icon-search"></i>
+              </span>
+              <form class="navbar-search">
+                <input type="text" class="search-query" placeholder="Search">
+              </form>
+            </div>
+            <div id="dropdown-lists">
+              {{{snippet-main-notifications}}}
+              {{{snippet-main-messages}}}
+            </div>
+
+            <div id="header-functions" class="pull-right">
+              {{{snippet-main-user-info}}}
+              <div id="logout-ribbon">
+                <a href="/logout"><i class="icon-off"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="content-wrap">
+      <div id="content">
+        <div id="content-outer">
+          <div id="content-inner">
+            <aside id="sidebar">
+              {{{snippet-main-nav}}}
+            </aside>
+
+            <div id="sidebar-separator"></div>
+            <section id="main" class="clearfix">
+              <div id="main-header" class="page-header">
+                {{{snippet-main-header}}}
+              </div>
+              {{{content}}}
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer id="footer">
+      {{{snippet-main-footer}}}
+    </footer>
+
+  </div>
+  <script src="/public/js/base.js"></script>
+  <script src="/public/js/layout-lib.js"></script>
+  <!-- App Scripts -->
+  {{#is-prod-mode}}
+  <script src="/public/js/app.js"></script>
+  {{/is-prod-mode}}
+  {{^is-prod-mode}}
+  <script src="/public/js/app-debug.js"></script>
+  {{/is-prod-mode}}
+  <script>
+    app.main.init();
+  </script>
+  {{{more-js}}}
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div>
+  <button class="btn" id="btn-click">click</button>
+</div>
+{{#with-js}}
+<script type="text/javascript">
+$(function(){
+  $('#btn-click').click(function(){
+    $.ajax({
+      method:'get',
+      url:'/examples/match',
+      dataType: 'json',
+      success: function(result){
+        alert(JSON.stringify(result));
+      }
+    });
+  });
+});
+</script>
+{{/with-js}}

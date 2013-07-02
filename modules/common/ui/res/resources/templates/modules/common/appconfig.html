@@ -1,0 +1,69 @@
+<div id="main-content">
+  <div class="widget">
+    <div class="widget-header">
+      <span class="title">应用配置</span>
+      <div class="toolbar">
+        <div class="btn-group">
+          <span class="btn"> 配置项总数: {{size}} </span>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar btn-toolbar">
+      <div class="btn-group">
+        <span class="btn"><i class="icol-bin-closed"></i> Delete</span> <span class="btn"><i class="icol-cancel"></i>
+          Spam</span>
+      </div>
+      <div class="btn-group">
+        <span class="btn dropdown-toggle" data-toggle="dropdown"><i class="icol-accept"></i> Mark <span
+          class="caret"></span></span>
+        <ul class="dropdown-menu">
+          <li><a href="#">Mark as Read</a></li>
+          <li><a href="#">Mark as Unread</a></li>
+          <li><a href="#">Flag for Follow-up</a></li>
+          <li><a href="#">Clear Flag</a></li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <span class="btn dropdown-toggle" data-toggle="dropdown"><i class="icol-arrow-out"></i> Move <span
+          class="caret"></span></span>
+        <ul class="dropdown-menu">
+          <li><a href="#">[New Folder]</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="widget-content table-container">
+      <table class="table table-striped table-checkable">
+        <thead>
+          <tr>
+            <th class="checkbox-column">
+              <div class="uniform-checker">
+                <span class=""><input type="checkbox" class="uniform" style="opacity: 0;"></span>
+              </div>
+            </th>
+            <th width="30"></th>
+            <th width="30%">键</th>
+            <th>值</th>
+            <th width="120">创建时间</th>
+            <th width="120">更新时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#appconfigs}}
+          <tr>
+            <td class="checkbox-column">
+              <div class="uniform-checker">
+                <span class=""><input type="checkbox" class="uniform" style="opacity: 0;"></span>
+              </div>
+            </td>
+            <td>{{no}}</td>
+            <td><b>{{key}}</b></td>
+            <td>{{{value}}}</td>
+            <td>{{created-at}}</td>
+            <td>{{updated-at}}</td>
+          </tr>
+          {{/appconfigs}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

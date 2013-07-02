@@ -1,0 +1,18 @@
+<div class="control-group">
+  <img src="/captcha" alt="验证码, 点击刷新" id="i-captcha" class="cursor:pointer">
+  <input type="text" placeholder="验证码"
+    name="captcha" id="input-captcha" class="big required" value="">
+</div>
+{{#with-js}}
+<script>
+  $(function() {
+    var $captcha = $("#i-captcha");
+    function refresh_captcha() {
+      var url = "/captcha";
+      $captcha.attr("src", url + "?" + new Date().getTime());
+    }
+
+    $captcha.click(refresh_captcha);
+  });
+</script>
+{{/with-js}}

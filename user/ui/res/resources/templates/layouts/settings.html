@@ -1,0 +1,41 @@
+<div id="main-content">
+  <div class="profile">
+    <div class="clearfix">
+      <div class="profile-head clearfix">
+        <div class="profile-info pull-left">
+          <h1 class="profile-username">Park Joo Won</h1>
+          <ul class="profile-attributes">
+            <li><i class="icon-map-marker"></i> Seoul, South Korea</li>
+            <li><i class="icon-briefcase"></i> Database Admin, Network
+              Engineer</li>
+          </ul>
+        </div>
+        <div class="btn-toolbar pull-right">
+          <a href="#" class="btn btn-primary"><i class="icon-envelope"></i>
+            Send Message</a> <a href="#" class="btn btn-success"><i
+            class="icon-users"></i> Hire Me</a>
+        </div>
+      </div>
+      <div class="profile-sidebar">
+        <div class="thumbnail">
+          <img src="/public/images/user-default.jpg" alt="">
+        </div>
+        <ul class="nav nav-tabs nav-stacked">
+          <li class="{{#chan-active}}password{{/chan-active}}"><a href="/settings/password"><i class="icos-user"></i>
+              Password</a></li>
+          <li class="{{#chan-active}}profile{{/chan-active}}"><a href="/settings/profile"><i class="icos-user"></i>
+              Profile</a></li>
+          <li class="{{#chan-active}}settings{{/chan-active}}"><a href="#"><i class="icos-cog"></i> Settings</a></li>
+          <li class="{{#chan-active}}apps{{/chan-active}}"><a href="#"><i class="icos-heart-favorite"></i> Apps</a></li>
+          <li class="{{#chan-active}}widgets{{/chan-active}}"  ><a href="#"><i class="icos-polaroids"></i> Widgets</a></li>
+        </ul>
+      </div>
+      <div class="profile-content">
+        <div class="tab-content">
+         {{{snippet-flash-msgs}}}
+         {{{content}}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
