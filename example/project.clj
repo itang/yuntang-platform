@@ -12,7 +12,7 @@
                  [clj-captcha "0.1.1-SNAPSHOT"]
                  [ansj_seg/ansj_seg "1.0"]]
   :repositories [["itang-repo" "http://itang.github.io/maven-repo"]]
-  :profiles {:dev {:plugins [[lein-ancient "0.4.2"]  ;$ lein ancient > check your project for outdated dependencies and plugins
+  :profiles {:dev {:plugins [[lein-ancient "0.4.3"]  ;$ lein ancient > check your project for outdated dependencies and plugins
                              [codox "0.6.4"]         ;$ lein doc
                              [lein-ring "0.8.6"]     ;$ lein ring server
                              [lein-pprint "1.1.1"]   ;$ lein pprint | lein with-profile 1.4 pprint
