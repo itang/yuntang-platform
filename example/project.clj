@@ -21,7 +21,7 @@
                              [lein-localrepo "0.5.2"]
                              [lein-checkall "0.1.1"]]
                    :dependencies [[ring-mock "0.1.5"]
-                                  [org.clojure/clojurescript "0.0-1847"]]}
+                                  [org.clojure/clojurescript "0.0-1853"]]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}}
   :aliases {"run-tests" ["with-profile" "1.4:1.5" "test"]
