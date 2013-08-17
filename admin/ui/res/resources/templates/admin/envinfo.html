@@ -1,13 +1,24 @@
 <div id="main-content">
   <ul class="nav nav-tabs" id="myTab">
     <li class="active"><a href="#app" data-toggle="tab">系统运行信息</a></li>
+    <li><a href="#system" data-toggle="tab">机器信息</a></li>
     <li><a href="#env" data-toggle="tab">系统环境信息</a></li>
     <li><a href="#prop" data-toggle="tab">JVM属性信息</a></li>
     <li><a href="#req" data-toggle="tab">当前请求信息</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="app">
-      {{{snippet-runtime-info}}}
+    <div class="tab-pane active" id="app">{{{snippet-runtime-info}}}</div>
+    <div class="tab-pane" id="system">
+      <table class="table table-striped table-bordered">
+        <tbody>
+          {{#system}}
+          <tr>
+            <td width="100"><b>{{key}}</b></td>
+            <td>{{{value}}}</td>
+          </tr>
+          {{/system}}
+        </tbody>
+      </table>
     </div>
     <div class="tab-pane" id="env">
       <table class="table table-striped table-bordered">

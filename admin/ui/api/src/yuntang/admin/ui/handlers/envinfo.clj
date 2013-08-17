@@ -1,6 +1,7 @@
 (ns yuntang.admin.ui.handlers.envinfo
   (:require [clojure.string :as str]
             [cljtang.core :refer :all]
+            [cljtang.runtime :as runtime]
             [clojure.core.memoize :as memoize]
             [compojure.core :refer :all]
             [noir.response :refer [json]]
@@ -10,10 +11,10 @@
 (defn- wrap-prop-value [^String k ^String v]
   (let [sep (System/getProperty "path.separator")]
     (when-> v (and (.contains v sep) (not (.startsWith v "http")))
-      (->> (str/split v (re-pattern sep)) 
-           (filter (complement empty?))
-           (map #(str "<b>" % "</b>"))
-           (str/join "<br/>")))))
+            (->> (str/split v (re-pattern sep))
+                 (filter (complement empty?))
+                 (map #(str "<b>" % "</b>"))
+                 (str/join "<br/>")))))
 
 (defn- map->info-bytype [k]
   (let [m (case k
@@ -24,11 +25,20 @@
 
 (def memo-map->info (memoize/lu map->info-bytype :lu/threshold 3))
 
+(defn- system-info []
+  (let [^Runtime runtime (Runtime/getRuntime)]
+    {:pid (runtime/pid)
+     :available-processors (.availableProcessors runtime)
+     :max-memory (.maxMemory runtime)
+     :free-memory (.freeMemory runtime)
+     :total-memory (.totalMemory runtime)}))
+
 (defhandler env [req]
-  (layout-view "admin/envinfo" 
+  (layout-view "admin/envinfo"
                {:req (for [[k v] req] {:key k :value v})
                 :env (memo-map->info :env)
-                :prop (memo-map->info :prop)}))
+                :prop (memo-map->info :prop)
+                :system (map->kv-pairs (system-info))}))
 
 (defhandler server-time []
   (json-success-message "" {:server_time (moment-format)}))
