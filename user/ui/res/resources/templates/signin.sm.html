@@ -1,0 +1,149 @@
+{% extends "templates/layouts/layout-base.sm.html" %}
+
+{% block more-css %}
+<!-- login css -->
+<link rel="stylesheet" href="/public/mooncake/assets/css/login.min.css"
+  media="screen">
+{% endblock%}
+
+{% block content %}
+
+<div id="login-wrap">
+  {{ snippet-flash-msgs }}
+  <div id="login-buttons">
+    <div class="btn-wrap">
+      <button type="button" class="btn" data-target="#login-form">
+        <i class="icon-key"></i>
+      </button>
+    </div>
+    <div class="btn-wrap">
+      <button type="button" class="btn" data-target="#register-form">
+        <i class="icon-edit"></i>
+      </button>
+    </div>
+    <div class="btn-wrap">
+      <button type="button" class="btn" data-target="#forget-form">
+        <i class="icon-question-sign"></i>
+      </button>
+    </div>
+  </div>
+  <div id="login-inner" class="login-inset">
+    <div id="login-circle">
+      <section id="login-form" class="login-inner-form">
+        <h1>Login</h1>
+        <form class="form-vertical" action="/signin" method="post">
+          <div class="control-group-merged">
+            <div class="control-group">
+              <input type="text" placeholder="用户名" name="username"
+                id="input-username" class="big required">
+            </div>
+            <div class="control-group">
+              <input type="password" placeholder="密  码" name="password"
+                id="input-password" class="big required">
+            </div>
+            {{snippet-user-captcha}}
+          </div>
+          <div class="control-group">
+            <label class="checkbox"> <input type="checkbox"
+              name="remember" class="uniform"> 记住我
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success btn-block btn-large">登入</button>
+          </div>
+        </form>
+      </section>
+      <section id="register-form" class="login-inner-form">
+        <h1>Register</h1>
+        <form class="form-vertical" action="/signup" method="POST">
+          <div class="control-group">
+            <label class="control-label">Username</label>
+            <div class="controls">
+              <input type="text" name="username" id="r-username"
+                class="required">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Email</label>
+            <div class="controls">
+              <input type="text" name="email" id="r-email"
+                class="required email">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Password</label>
+            <div class="controls">
+              <input type="password" name="password" id="r-password"
+                class="required">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Fullname</label>
+            <div class="controls">
+              <input type="text" name="realname" id="r-realname"">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">用户类型</label>
+            <div class="controls">
+              <select class="required" name="type" id="r-type">
+                {{snippet-user-type-options}}
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-danger btn-block btn-large">Register</button>
+          </div>
+        </form>
+      </section>
+      <section id="forget-form" class="login-inner-form">
+        <h1>Forget Password?</h1>
+        <form class="form-vertical" action="/forget_password" method="POST">
+          <div class="control-group">
+            <div class="controls">
+              <input type="text" name="email" class="big required email"
+                placeholder="Enter Your Email...">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-danger btn-block btn-large">申请重置密码</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+  <!-- <div id="login-social" class="login-inset">
+        <button class="zocial facebook">Connect with Facebook</button>
+        <button class="zocial twitter">Connect with Twitter</button>
+      </div> -->
+</div>
+<script type="text/javascript">
+  var active_form = "{{active-form}}";
+  var params_json = {{params-json}};
+</script>
+
+ 
+
+{% endblock %}
+
+ {% block more-js %}
+    {% if is-dev-mode %} 
+    <script type="text/javascript">
+      $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
+      $('#register-form form').deserialize({
+          "username":"itang",
+          "password":"computer",
+          "email":"livetang@qq.com",
+          "realname":"糖糖"
+        }
+      );
+    </script>
+    {% endif %}
+    
+    <script type="text/javascript">
+      $('#login-form form').deserialize(params_json);
+      $('#register-form form').deserialize(params_json);
+    </script>
+    <!-- Login Script -->
+    <script src="/public/mooncake/assets/js/login.js"></script>
+  {% endblock %}

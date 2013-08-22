@@ -18,6 +18,7 @@
            (apply [this scope template]
             (v (.text ^com.github.jknack.handlebars.Template template))))]
        (swap! tags-map assoc k lambad)))
+  (regist-filter [_ k v] )
   (clear-cache! [_]
     (.. ^com.github.jknack.handlebars.Handlebars hbs/*hbs* getCache clear)))
 

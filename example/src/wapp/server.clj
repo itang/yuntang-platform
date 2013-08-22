@@ -9,20 +9,31 @@
                              inject-fn-user-logined?
                              inject-fn-current-user
                              inject-db-config
-                             inject-not-found-content]]
+                             inject-not-found-content
+                             alter-template-engine!]]
+    [cljwtang.template.selmer :as selmer]
     [cljwtang.core :refer [render-file]]
     [yuntang.layout.inject :refer [inject-menus]]
-    [yuntang.user.core :as user-core]
-    [yuntang.user.ui.core :as user-ui]
-    [yuntang.layout.core :as layout-ui]
-    [yuntang.admin.ui.core :as admin-ui]
-    [yuntang.modules.captcha.ui.core :as captcha-ui]
-    [yuntang.modules.common.ui.core :as common-ui]
     [yuntang.modules.common.appconfig.core :refer [app-config]]
-    [wapp.config :as wappcofig]
-    [wapp.core :as wapp]))
+    [wapp.config :as wappcofig]))
 
-(def modules [layout-ui/module
+(inject-db-config wappcofig/db-config)
+
+(inject-fn-app-config app-config)
+
+(alter-template-engine! (selmer/new-selmer-template-engine))
+
+(require 
+    '[yuntang.user.core :as user-core]
+    '[yuntang.user.ui.core :as user-ui]
+    '[yuntang.layout.core :as layout-ui]
+    '[yuntang.admin.ui.core :as admin-ui]
+    '[yuntang.modules.captcha.ui.core :as captcha-ui]
+    '[yuntang.modules.common.ui.core :as common-ui]
+    '[wapp.core :as wapp])
+
+(defn modules [] 
+  [layout-ui/module
               captcha-ui/module
               user-ui/module
               wapp/module
@@ -30,11 +41,7 @@
               common-ui/module])
 
 (defn- flatten-by [f]
-  (->> modules (map f) flatten))
-
-(inject-db-config wappcofig/db-config)
-
-(inject-fn-app-config app-config)
+  (->> (modules) (map f) flatten))
 
 (inject-snippets-ns (flatten-by snippets-ns))
 

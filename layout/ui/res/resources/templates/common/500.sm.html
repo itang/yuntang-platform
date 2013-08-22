@@ -1,0 +1,15 @@
+<div id="main-header" class="page-header">
+  <h1 id="main-heading">
+    <font color="red">系统出错了(error code: 500)</font><span>请重试, 还有问题请联系xxx</span>
+    <a href="javascript:history.back();">返回</a>
+  </h1>
+</div>
+{{isprodmode}}
+<div id="main-content">
+  {% if is-dev-mode %}
+  <div>
+    <p><b>详细错误信息如下</b>:</p>
+    <pre>{{detail-message|safe}}</pre>
+  </div>
+  {% endif %}
+</div>

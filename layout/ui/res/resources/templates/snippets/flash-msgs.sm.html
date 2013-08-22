@@ -1,0 +1,21 @@
+<div class="alert alert-{{type}}">
+  <ul>
+    {{#messages}}
+    <li>{{.}}</li>
+    {{/messages}}
+  </ul>
+</div>
+<script>
+  var _notifyMsg = {
+    title : '提示信息',
+    text : '{{{text}}}',
+    type : '{{type}}'
+  };
+</script>
+{{#with-js}}
+<script>
+  $(function() {
+    $.pnotify(_notifyMsg);
+  });
+</script>
+{{/with-js}}
