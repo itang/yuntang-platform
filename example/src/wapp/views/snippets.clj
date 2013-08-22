@@ -1,3 +1,3 @@
 (ns wapp.views.snippets)
 
-(defn hello-snippet [] "Hello snippet!")
+(defn hello-snippet [a c] "Hello snippet!")

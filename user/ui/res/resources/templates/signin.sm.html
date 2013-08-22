@@ -7,7 +7,6 @@
 {% endblock%}
 
 {% block content %}
-
 <div id="login-wrap">
   {{ snippet-flash-msgs }}
   <div id="login-buttons">
@@ -119,31 +118,28 @@
 </div>
 <script type="text/javascript">
   var active_form = "{{active-form}}";
-  var params_json = {{params-json}};
+  var params_json = {{params|json|safe}};
 </script>
-
- 
-
 {% endblock %}
 
- {% block more-js %}
-    {% if is-dev-mode %} 
-    <script type="text/javascript">
-      $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
-      $('#register-form form').deserialize({
-          "username":"itang",
-          "password":"computer",
-          "email":"livetang@qq.com",
-          "realname":"糖糖"
-        }
-      );
-    </script>
-    {% endif %}
+{% block more-js %}
+  {% if is-dev-mode %} 
+  <script type="text/javascript">
+    $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
+    $('#register-form form').deserialize({
+        "username":"itang",
+        "password":"computer",
+        "email":"livetang@qq.com",
+        "realname":"糖糖"
+      }
+    );
+  </script>
+  {% endif %}
     
-    <script type="text/javascript">
-      $('#login-form form').deserialize(params_json);
-      $('#register-form form').deserialize(params_json);
-    </script>
-    <!-- Login Script -->
-    <script src="/public/mooncake/assets/js/login.js"></script>
-  {% endblock %}
+  <script type="text/javascript">
+    $('#login-form form').deserialize(params_json);
+    $('#register-form form').deserialize(params_json);
+  </script>
+  <!-- Login Script -->
+  <script src="/public/mooncake/assets/js/login.js"></script>
+{% endblock %}

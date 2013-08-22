@@ -12,7 +12,7 @@
                       :created-at (format-date (:created_at %))
                       :updated-at (some-> (:updated_at %) format-date))
                 (appconfigs/find-all))]
-    (layout-view "modules/common/appconfig"
+    (view "modules/common/appconfig"
       {:appconfigs (maplist-with-no items)
        :size (count items)})))
 

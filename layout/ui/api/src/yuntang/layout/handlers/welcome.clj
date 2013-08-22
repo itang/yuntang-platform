@@ -6,10 +6,10 @@
             [yuntang.user.core :refer [user-logined?]]))
 
 (defhandler welcome [req]
-  (view-template "welcome" ))
+  (view "welcome" ))
 
 (defhandler dashboard [req]
-  (layout-view "dashboard"))
+  (view "dashboard"))
 
 (defroutes welcome-routes
   (GET "/" req (if (user-logined?) dashboard welcome)))

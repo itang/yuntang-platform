@@ -51,15 +51,14 @@
 ;; 登录页面
 (defhandler signin-page [active-form req]
   (let [postback-params (postback-params)]
-    (layout-base-view "signin"
+    (view "signin"
       {:captcha-enabled? (captcha-enabled?)
        :ori-active-form active-form
        :active-form (case active-form 
                           "second" "eq(1)"
                           "three" "eq(2)"
                           nil)
-       :params postback-params
-       :params-json (cheshire/generate-string postback-params)})))
+       :params postback-params})))
 
 (defn- check-user-status [user]
   (cond
@@ -135,7 +134,7 @@
           "mail-activation-template"
           {:activation-url activation-url
            :email email})))
-    (layout-base-view "signup-submit-finish" 
+    (view "signup-submit-finish" 
                       {:email email
                        :mail-vendor (mail-vendor-by-email-account email)
                        :by-email activation-mode-by-email
@@ -149,7 +148,7 @@
   (if-not (= 32 (count code))
     (not-found "")
     (let [user (activation-user! code)]
-      (layout-base-view "activation-result" {:user user }))))
+      (view "activation-result" {:user user }))))
 
 
 (defn- check-email? [map key options]
@@ -179,7 +178,7 @@
            :subject (str "[wapp]-" "申请重置密码邮件")}
           "forget-password-template"
           {:reset-url reset-url})
-    (layout-base-view 
+    (view 
       "forget-password-result"
       {:mail-vendor (mail-vendor-by-email-account email)}))
   :failture
@@ -195,14 +194,14 @@
         {:to email :subject (str "[wapp]-" "重置密码邮件通知")}
         "reset-password-notice-template"
         ctx)
-      (layout-base-view "reset-password-result" ctx))))
+      (view "reset-password-result" ctx))))
 
 (defhandler settings []
   (redirect "/settings/password"))
 
 (defn- layout-settings-view [template-name ctx & [sctx]]
-  (layout-view "layouts/settings"
-               (merge {:content (view-template template-name ctx)}
+  (view "layouts/settings"
+               (merge {:content (view template-name ctx)}
                       sctx)))
 
 (defhandler settings-profile []
@@ -242,7 +241,7 @@
                       (assoc :created_at_pretty (pretty-format (:created_at %)))
                       (assoc :type-name (user-types-map (:type %))))
                     (all-users))]
-    (layout-view "admin/users" {:users users})))
+    (view "admin/users" {:users users})))
 
 (defroutes account-routes
   (GET "/signin" [] signin-page)

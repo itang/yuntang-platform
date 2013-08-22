@@ -17,7 +17,7 @@
             [clj-captcha.core :refer [captcha-response-correc?]]))
 
 (defhandler index [req]
-  (layout-view "examples/index"
+  (view "examples/index"
                {:foo (tower/t :example/foo)
                 :locale (get-in req [:headers "accept-language"])}))
 
@@ -49,7 +49,7 @@
     (json-success-message "操作完成")))
 
 (defhandler fileupload-index []
-  (layout-view "examples/fileupload"
+  (view "examples/fileupload"
                {:noir-flash @*noir-flash*
                 :noir-session @*noir-session*
                 :mem @mem}))

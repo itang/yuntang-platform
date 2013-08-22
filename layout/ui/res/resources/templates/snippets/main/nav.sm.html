@@ -1,15 +1,21 @@
 <nav id="navigation" class="collapse">
 <ul>
-{{#menus}}
-   <li>
-   <span title="{{description}}"> <i class="icon-home"></i> <span
-        class="nav-title">{{name}}</span></span>
-         <ul class="inner-nav">
-         {{#children}}
-          <li><a href="{{funcpoint.url}}" target="{{attrs.target}}"><i class="{{attrs.classname}}"></i> {{name}}</a></li>
-         {{/children}}
-         </ul>
-   </li>
-{{/menus}}
+{% if menus %}
+{% for menu in menus %}
+  <li>
+    <span title="{{description}}"> <i class="icon-home"></i> 
+      <span class="nav-title">{{menu.name}}</span>
+    </span>
+    <ul class="inner-nav">
+      {% if menu.children %}
+        {% for item in menu.children %}
+        <li><a href="{{item.funcpoint.url}}" target="{{item.attrs.target}}"><i class="{{item.attrs.classname}}"></i> {{item.name}}</a></li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </li>
+  {% empty %}no elements
+{% endfor %} 
+{% endif %}
 </ul>
 </nav>

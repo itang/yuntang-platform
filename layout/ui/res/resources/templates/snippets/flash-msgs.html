@@ -12,10 +12,10 @@
     type : '{{type}}'
   };
 </script>
-{{#with-js}}
+{% block more-js %}
 <script>
   $(function() {
     $.pnotify(_notifyMsg);
   });
 </script>
-{{/with-js}}
+{% endblock %}

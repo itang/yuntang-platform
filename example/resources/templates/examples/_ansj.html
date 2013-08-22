@@ -12,14 +12,3 @@
     <div id="ansj-info" style="color: red"></div>
   </div>
 </div>
-{{#with-js}}
-<script>
-  $(function() {
-    $('#btnOk').click(function() {
-      $.getJSON('/examples/ansj?source=' + $('#source').val(), function(result) {
-        $('#ansj-info').html(result.message + "<br/>" + result.data);
-      });
-    });
-  });
-</script>
-{{/with-js}}

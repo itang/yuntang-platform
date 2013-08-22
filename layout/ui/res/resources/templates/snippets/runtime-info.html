@@ -27,7 +27,7 @@
     </tr>
   </tbody>
 </table>
-{{#with-js}}
+{% block more-js %}
 <script type="text/javascript">
   $(function() {
     var util = yuntang.layout.client.util;
@@ -58,4 +58,4 @@
     });
   });
 </script>
-{{/with-js}}
+{% endblock %}

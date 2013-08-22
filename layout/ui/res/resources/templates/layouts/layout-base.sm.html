@@ -22,8 +22,7 @@
 <!-- Main Layout Stylesheet -->
 <link rel="stylesheet" href="/public//mooncake/assets/css/fonts/icomoon/style.css" media="screen">
 <link rel="stylesheet" href="/public//mooncake/plugins/zocial/zocial.css" media="screen">
-{% block more-css %}
-{% endblock%}
+{% block more-css %}{% endblock%}
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="/public/js/libs/html5.js"></script>
@@ -32,7 +31,6 @@
 <body>
   {% block content %} Some content {% endblock %}
   <script src="/public/js/base.js"></script>
-  {% block more-js %}
-  {% endblock%}
+  {% block more-js %}{% endblock%}
 </body>
 </html>

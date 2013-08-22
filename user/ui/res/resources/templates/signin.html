@@ -1,8 +1,8 @@
-{{#with-css}}
+{% block more-css %}
 <!-- login css -->
 <link rel="stylesheet" href="/public/mooncake/assets/css/login.min.css"
   media="screen">
-{{/with-css}}
+{% endblock %}
 <div id="login-wrap">
   {{{snippet-flash-msgs}}}
   <div id="login-buttons">
@@ -117,7 +117,7 @@
   var params_json = {{{params-json}}};
 </script>
 {{#is-dev-mode}} 
-{{#with-js}}
+{% block more-js %}
 <script type="text/javascript">
   $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
   $('#register-form form').deserialize({
@@ -128,13 +128,13 @@
     }
   );
 </script>
-{{/with-js}}
+{% endblock %}
 {{/is-dev-mode}}
-{{#with-js}}
+{% block more-js %}
 <script type="text/javascript">
   $('#login-form form').deserialize(params_json);
   $('#register-form form').deserialize(params_json);
 </script>
 <!-- Login Script -->
 <script src="/public/mooncake/assets/js/login.js"></script>
-{{/with-js}}
+{% endblock %}

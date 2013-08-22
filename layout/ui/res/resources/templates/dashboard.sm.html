@@ -1,5 +1,6 @@
-<!-- dashboard main content -->
-{{#with-css}}
+{% extends "templates/layouts/layout-main.sm.html" %}
+
+{% block more-css %}
 <!-- jquery-ui Stylesheets -->
 <link rel="stylesheet" href="/public/mooncake/assets/jui/css/jquery-ui.css" media="screen">
 <link rel="stylesheet" href="/public/mooncake/assets/jui/jquery-ui.custom.css" media="screen">
@@ -21,7 +22,9 @@
 <link rel="stylesheet" href="/public/mooncake/plugins/fullcalendar/fullcalendar.print.css" media="print">
 
 <!-- End Plugin Stylesheets -->
-{{/with-css}}
+{% endblock %}
+
+{% block content %}
 <div id="main-content">
   <ul class="stats-container">
     <li><a href="#" class="stat summary"> <span class="sparkline" sparkType="bar" sparkBarColor="#e95d3c"
@@ -336,7 +339,9 @@
     </div>
   </div>
 </div>
-{{#with-js}}
+{% endblock %}
+
+{% block more-js %}
 <script src="/public/js/lib.js"></script>
 <script src="/public/mooncake/assets/js/demo/dashboard.js"></script>
-{{/with-js}}
+{% endblock %}

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/public/mooncake/bootstrap/css/bootstrap.min.css" media="all">
 <link rel="stylesheet" href="/public/libs/pnotify/jquery.pnotify.default.css" media="screen">
 <link rel="stylesheet" href="/public/mooncake/plugins/uniform/css/uniform.default.css" media="screen">
-{% more-css|safe %}
+{% block more-css %}{% endblock%}
 <!-- Main Layout Stylesheet -->
 <link rel="stylesheet" href="/public/mooncake/assets/css/fonts/icomoon/style.css" media="screen">
 <link rel="stylesheet" href="/public/mooncake/assets/css/mooncake.min.css" media="screen">
@@ -63,12 +63,12 @@
               </form>
             </div>
             <div id="dropdown-lists">
-              {% snippet-main-notifications|safe %}
-              {% snippet-main-messages|safe %}
+              {% snippet-main-notifications %}
+              {% snippet-main-messages %}
             </div>
 
             <div id="header-functions" class="pull-right">
-              {% snippet-main-user-info|safe %}
+              {% snippet-main-user-info %}
               <div id="logout-ribbon">
                 <a href="/logout"><i class="icon-off"></i></a>
               </div>
@@ -83,13 +83,13 @@
         <div id="content-outer">
           <div id="content-inner">
             <aside id="sidebar">
-              {% snippet-main-nav|safe %}
+              {% snippet-main-nav %}
             </aside>
 
             <div id="sidebar-separator"></div>
             <section id="main" class="clearfix">
               <div id="main-header" class="page-header">
-                {% snippet-main-header|safe %}
+                {% snippet-main-header %}
               </div>
               {% block content %}
               Some content
@@ -101,7 +101,7 @@
     </div>
 
     <footer id="footer">
-      {% snippet-main-footer|safe %}
+      {% snippet-main-footer %}
     </footer>
 
   </div>
@@ -116,6 +116,6 @@
   <script>
     app.main.init();
   </script>
-  {% more-js|safe %}
+  {% block more-js %}{% endblock%}
 </body>
 </html>

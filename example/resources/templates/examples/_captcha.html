@@ -8,25 +8,3 @@
     <button class="btn" id="btn-check">验证</button>
   </form>
 </div>
-{{#with-js}}
-<script>
-  $(function() {
-    function refresh_captcha() {
-      var $captcha = $("#i-captcha");
-      var url = "/captcha";
-      $captcha.attr("src", url + "?" + new Date().getTime());
-    }
-
-    $('#btn-refresh-captcha').click(refresh_captcha);
-
-    $('#form-captcha').ajaxForm({
-      dataType : 'json',
-      success : function(result) {
-        alert(JSON.stringify(result));
-        refresh_captcha();
-        $('#input-captcha').val('');
-      }
-    });
-  });
-</script>
-{{/with-js}}

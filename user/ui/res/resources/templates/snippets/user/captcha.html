@@ -3,7 +3,7 @@
   <input type="text" placeholder="验证码"
     name="captcha" id="input-captcha" class="big required" value="">
 </div>
-{{#with-js}}
+{% block more-js %}
 <script>
   $(function() {
     var $captcha = $("#i-captcha");
@@ -15,4 +15,4 @@
     $captcha.click(refresh_captcha);
   });
 </script>
-{{/with-js}}
+{% endblock %}

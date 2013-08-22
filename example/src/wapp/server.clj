@@ -9,8 +9,7 @@
                              inject-fn-user-logined?
                              inject-fn-current-user
                              inject-db-config
-                             inject-not-found-content
-                             alter-template-engine!]]
+                             inject-not-found-content]]
     [cljwtang.template.selmer :as selmer]
     [cljwtang.core :refer [render-file]]
     [yuntang.layout.inject :refer [inject-menus]]
@@ -20,8 +19,6 @@
 (inject-db-config wappcofig/db-config)
 
 (inject-fn-app-config app-config)
-
-(alter-template-engine! (selmer/new-selmer-template-engine))
 
 (require 
     '[yuntang.user.core :as user-core]
