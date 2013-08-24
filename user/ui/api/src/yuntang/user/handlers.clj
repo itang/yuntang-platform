@@ -1,15 +1,14 @@
-(ns yuntang.user.ui.handlers
+(ns yuntang.user.handlers
   (:require [clojure.string :refer [trim]]
             [clojure.tools.logging :as log]
             [cljtang.core :refer :all]
             [cljtang.util :refer :all]
             [metis.core :refer :all]
-            [clj-pretty-format.core :refer [pretty-format]]
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang :refer :all]
             [yuntang.user.core :refer :all]
-            [yuntang.user.ui.util :refer [check-username-pattern]]
-            [yuntang.user.ui.config :refer :all]))
+            [yuntang.user.util :refer [check-username-pattern]]
+            [yuntang.user.config :refer :all]))
 
 (defn- password? [map key options]
   (if-let [password (some-> (get map key) trim)]
@@ -224,8 +223,6 @@
 (defhandler admin-users []
   (let [today (moment-format "yyyy-MM-dd")
         users (map #(-> %
-                      (assoc :created_at_string (format-date (:created_at %)))
-                      (assoc :created_at_pretty (pretty-format (:created_at %)))
                       (assoc :type-name (user-types-map (:type %))))
                     (all-users))]
     (view "admin/users" {:users users})))

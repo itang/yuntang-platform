@@ -1,4 +1,4 @@
-(ns yuntang.user.ui.config
+(ns yuntang.user.config
   (:require [cljwtang.config :as config]
             [yuntang.modules.common.appconfig.core :refer [app-config]]))
 

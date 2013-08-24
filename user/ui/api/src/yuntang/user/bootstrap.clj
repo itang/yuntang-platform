@@ -1,4 +1,4 @@
-(ns yuntang.user.ui.bootstrap
+(ns yuntang.user.bootstrap
   (:require [cljwtang.datatype :refer [new-bootstrap-task]]
             [yuntang.user.core :refer :all]))
 

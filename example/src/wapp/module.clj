@@ -1,4 +1,4 @@
-(ns wapp.core
+(ns wapp.module
   (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
             [wapp.handlers.examples :refer [examples-routes]]))
 

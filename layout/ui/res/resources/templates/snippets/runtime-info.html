@@ -6,11 +6,11 @@
     </tr>
     <tr>
       <td>应用启动时间</td>
-      <td>{{start-time}} - ({{start-time-pretty}})</td>
+      <td>{{start-time|date:"yyyy-MM-dd HH:mm:ss"}} - ({{start-time|date-pretty}})</td>
     </tr>
     <tr>
       <td>服务器端当前时间</td>
-      <td><span id="server-time">{{server-time}}</span>
+      <td><span id="server-time">{{server-time|date:"yyyy-MM-dd HH:mm:ss"}}</span>
         <button class="btn btn-small" onclick="javascript:location.reload();">刷新</button>
         <button class="btn btn-small" id="btn-ajaxfresh">Ajax刷新</button>
         <button class="btn btn-small" id="btn-auto">自动刷新</button></td>
@@ -58,4 +58,3 @@
     });
   });
 </script>
-

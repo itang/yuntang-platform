@@ -1,13 +1,13 @@
-(ns yuntang.layout.core
+(ns yuntang.layout.module
   (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
-            [yuntang.layout.handlers.welcome :refer [welcome-routes]]))
+            [yuntang.layout.handlers :refer [layout-routes]]))
 
 (def fp-dashboard
   (new-funcpoint {:name "dashboard"
                   :url "/"}))
 
 (def module
-  (new-ui-module {:routes [welcome-routes]
+  (new-ui-module {:routes [layout-routes]
                   :fps [fp-dashboard]
                   :menus (maps->menus
                            [{:id "dashboard"
@@ -19,4 +19,4 @@
                              :attrs {:classname "icol-dashboard"}
                              :parent "dashboard"
                              :sort -1}])
-                  :snippets-ns ['yuntang.layout.views.snippets]}))
+                  :snippets-ns ['yuntang.layout.snippets]}))

@@ -22,20 +22,20 @@
 
 (require 
     '[yuntang.user.core :as user-core]
-    '[yuntang.user.ui.core :as user-ui]
-    '[yuntang.layout.core :as layout-ui]
-    '[yuntang.admin.ui.core :as admin-ui]
-    '[yuntang.modules.captcha.ui.core :as captcha-ui]
-    '[yuntang.modules.common.ui.core :as common-ui]
-    '[wapp.core :as wapp])
+    '[yuntang.user.module :as user-module]
+    '[yuntang.layout.module :as layout-module]
+    '[yuntang.admin.module :as admin-module]
+    '[yuntang.modules.captcha.module :as captcha-module]
+    '[yuntang.modules.common.module :as common-module]
+    '[wapp.module :as wapp])
 
-(defn modules [] 
-  [layout-ui/module
-              captcha-ui/module
-              user-ui/module
-              wapp/module
-              admin-ui/module
-              common-ui/module])
+(defn modules []
+  [layout-module/module
+   captcha-module/module
+   user-module/module
+   wapp/module
+   admin-module/module
+   common-module/module])
 
 (defn- flatten-by [f]
   (->> (modules) (map f) flatten))

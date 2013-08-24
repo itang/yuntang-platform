@@ -1,7 +1,18 @@
-(ns yuntang.modules.common.ui.handlers.dev
-  (:require [clojure.tools.logging :as log]
+(ns yuntang.modules.common.handlers
+  (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
+            [compojure.core :refer :all]
             [cljtang.core :refer :all]
-            [cljwtang :refer :all]))
+            [cljwtang.core :refer :all]
+            [cljwtang.view :refer :all]
+            [yuntang.modules.common.appconfig.core :as appconfigs]))
+
+(defhandler index []
+  (let [items (map #(assoc %
+                      :created-at (format-date (:created_at %))
+                      :updated-at (some-> (:updated_at %) format-date))
+                   (appconfigs/find-all))]
+    (view "modules/common/appconfig" {:appconfigs (maplist-with-no items)})))
 
 (defonce ignored-namespaces (atom #{}))
 
@@ -33,5 +44,6 @@
         (json-success-message "finished"))
       (log/warn "request from" remote-addr))))
 
-(defroutes dev-routes
+(defroutes common-routes
+  (GET "/admin/appconfigs" [] index)
   (GET "/_dev/reload" [] reload))

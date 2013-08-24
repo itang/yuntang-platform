@@ -1,8 +1,7 @@
-(ns yuntang.layout.views.snippets
+(ns yuntang.layout.snippets
   (:import java.util.Calendar)
   (:require [cljtang.core :refer :all]
             [hiccup.core :as hiccup]
-            [clj-pretty-format.core :refer [pretty-format]]
             [cljwtang :refer :all]
             [yuntang.user.core :refer [current-user]]
             [yuntang.layout.inject :as inject]))
@@ -10,7 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; common
 
-(def start-time (java.util.Date.))
+(def start-time (moment))
 
 (defsnippet flash-msgs
   (flash-msg)
@@ -60,6 +59,5 @@
 ;; 运行时信息
 (defsnippet runtime-info
   {:mode run-mode
-   :start-time (format-date start-time)
-   :start-time-pretty (pretty-format start-time)
-   :server-time (moment-format)})
+   :start-time start-time
+   :server-time (moment)})

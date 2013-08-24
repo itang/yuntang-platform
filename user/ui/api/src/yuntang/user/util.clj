@@ -1,4 +1,4 @@
-(ns yuntang.user.ui.util
+(ns yuntang.user.util
   (:require [clojure.string :refer [trim]]))
 
 (def ^:private cexample

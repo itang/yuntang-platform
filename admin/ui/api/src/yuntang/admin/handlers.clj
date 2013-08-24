@@ -1,4 +1,4 @@
-(ns yuntang.admin.ui.handlers.envinfo
+(ns yuntang.admin.handlers
   (:require [clojure.string :as str]
             [clojure.core.memoize :as memoize]
             [cljtang.core :refer :all]
@@ -32,15 +32,15 @@
 
 (defhandler env [req]
   (view "admin/envinfo"
-               {:req (for [[k v] req] {:key k :value v})
-                :env (memo-map->info :env)
-                :prop (memo-map->info :prop)
-                :system (map->kv-pairs (system-info))}))
+        {:req (for [[k v] req] {:key k :value v})
+         :env (memo-map->info :env)
+         :prop (memo-map->info :prop)
+         :system (map->kv-pairs (system-info))}))
 
 (defhandler server-time []
   (json-success-message "" {:server_time (moment-format)}))
 
-(defroutes envinfo-routes
+(defroutes admin-routes
   (GET "/admin/envinfo" [] env)
   (GET "/admin/server-time" [] server-time)
   (GET "/admin/server-time/polling" [] server-time))

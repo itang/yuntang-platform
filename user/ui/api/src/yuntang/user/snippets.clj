@@ -1,6 +1,6 @@
-(ns yuntang.user.ui.snippets
+(ns yuntang.user.snippets
   (:require [cljwtang.view :refer :all]
-            [yuntang.user.ui.config :refer [captcha-enabled?]]
+            [yuntang.user.config :refer [captcha-enabled?]]
             [yuntang.user.core :refer [user-types]]))
 
 (defsnippet user/captcha

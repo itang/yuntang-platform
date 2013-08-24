@@ -1,6 +1,6 @@
-(ns yuntang.admin.ui.core
+(ns yuntang.admin.module
   (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
-            [yuntang.admin.ui.handlers.envinfo :refer [envinfo-routes]]))
+            [yuntang.admin.handlers :refer [admin-routes]]))
 
 (def fp-admin-envinfo 
   (new-funcpoint {:name "admin.envinfo"
@@ -8,7 +8,7 @@
                   :perm "admin.envinfo"}))
 
 (def module
-  (new-ui-module {:routes [envinfo-routes]
+  (new-ui-module {:routes [admin-routes]
                   :fps [fp-admin-envinfo]
                   :menus (maps->menus
                            [{:id "admin"
