@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/public/mooncake/bootstrap/css/bootstrap.min.css" media="all">
 <link rel="stylesheet" href="/public/libs/pnotify/jquery.pnotify.default.css" media="screen">
 <link rel="stylesheet" href="/public/mooncake/plugins/uniform/css/uniform.default.css" media="screen">
-{{{more-css}}}
+{% block more-css %}{% endblock%}
 <!-- Main Layout Stylesheet -->
 <link rel="stylesheet" href="/public/mooncake/assets/css/fonts/icomoon/style.css" media="screen">
 <link rel="stylesheet" href="/public/mooncake/assets/css/mooncake.min.css" media="screen">
@@ -21,6 +21,7 @@
 <!--[if lt IE 9]>
 <script src="/public/libs/html5.js"></script>
 <![endif]-->
+<script src="/public/libs/jquery-2.0.3.min.js"></script>
 </head>
 <body data-show-sidebar-toggle-button="true" data-fixed-sidebar="true">
 
@@ -63,12 +64,12 @@
               </form>
             </div>
             <div id="dropdown-lists">
-              {{{snippet-main-notifications}}}
-              {{{snippet-main-messages}}}
+              {% snippet-main-notifications %}
+              {% snippet-main-messages %}
             </div>
 
             <div id="header-functions" class="pull-right">
-              {{{snippet-main-user-info}}}
+              {% snippet-main-user-info %}
               <div id="logout-ribbon">
                 <a href="/logout"><i class="icon-off"></i></a>
               </div>
@@ -83,15 +84,17 @@
         <div id="content-outer">
           <div id="content-inner">
             <aside id="sidebar">
-              {{{snippet-main-nav}}}
+              {% snippet-main-nav %}
             </aside>
 
             <div id="sidebar-separator"></div>
             <section id="main" class="clearfix">
               <div id="main-header" class="page-header">
-                {{{snippet-main-header}}}
+                {% snippet-main-header %}
               </div>
-              {{{content}}}
+              {% block content %}
+              Some content
+              {% endblock %}
             </section>
           </div>
         </div>
@@ -99,22 +102,21 @@
     </div>
 
     <footer id="footer">
-      {{{snippet-main-footer}}}
+      {% snippet-main-footer %}
     </footer>
 
   </div>
   <script src="/public/js/base.js"></script>
   <script src="/public/js/layout-lib.js"></script>
   <!-- App Scripts -->
-  {{#is-prod-mode}}
+  {% if is-prod-mode %}
   <script src="/public/js/app.js"></script>
-  {{/is-prod-mode}}
-  {{^is-prod-mode}}
+  {% else %}
   <script src="/public/js/app-debug.js"></script>
-  {{/is-prod-mode}}
+  {% endif %}
   <script>
     app.main.init();
   </script>
-  {{{more-js}}}
+  {% block more-js %}{% endblock%}
 </body>
 </html>

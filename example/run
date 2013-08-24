@@ -1,0 +1,4 @@
+#!/bin/sh
+unset LEIN_NO_DEV
+
+lein ring server

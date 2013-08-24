@@ -1,10 +1,14 @@
+{% extends "templates/layouts/layout-base.html" %}
+
 {% block more-css %}
 <!-- login css -->
 <link rel="stylesheet" href="/public/mooncake/assets/css/login.min.css"
   media="screen">
-{% endblock %}
+{% endblock%}
+
+{% block content %}
 <div id="login-wrap">
-  {{{snippet-flash-msgs}}}
+  {% snippet-flash-msgs %}
   <div id="login-buttons">
     <div class="btn-wrap">
       <button type="button" class="btn" data-target="#login-form">
@@ -36,7 +40,7 @@
               <input type="password" placeholder="密  码" name="password"
                 id="input-password" class="big required">
             </div>
-            {{{snippet-user-captcha}}}
+            {% snippet-user-captcha %}
           </div>
           <div class="control-group">
             <label class="checkbox"> <input type="checkbox"
@@ -82,7 +86,7 @@
             <label class="control-label">用户类型</label>
             <div class="controls">
               <select class="required" name="type" id="r-type">
-                {{{snippet-user-type-options}}}
+                {% snippet-user-type-options %}
               </select>
             </div>
           </div>
@@ -114,27 +118,28 @@
 </div>
 <script type="text/javascript">
   var active_form = "{{active-form}}";
-  var params_json = {{{params-json}}};
-</script>
-{{#is-dev-mode}} 
-{% block more-js %}
-<script type="text/javascript">
-  $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
-  $('#register-form form').deserialize({
-      "username":"itang",
-      "password":"computer",
-      "email":"livetang@qq.com",
-      "realname":"糖糖"
-    }
-  );
+  var params_json = {{params|json|safe}};
 </script>
 {% endblock %}
-{{/is-dev-mode}}
+
 {% block more-js %}
-<script type="text/javascript">
-  $('#login-form form').deserialize(params_json);
-  $('#register-form form').deserialize(params_json);
-</script>
-<!-- Login Script -->
-<script src="/public/mooncake/assets/js/login.js"></script>
+  {% if is-dev-mode %} 
+  <script type="text/javascript">
+    $('#login-form form').deserialize({"username":"admin", "password":"admin123"});
+    $('#register-form form').deserialize({
+        "username":"itang",
+        "password":"computer",
+        "email":"livetang@qq.com",
+        "realname":"糖糖"
+      }
+    );
+  </script>
+  {% endif %}
+    
+  <script type="text/javascript">
+    $('#login-form form').deserialize(params_json);
+    $('#register-form form').deserialize(params_json);
+  </script>
+  <!-- Login Script -->
+  <script src="/public/mooncake/assets/js/login.js"></script>
 {% endblock %}

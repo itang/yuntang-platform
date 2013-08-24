@@ -1,10 +1,13 @@
+{% extends "templates/layouts/layout-main.html" %}
+
+{% block content %}
 <div id="main-content">
   <div class="widget">
     <div class="widget-header">
       <span class="title">应用配置</span>
       <div class="toolbar">
         <div class="btn-group">
-          <span class="btn"> 配置项总数: {{size}} </span>
+          <span class="btn"> 配置项总数: {{appconfigs|count}} </span>
         </div>
       </div>
     </div>
@@ -48,22 +51,23 @@
           </tr>
         </thead>
         <tbody>
-          {{#appconfigs}}
+          {% for item in appconfigs %}
           <tr>
             <td class="checkbox-column">
               <div class="uniform-checker">
                 <span class=""><input type="checkbox" class="uniform" style="opacity: 0;"></span>
               </div>
             </td>
-            <td>{{no}}</td>
-            <td><b>{{key}}</b></td>
-            <td>{{{value}}}</td>
-            <td>{{created-at}}</td>
-            <td>{{updated-at}}</td>
+            <td>{{item.no}}</td>
+            <td><b>{{item.key}}</b></td>
+            <td>{{item.value}}</td>
+            <td>{{item.created-at}}</td>
+            <td>{{item.updated-at}}</td>
           </tr>
-          {{/appconfigs}}
+          {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
 </div>
+{% endblock %}

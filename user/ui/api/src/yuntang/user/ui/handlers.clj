@@ -3,18 +3,10 @@
             [clojure.tools.logging :as log]
             [cljtang.core :refer :all]
             [cljtang.util :refer :all]
-            [ring.util.response :refer [not-found]]
-            [compojure.core :refer :all]
-            [noir.response :refer [redirect]]
-            [noir.session :as session]
             [metis.core :refer :all]
-            [cheshire.core :as cheshire]
             [clj-pretty-format.core :refer [pretty-format]]
             [clj-captcha.core :refer [captcha-response-correc?]]
-            [cljwtang.core :refer :all]
-            [cljwtang.inject :refer [fn-app-config]]
-            [cljwtang.view :refer :all]
-            [cljwtang.utils.mail :refer :all]
+            [cljwtang :refer :all]
             [yuntang.user.core :refer :all]
             [yuntang.user.ui.util :refer [check-username-pattern]]
             [yuntang.user.ui.config :refer :all]))
@@ -89,7 +81,7 @@
 
 ;; 注销
 (defhandler logout []
-  (session/remove! :user)
+  (session-remove! :user)
   (redirect-signin-page))
 
 (defvalidator signup-form-validator
@@ -199,16 +191,11 @@
 (defhandler settings []
   (redirect "/settings/password"))
 
-(defn- layout-settings-view [template-name ctx & [sctx]]
-  (view "layouts/settings"
-               (merge {:content (view template-name ctx)}
-                      sctx)))
-
 (defhandler settings-profile []
-  (layout-settings-view "settings/profile" nil {:channel "profile"}))
+  (view "settings/profile" {:channel "profile"}))
 
 (defhandler settings-password []
-  (layout-settings-view "settings/password" nil {:channel "password"}))
+  (view "settings/password" {:channel "password"}))
 
 (defvalidator settings-change-password-form-validator
   [[:current_password :password :user_password_confirmation]

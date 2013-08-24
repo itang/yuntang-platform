@@ -1,14 +1,14 @@
 <div class="alert alert-{{type}}">
   <ul>
-    {{#messages}}
-    <li>{{.}}</li>
-    {{/messages}}
+    {% for msg in messages %}
+    <li>{{msg}}</li>
+    {% endfor %}
   </ul>
 </div>
 <script>
   var _notifyMsg = {
     title : '提示信息',
-    text : '{{{text}}}',
+    text : '{{text|safe}}',
     type : '{{type}}'
   };
 </script>

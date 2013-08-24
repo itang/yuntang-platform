@@ -30,14 +30,14 @@
 (def jsbase-src 
   (map 
     (partial full-path "resources/public/")
-    ["http://code.jquery.com/jquery-2.0.0.min.js"
+    [#_"http://code.jquery.com/jquery-2.0.0.min.js"
      #_("http://code.jquery.com/jquery-1.8.3.min.js")
-     "http://code.jquery.com/jquery-migrate-1.1.1.min.js"
+     "http://code.jquery.com/jquery-migrate-1.2.1.min.js"
      "https://raw.github.com/bestiejs/lodash/v1.2.1/dist/lodash.min.js"
      "http://malsup.github.com/jquery.form.js"
      (ghs "kflorence/jquery-deserialize/master/dist/jquery.deserialize.min.js")
      #_("libs/jquery.cookies.2.2.0.min.js")
-     (ghs "mathiasbynens/jquery-placeholder/master/jquery.placeholder.min.js")
+     (ghs "mathiasbynens/jquery-placeholder/master/jquery.placeholder.js")
      #_("mooncake/assets/js/libs/jquery.placeholder.min.js")
    #_("https://raw.github.com/pixelmatrix/uniform/master/jquery.uniform.min.js")
      "mooncake/plugins/uniform/jquery.uniform.min.js"

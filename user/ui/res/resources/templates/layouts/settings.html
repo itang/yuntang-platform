@@ -1,3 +1,6 @@
+{% extends "templates/layouts/layout-main.html" %}
+
+{% block content %}
 <div id="main-content">
   <div class="profile">
     <div class="clearfix">
@@ -21,21 +24,23 @@
           <img src="/public/images/user-default.jpg" alt="">
         </div>
         <ul class="nav nav-tabs nav-stacked">
-          <li class="{{#chan-active}}password{{/chan-active}}"><a href="/settings/password"><i class="icos-user"></i>
+          <li class="{% chan-active password %}"><a href="/settings/password"><i class="icos-user"></i>
               Password</a></li>
-          <li class="{{#chan-active}}profile{{/chan-active}}"><a href="/settings/profile"><i class="icos-user"></i>
+          <li class="{% chan-active profile %}"><a href="/settings/profile"><i class="icos-user"></i>
               Profile</a></li>
-          <li class="{{#chan-active}}settings{{/chan-active}}"><a href="#"><i class="icos-cog"></i> Settings</a></li>
-          <li class="{{#chan-active}}apps{{/chan-active}}"><a href="#"><i class="icos-heart-favorite"></i> Apps</a></li>
-          <li class="{{#chan-active}}widgets{{/chan-active}}"  ><a href="#"><i class="icos-polaroids"></i> Widgets</a></li>
+          <li class="{% chan-active settings %}"><a href="#"><i class="icos-cog"></i> Settings</a></li>
+          <li class="{% chan-active apps %}"><a href="#"><i class="icos-heart-favorite"></i> Apps</a></li>
+          <li class="{% chan-active widgets %}"  ><a href="#"><i class="icos-polaroids"></i> Widgets</a></li>
         </ul>
       </div>
       <div class="profile-content">
         <div class="tab-content">
-         {{{snippet-flash-msgs}}}
-         {{{content}}}
+         {% snippet-flash-msgs %}
+         {% block subcontent %}subcontent{% endblock %}
         </div>
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+

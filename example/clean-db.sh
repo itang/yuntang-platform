@@ -2,3 +2,4 @@
 
 rm -rf ~/wapp_*.db
 
+lein migrate

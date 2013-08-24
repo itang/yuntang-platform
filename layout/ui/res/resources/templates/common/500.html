@@ -4,11 +4,12 @@
     <a href="javascript:history.back();">返回</a>
   </h1>
 </div>
+{{isprodmode}}
 <div id="main-content">
-  {{^is-prod-mode}}
+  {% if is-dev-mode %}
   <div>
     <p><b>详细错误信息如下</b>:</p>
-    <pre>{{{detail-message}}}</pre>
+    <pre>{{detail-message|safe}}</pre>
   </div>
-  {{/is-prod-mode}}
+  {% endif %}
 </div>

@@ -1,7 +1,7 @@
 (ns wapp.config
   (:require [clojure.string :as str]
             [korma.db :refer [defdb h2 postgres]]
-            [cljwtang.core :refer :all]))
+            [cljwtang.config :refer :all]))
 
 (def ^:private postgres-db
   (postgres {:db "korma"

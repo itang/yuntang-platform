@@ -1,11 +1,9 @@
 (ns yuntang.layout.views.snippets
   (:import java.util.Calendar)
   (:require [cljtang.core :refer :all]
-            [hiccup.core :refer [html]]
-            [noir.session :as session]
+            [hiccup.core :as hiccup]
             [clj-pretty-format.core :refer [pretty-format]]
-            [cljwtang.core :refer :all]
-            [cljwtang.view :refer :all]
+            [cljwtang :refer :all]
             [yuntang.user.core :refer [current-user]]
             [yuntang.layout.inject :as inject]))
 
@@ -21,7 +19,7 @@
         messages (if (empty? messages)
                    (conj messages (:message msg))
                    messages)
-        text (html [:ul] (for [m messages] [:li m]))]
+        text (hiccup/html [:ul] (for [m messages] [:li m]))]
     {:type (some-> (:type msg) name)
      :messages messages
      :text text}))

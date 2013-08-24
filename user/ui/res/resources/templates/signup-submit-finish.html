@@ -1,15 +1,19 @@
+{% extends "templates/layouts/layout-base.html" %}
+
+{% block content %}
 <div class="container">
-  {{#auto}} 成功注册 &nbsp;<a href="/">登录</a> {{/auto}}
+  {% if auto %} 成功注册 &nbsp;<a href="/">登录</a> {% endif %}
   
-  {{#by-email}}
+  {% if by-email %}
   <div>
-  已成功提交注册, 激活邮件已经发送到： {{{email}}}
+  已成功提交注册, 激活邮件已经发送到： {{email}}
   <br/>
-  <a href="http://{{mail-vendor}}" target="_blank">点击此处进入邮箱</a>
+  <a href="http://{{mail-vendor|safe}}" target="_blank">点击此处进入邮箱</a>
   </div>
-  {{/by-email}}
+  {% endif %}
     
-  {{#by-manual}} 已成功提交注册, 请留意开通邮件{{/by-manual}}
+  {% if by-manual %} 已成功提交注册, 请留意开通邮件 {% endif %}
   
   &nbsp;<a href="/">首页</a> 
 </div>
+{% endblock %}

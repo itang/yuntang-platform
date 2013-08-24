@@ -1,11 +1,7 @@
 (ns yuntang.modules.common.ui.handlers.dev
-  (:require
-    [clojure.tools.logging :as log]
-    [compojure.core :refer :all]
-    [cljtang.core :refer :all]
-    [cljwtang.core :refer :all]
-    ;[clojure.tools.namespace.repl :refer [refresh]]
-    [stencil.loader :refer [invalidate-cache]]))
+  (:require [clojure.tools.logging :as log]
+            [cljtang.core :refer :all]
+            [cljwtang :refer :all]))
 
 (defonce ignored-namespaces (atom #{}))
 

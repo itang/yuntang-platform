@@ -1,12 +1,9 @@
 (ns yuntang.admin.ui.handlers.envinfo
   (:require [clojure.string :as str]
+            [clojure.core.memoize :as memoize]
             [cljtang.core :refer :all]
             [cljtang.runtime :as runtime]
-            [clojure.core.memoize :as memoize]
-            [compojure.core :refer :all]
-            [noir.response :refer [json]]
-            [cljwtang.core :refer :all]
-            [cljwtang.view :refer :all]))
+            [cljwtang :refer :all]))
 
 (defn- wrap-prop-value [^String k ^String v]
   (let [sep (System/getProperty "path.separator")]

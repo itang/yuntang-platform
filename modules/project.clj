@@ -5,5 +5,4 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :plugins [[lein-sub "0.2.4"]]
   :sub ["captcha"
-        "common"
-		"hbs"])
+        "common"])

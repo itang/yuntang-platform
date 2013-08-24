@@ -1,4 +1,3 @@
-{{#types}}
-<option value="{{value}}">{{name}}</option>
-{{/types}}
-
+{% for item in types %}
+<option value="{{item.value}}">{{item.name}}</option>
+{% endfor %}

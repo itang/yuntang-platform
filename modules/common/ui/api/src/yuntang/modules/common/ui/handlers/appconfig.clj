@@ -13,8 +13,7 @@
                       :updated-at (some-> (:updated_at %) format-date))
                 (appconfigs/find-all))]
     (view "modules/common/appconfig"
-      {:appconfigs (maplist-with-no items)
-       :size (count items)})))
+      {:appconfigs (maplist-with-no items)})))
 
 (defroutes appconfig-routes
   (GET "/admin/appconfigs" [] index))
