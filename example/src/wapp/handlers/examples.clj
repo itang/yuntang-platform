@@ -5,15 +5,9 @@
             [clojure.tools.logging :as log]
             [cljtang.core :refer :all]
             [coercer.core :refer [coerce]]
-            [compojure.core :refer :all]
-            [noir.response :refer [json redirect]]
-            [noir.session :refer [*noir-flash* *noir-session* mem]:as session]
+            [noir.session :refer [*noir-flash* *noir-session* mem] :as session]
             [taoensso.tower :as tower]
-            [cljwtang.core :refer :all]
-            [cljwtang.view :refer :all]
-            [cljwtang.request :refer [ajax?]]
-            [cljwtang.response :refer [html]]
-            [cljwtang.utils.upload :refer [upload-file]]
+            [cljwtang :refer :all]
             [clj-captcha.core :refer [captcha-response-correc?]]))
 
 (defhandler index [req]

@@ -10,7 +10,6 @@
                              inject-fn-current-user
                              inject-db-config
                              inject-not-found-content]]
-    [cljwtang.template.selmer :as selmer]
     [cljwtang.core :refer [render-file]]
     [yuntang.layout.inject :refer [inject-menus]]
     [yuntang.modules.common.appconfig.core :refer [app-config]]
