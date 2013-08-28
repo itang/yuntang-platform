@@ -1473,6 +1473,10 @@ cljs.core.missing_protocol = function(a, b) {
   var c = cljs.core.type.call(null, b), c = cljs.core.truth_(cljs.core.truth_(c) ? c.cljs$lang$type : c) ? c.cljs$lang$ctorStr : goog.typeOf(b);
   return Error(["No protocol method ", a, " defined for type ", c, ": ", b].join(""))
 };
+cljs.core.type__GT_str = function(a) {
+  var b = a.cljs$lang$ctorStr;
+  return cljs.core.truth_(b) ? b : "" + cljs.core.str(a)
+};
 cljs.core.aclone = function(a) {
   return a.slice()
 };
@@ -3323,18 +3327,67 @@ cljs.core.linear_traversal_nth = function() {
 }();
 cljs.core.nth = function() {
   var a = null, b = function(a, b) {
-    var c;
-    null == a ? c = null : (a ? (c = (c = a.cljs$lang$protocol_mask$partition0$ & 16) ? c : a.cljs$core$IIndexed$, c = c ? !0 : !1) : c = !1, c = c ? cljs.core._nth.call(null, a, Math.floor(b)) : a instanceof Array ? b < a.length ? a[b] : null : cljs.core.string_QMARK_.call(null, a) ? b < a.length ? a[b] : null : cljs.core.type_satisfies_.call(null, cljs.core.IIndexed, a) ? cljs.core._nth.call(null, a, b) : cljs.core.linear_traversal_nth.call(null, a, Math.floor(b)));
-    return c
+    if(null == a) {
+      return null
+    }
+    if(function() {
+      if(a) {
+        var b;
+        b = (b = a.cljs$lang$protocol_mask$partition0$ & 16) ? b : a.cljs$core$IIndexed$;
+        return b ? !0 : !1
+      }
+      return!1
+    }()) {
+      return cljs.core._nth.call(null, a, Math.floor(b))
+    }
+    if(a instanceof Array || cljs.core.string_QMARK_.call(null, a)) {
+      return b < a.length ? a[b] : null
+    }
+    if(cljs.core.type_satisfies_.call(null, cljs.core.IIndexed, a)) {
+      return cljs.core._nth.call(null, a, b)
+    }
+    if(function() {
+      if(a) {
+        var b;
+        b = (b = a.cljs$lang$protocol_mask$partition0$ & 64) ? b : a.cljs$core$ISeq$;
+        return b ? !0 : a.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.ISeq, a)
+      }
+      return cljs.core.type_satisfies_.call(null, cljs.core.ISeq, a)
+    }()) {
+      return cljs.core.linear_traversal_nth.call(null, a, Math.floor(b))
+    }
+    throw Error([cljs.core.str("nth not supported on this type "), cljs.core.str(cljs.core.type__GT_str.call(null, cljs.core.type.call(null, a)))].join(""));
   }, c = function(a, b, c) {
     if(null != a) {
-      var g;
-      a ? (g = (g = a.cljs$lang$protocol_mask$partition0$ & 16) ? g : a.cljs$core$IIndexed$, g = g ? !0 : !1) : g = !1;
-      a = g ? cljs.core._nth.call(null, a, Math.floor(b), c) : a instanceof Array ? b < a.length ? a[b] : c : cljs.core.string_QMARK_.call(null, a) ? b < a.length ? a[b] : c : cljs.core.type_satisfies_.call(null, cljs.core.IIndexed, a) ? cljs.core._nth.call(null, a, b) : cljs.core.linear_traversal_nth.call(null, a, Math.floor(b), c)
-    }else {
-      a = c
+      if(function() {
+        if(a) {
+          var b;
+          b = (b = a.cljs$lang$protocol_mask$partition0$ & 16) ? b : a.cljs$core$IIndexed$;
+          return b ? !0 : !1
+        }
+        return!1
+      }()) {
+        return cljs.core._nth.call(null, a, Math.floor(b), c)
+      }
+      if(a instanceof Array || cljs.core.string_QMARK_.call(null, a)) {
+        return b < a.length ? a[b] : c
+      }
+      if(cljs.core.type_satisfies_.call(null, cljs.core.IIndexed, a)) {
+        return cljs.core._nth.call(null, a, b)
+      }
+      if(function() {
+        if(a) {
+          var b;
+          b = (b = a.cljs$lang$protocol_mask$partition0$ & 64) ? b : a.cljs$core$ISeq$;
+          return b ? !0 : a.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.ISeq, a)
+        }
+        return cljs.core.type_satisfies_.call(null, cljs.core.ISeq, a)
+      }()) {
+        return cljs.core.linear_traversal_nth.call(null, a, Math.floor(b), c)
+      }
+      throw Error([cljs.core.str("nth not supported on this type "), cljs.core.str(cljs.core.type__GT_str.call(null, cljs.core.type.call(null, a)))].join(""));
     }
-    return a
+    return c
   }, a = function(a, e, f) {
     switch(arguments.length) {
       case 2:
@@ -3476,16 +3529,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    void 0 === cljs.core.t5347 && (cljs.core.t5347 = {}, cljs.core.t5347 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t5368 && (cljs.core.t5368 = {}, cljs.core.t5368 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta5348 = g;
+      this.meta5369 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t5347.cljs$lang$type = !0, cljs.core.t5347.cljs$lang$ctorStr = "cljs.core/t5347", cljs.core.t5347.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t5347")
-    }, cljs.core.t5347.prototype.call = function() {
+    }, cljs.core.t5368.cljs$lang$type = !0, cljs.core.t5368.cljs$lang$ctorStr = "cljs.core/t5368", cljs.core.t5368.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t5368")
+    }, cljs.core.t5368.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3502,17 +3555,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t5347.prototype.apply = function(b, c) {
+    }(), cljs.core.t5368.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t5347.prototype.cljs$core$Fn$ = !0, cljs.core.t5347.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta5348
-    }, cljs.core.t5347.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t5347(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t5347 = function(b, c, f, g) {
-      return new cljs.core.t5347(b, c, f, g)
+    }, cljs.core.t5368.prototype.cljs$core$Fn$ = !0, cljs.core.t5368.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta5369
+    }, cljs.core.t5368.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t5368(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t5368 = function(b, c, f, g) {
+      return new cljs.core.t5368(b, c, f, g)
     });
-    return new cljs.core.t5347(c, b, with_meta, null)
+    return new cljs.core.t5368(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
