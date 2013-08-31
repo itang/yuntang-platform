@@ -11,14 +11,16 @@
                   :url "/examples/fileupload"}))
 
 (def module
-  (new-ui-module {:routes [examples-routes]
-                  :fps [fp-examples fp-examples-fileupload]
-                  :menus (maps->menus
-                           [{:id "examples"
-                             :name "Examples"
-                             :funcpoint fp-examples
-                             :parent "dashboard"}
-                            {:name "File Upload"
-                             :funcpoint fp-examples-fileupload
-                             :parent "dashboard"}])
-                  :snippets-ns ['wapp.views.snippets]}))
+  (new-ui-module
+    {:name "example app"
+     :routes [examples-routes]
+     :fps [fp-examples fp-examples-fileupload]
+     :menus (maps->menus
+              [{:id "examples"
+                :name "Examples"
+                :funcpoint fp-examples
+                :parent "dashboard"}
+               {:name "File Upload"
+                :funcpoint fp-examples-fileupload
+                :parent "dashboard"}])
+     :snippets-ns ['wapp.views.snippets]}))

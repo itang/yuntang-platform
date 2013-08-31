@@ -1,17 +1,14 @@
 (ns wapp.server
   (:refer-clojure :exclude [name sort])
   (:require
-    [cljwtang.datatype :refer :all]
-    [cljwtang.inject :refer [inject-snippets-ns
-                             inject-fn-app-config
-                             inject-routes
-                             inject-bootstrap-tasks
-                             inject-fn-user-logined?
-                             inject-fn-current-user
-                             inject-db-config
-                             inject-not-found-content]]
+    [cljwtang.inject 
+     :as inject
+     :refer [inject-fn-app-config
+     inject-fn-user-logined?
+     inject-fn-current-user
+     inject-db-config
+     inject-not-found-content]]
     [cljwtang.core :refer [render-file]]
-    [yuntang.layout.inject :refer [inject-menus]]
     [yuntang.modules.common.appconfig.core :refer [app-config]]
     [wapp.config :as wappcofig]))
 
@@ -28,30 +25,15 @@
     '[yuntang.modules.common.module :as common-module]
     '[wapp.module :as wapp])
 
-(defn modules []
-  [layout-module/module
-   captcha-module/module
-   user-module/module
-   wapp/module
-   admin-module/module
-   common-module/module])
-
-(defn- flatten-by [f]
-  (->> (modules) (map f) flatten))
-
-(inject-snippets-ns (flatten-by snippets-ns))
-
-(inject-menus (flatten-by menus))
-
-(inject-routes (flatten-by routes))
-
-(inject-bootstrap-tasks (flatten-by bootstrap-tasks))
-
-(inject-fn-user-logined? user-core/user-logined?)
-
-(inject-fn-current-user user-core/current-user)
-
 (inject-not-found-content (render-file "common/404" nil))
+
+(inject/regist-modules!
+  layout-module/module
+  captcha-module/module
+  user-module/module
+  wapp/module
+  admin-module/module
+  common-module/module)
 
 (require '[cljwtang.server :as server])
 

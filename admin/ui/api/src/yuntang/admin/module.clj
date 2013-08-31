@@ -8,13 +8,15 @@
                   :perm "admin.envinfo"}))
 
 (def module
-  (new-ui-module {:routes [admin-routes]
-                  :fps [fp-admin-envinfo]
-                  :menus (maps->menus
-                           [{:id "admin"
-                             :name "系统管理"
-                             :attrs {:classname "icon-gift"}}
-                            {:name "运行环境"
-                             :funcpoint fp-admin-envinfo
-                             :attrs {:classname "icol-user"}
-                             :parent "admin"}])}))
+  (new-ui-module 
+    {:name "admin"
+     :routes [admin-routes]
+     :fps [fp-admin-envinfo]
+     :menus (maps->menus
+              [{:id "admin"
+                :name "系统管理"
+                :attrs {:classname "icon-gift"}}
+               {:name "运行环境"
+                :funcpoint fp-admin-envinfo
+                :attrs {:classname "icol-user"}
+                :parent "admin"}])}))

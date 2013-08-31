@@ -2,9 +2,9 @@
   (:import java.util.Calendar)
   (:require [cljtang.core :refer :all]
             [hiccup.core :as hiccup]
+            [cljwtang.inject :as inject]
             [cljwtang :refer :all]
-            [yuntang.user.core :refer [current-user]]
-            [yuntang.layout.inject :as inject]))
+            [yuntang.user.core :refer [current-user]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; common
@@ -27,7 +27,7 @@
 ;; main
 
 ;; 主导航
-(defsnippet main/nav {:menus inject/the-menus})
+(defsnippet main/nav {:menus (inject/app-menus)})
 
 ;; 主区域头部 (包括当前位置等)
 (defsnippet main/header {})

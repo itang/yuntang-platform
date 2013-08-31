@@ -8,10 +8,12 @@
                   :perm "admin.appconfigs"}))
 
 (def module
-  (new-ui-module {:routes [common-routes]
-                  :fps [fp-admin-appconfigs]
-                  :menus (maps->menus
-                           [{:name "应用配置"
-                             :funcpoint fp-admin-appconfigs
-                             :attrs {:classname "icol-user"}
-                             :parent "admin"}])}))
+  (new-ui-module 
+    {:name "common"
+     :routes [common-routes]
+     :fps [fp-admin-appconfigs]
+     :menus (maps->menus
+              [{:name "应用配置"
+                :funcpoint fp-admin-appconfigs
+                :attrs {:classname "icol-user"}
+                :parent "admin"}])}))

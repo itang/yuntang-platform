@@ -7,16 +7,18 @@
                   :url "/"}))
 
 (def module
-  (new-ui-module {:routes [layout-routes]
-                  :fps [fp-dashboard]
-                  :menus (maps->menus
-                           [{:id "dashboard"
-                             :name "Dashboard"
-                             :attrs {:classname "icon-home"}
-                             :sort -1}
-                            {:name "Dashboard"
-                             :funcpoint fp-dashboard
-                             :attrs {:classname "icol-dashboard"}
-                             :parent "dashboard"
-                             :sort -1}])
-                  :snippets-ns ['yuntang.layout.snippets]}))
+  (new-ui-module 
+    {:name "layout"
+     :routes [layout-routes]
+     :fps [fp-dashboard]
+     :menus (maps->menus
+              [{:id "dashboard"
+                :name "Dashboard"
+                :attrs {:classname "icon-home"}
+                :sort -1}
+               {:name "Dashboard"
+                :funcpoint fp-dashboard
+                :attrs {:classname "icol-dashboard"}
+                :parent "dashboard"
+                :sort -1}])
+     :snippets-ns ['yuntang.layout.snippets]}))
