@@ -2,9 +2,7 @@
   (:import java.util.Calendar)
   (:require [cljtang.core :refer :all]
             [hiccup.core :as hiccup]
-            [cljwtang.inject :as inject]
-            [cljwtang :refer :all]
-            [yuntang.user.core :refer [current-user]]))
+            [cljwtang.lib :refer :all]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; common
@@ -27,7 +25,7 @@
 ;; main
 
 ;; 主导航
-(defsnippet main/nav {:menus (inject/app-menus)})
+(defsnippet main/nav {:menus (app-menus)})
 
 ;; 主区域头部 (包括当前位置等)
 (defsnippet main/header {})
@@ -39,16 +37,16 @@
 (defsnippet main/messages {})
 
 ;; 用户信息区域
-(defsnippet main/user-info {:user (current-user)})
+(defsnippet main/user-info {:user (*current-user-fn*)})
 
 ;; footer区域
 (defsnippet main/footer
-  (let [start-year (app-config :plaform.start-year 2013)
+  (let [start-year (*app-config-fn* :plaform.start-year 2013)
         end-year (.get (Calendar/getInstance) Calendar/YEAR)
         years (str start-year
                 (when-not (= end-year start-year) (str "-" end-year)))
-        name (app-config :platform.name)
-        description (app-config :platform.fullname "基于Clojure的Web平台")]
+        name (*app-config-fn* :platform.name)
+        description (*app-config-fn* :platform.fullname "基于Clojure的Web平台")]
     {:years years
      :name name
      :description description}))

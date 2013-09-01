@@ -1,10 +1,8 @@
 (ns yuntang.modules.common.handlers
   (:require [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [compojure.core :refer :all]
             [cljtang.core :refer :all]
-            [cljwtang.core :refer :all]
-            [cljwtang.view :refer :all]
+            [cljwtang.lib :refer :all]
             [yuntang.modules.common.appconfig.core :as appconfigs]))
 
 (defhandler index []

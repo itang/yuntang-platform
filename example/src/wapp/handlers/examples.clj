@@ -7,8 +7,8 @@
             [coercer.core :refer [coerce]]
             [noir.session :refer [*noir-flash* *noir-session* mem] :as session]
             [taoensso.tower :as tower]
-            [cljwtang :refer :all]
-            [clj-captcha.core :refer [captcha-response-correc?]]))
+            [clj-captcha.core :refer [captcha-response-correc?]]
+            [cljwtang.lib :refer :all]))
 
 (defhandler index [req]
   (view "examples/index"

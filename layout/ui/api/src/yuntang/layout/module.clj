@@ -1,5 +1,5 @@
 (ns yuntang.layout.module
-  (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
+  (:require [cljwtang.lib :refer :all]
             [yuntang.layout.handlers :refer [layout-routes]]))
 
 (def fp-dashboard

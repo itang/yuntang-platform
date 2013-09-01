@@ -5,7 +5,6 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [cljwtang "0.1.0-SNAPSHOT"]
-                 [yuntang-platform/yuntang-user-core "0.1.0-SNAPSHOT"]
                  [yuntang-platform/yuntang-modules-common-core "0.1.0-SNAPSHOT"]]
   :profiles {:dev {:plugins [[codox "0.6.4"]
                              [lein-pprint "1.1.1"]

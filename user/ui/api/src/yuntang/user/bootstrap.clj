@@ -1,5 +1,5 @@
 (ns yuntang.user.bootstrap
-  (:require [cljwtang.datatype :refer [new-bootstrap-task]]
+  (:require [cljwtang.lib :refer [new-bootstrap-task]]
             [yuntang.user.core :refer :all]))
 
 (def bootstrap-tasks

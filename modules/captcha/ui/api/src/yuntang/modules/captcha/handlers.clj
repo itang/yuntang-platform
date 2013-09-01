@@ -1,6 +1,6 @@
 (ns yuntang.modules.captcha.handlers
   (:import java.io.ByteArrayInputStream)
-  (:require [cljwtang :refer :all]
+  (:require [cljwtang.lib :refer :all]
             [clj-captcha.core :refer [captcha-challenge-as-jpeg]]))
 
 (defhandler captcha[req]

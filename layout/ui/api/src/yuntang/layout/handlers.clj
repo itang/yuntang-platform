@@ -1,7 +1,6 @@
 (ns yuntang.layout.handlers
   (:require [clojure.string :as str]
-            [cljwtang :refer :all]
-            [yuntang.user.core :refer [user-logined?]]))
+            [cljwtang.lib :refer :all]))
 
 (defhandler welcome [req]
   (view "welcome" ))
@@ -10,4 +9,4 @@
   (view "dashboard"))
 
 (defroutes layout-routes
-  (GET "/" req (if (user-logined?) dashboard welcome)))
+  (GET "/" req (if (*user-logined?-fn*) dashboard welcome)))

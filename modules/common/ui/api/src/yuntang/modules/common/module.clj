@@ -1,5 +1,6 @@
 (ns yuntang.modules.common.module
-  (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
+  (:require [cljwtang.lib :refer :all]
+            [yuntang.modules.common.appconfig.core :refer [app-config]]
             [yuntang.modules.common.handlers :refer [common-routes]]))
 
 (def fp-admin-appconfigs
@@ -10,6 +11,9 @@
 (def module
   (new-ui-module 
     {:name "common"
+     :init (fn [m]
+             (info "set app-config fn...")
+             (set-app-config-fn! app-config))
      :routes [common-routes]
      :fps [fp-admin-appconfigs]
      :menus (maps->menus

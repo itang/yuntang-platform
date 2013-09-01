@@ -1,13 +1,5 @@
 (ns yuntang.user.module
-  (:require
-  [cljwtang.inject 
-   :as inject
-   :refer [inject-fn-app-config
-   inject-fn-user-logined?
-   inject-fn-current-user
-   inject-db-config
-   inject-not-found-content]])
-  (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
+  (:require [cljwtang.lib :refer :all]
             [yuntang.user.core :refer :all]
             [yuntang.user.handlers :refer [account-routes]]
             [yuntang.user.bootstrap :refer [bootstrap-tasks]]))
@@ -20,8 +12,10 @@
   (new-ui-module 
     {:name "user"
      :init (fn [m]
-             (inject-fn-user-logined? user-logined?)
-             (inject-fn-current-user current-user))
+             (info "set user-logined?-fn...")
+             (set-user-logined?-fn! user-logined?)
+             (info "set current-user-fn...")
+             (set-current-user-fn! current-user))
      :routes [account-routes]
      :menus (maps->menus
               [{:id "amdin.users"

@@ -1,5 +1,5 @@
 (ns yuntang.admin.module
-  (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
+  (:require [cljwtang.lib :refer :all]
             [yuntang.admin.handlers :refer [admin-routes]]))
 
 (def fp-admin-envinfo 

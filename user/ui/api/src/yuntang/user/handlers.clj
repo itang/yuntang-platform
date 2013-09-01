@@ -5,7 +5,7 @@
             [cljtang.util :refer :all]
             [metis.core :refer :all]
             [clj-captcha.core :refer [captcha-response-correc?]]
-            [cljwtang :refer :all]
+            [cljwtang.lib :refer :all]
             [yuntang.user.core :refer :all]
             [yuntang.user.util :refer [check-username-pattern]]
             [yuntang.user.config :refer :all]))

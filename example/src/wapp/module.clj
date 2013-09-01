@@ -1,5 +1,5 @@
 (ns wapp.module
-  (:require [cljwtang.datatype :refer [new-ui-module new-funcpoint maps->menus]]
+  (:require [cljwtang.lib :refer :all]
             [wapp.handlers.examples :refer [examples-routes]]))
 
 (def fp-examples

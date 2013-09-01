@@ -3,7 +3,7 @@
             [clojure.core.memoize :as memoize]
             [cljtang.core :refer :all]
             [cljtang.runtime :as runtime]
-            [cljwtang :refer :all]))
+            [cljwtang.lib :refer :all]))
 
 (defn- wrap-prop-value [^String k ^String v]
   (let [sep (System/getProperty "path.separator")]

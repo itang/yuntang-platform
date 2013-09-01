@@ -1,15 +1,14 @@
 (ns yuntang.user.config
-  (:require [cljwtang.config :as config]
-            [yuntang.modules.common.appconfig.core :refer [app-config]]))
+  (:require [cljwtang.lib :refer :all]))
 
 (defn captcha-enabled? []
-  (app-config :platform.captcha-enabled? false))
+  (*app-config-fn* :platform.captcha-enabled? false))
 
 (defn activation-url-prefix []
-  (str "http://" (config/hostaddr) "/activation"))
+  (str "http://" (hostaddr) "/activation"))
 
 (defn user-regist-activation-mode []
-  (app-config :user-regist-activation-mode :by-email))
+  (*app-config-fn* :user-regist-activation-mode :by-email))
 
 (defn reset-password-url-prefix []
-  (str "http://" (config/hostaddr) "/reset_password"))
+  (str "http://" (hostaddr) "/reset_password"))

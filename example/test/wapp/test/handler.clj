@@ -1,5 +1,5 @@
 (ns wapp.test.handler
-  (:require [cljwtang.core :as cljwtang])
+  (:require [cljwtang.lib :as cljwtang])
   (:use clojure.test
         ring.mock.request
         wapp.server))
