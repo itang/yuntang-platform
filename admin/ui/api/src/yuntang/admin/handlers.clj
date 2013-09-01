@@ -35,7 +35,8 @@
         {:req (for [[k v] req] {:key k :value v})
          :env (memo-map->info :env)
          :prop (memo-map->info :prop)
-         :system (map->kv-pairs (system-info))}))
+         :system (map->kv-pairs (system-info))
+         :sub-modules (app-sub-modules)}))
 
 (defhandler server-time []
   (json-success-message "" {:server_time (moment-format)}))

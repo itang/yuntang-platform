@@ -1,12 +1,11 @@
-{% extends "templates/layouts/layout-main.html" %}
-
-{% block content %}
+{% extends "templates/layouts/layout-main.html" %} {% block content %}
 <div id="main-content">
   <ul class="nav nav-tabs" id="myTab">
     <li class="active"><a href="#app" data-toggle="tab">系统运行信息</a></li>
     <li><a href="#system" data-toggle="tab">机器信息</a></li>
     <li><a href="#env" data-toggle="tab">系统环境信息</a></li>
     <li><a href="#prop" data-toggle="tab">JVM属性信息</a></li>
+    <li><a href="#modules" data-toggle="tab">模块</a></li>
     <li><a href="#req" data-toggle="tab">当前请求信息</a></li>
   </ul>
   <div class="tab-content">
@@ -26,7 +25,7 @@
     <div class="tab-pane" id="env">
       <table class="table table-striped table-bordered">
         <tbody>
-          {% for item in env %} 
+          {% for item in env %}
           <tr>
             <td width="100"><b>{{item.key}}</b></td>
             <td>{{item.value|safe}}</td>
@@ -47,15 +46,40 @@
         </tbody>
       </table>
     </div>
+    <div class="tab-pane" id="modules">
+      <table class="table table-striped table-bordered">
+        <tbody>
+          <tr><th>模块</th><th>描述</th><th>详细</th></tr>
+          {% for item in sub-modules %}
+          <tr>
+            <td width="100"><b>{{item.name}}</b></td>
+            <td>{{item.description|safe}}
+            </td>
+            <td>
+            FPS:
+            {% for fp in item.fps %}
+              {{fp.name}}, 
+            {% endfor %}
+            <br/>
+            MENUS:
+            {% for menus in item.menus %}
+              {{menus.name}}, 
+            {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     <div class="tab-pane" id="req">
       <table class="table table-striped table-bordered">
         <tbody>
-          {% for item in req %} 
+          {% for item in req %}
           <tr>
             <td width="100"><b>{{item.key}}</b></td>
             <td>{{item.value}}</td>
           </tr>
-           {% endfor %}
+          {% endfor %}
         </tbody>
       </table>
     </div>
