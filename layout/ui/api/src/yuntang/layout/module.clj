@@ -7,8 +7,10 @@
                   :url "/"}))
 
 (def module
-  (new-ui-module 
+  (new-ui-module
     {:name "layout"
+     :init (fn [m]
+             (set-not-found-content! (render-file "common/404" nil)))
      :routes [layout-routes]
      :fps [fp-dashboard]
      :menus (maps->menus

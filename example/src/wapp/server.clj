@@ -11,8 +11,6 @@
 
 (set-db-config! wappcofig/db-config)
 
-(set-not-found-content! (render-file "common/404" nil))
-
 (regist-modules!
  layout-module/module
  captcha-module/module
