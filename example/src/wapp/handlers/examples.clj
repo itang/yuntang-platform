@@ -10,23 +10,27 @@
             [cljwtang.lib :refer :all]))
 
 (with-routes examples-routes
-  (defhandler-meta {:path "/examples" :fp-name "examples index" :method :get}
-    examples-index [req]
+  (defhandler  examples-index
+    {:path "/examples" :fp-name "examples index" :method :get}
+    [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)
            :locale (get-in req [:headers "accept-language"])}))
 
-  (defhandler-meta {:path "/examples/ajax" :method :get}
-    ajax [age]
+  (defhandler ajax
+    {:path "/examples/ajax" :method :get}
+    [age]
     (json-success-message "Hello, World!"
                           {:age (inc (coerce age Integer)) :now (moment-format)}))
 
-  (defhandler-meta {:path "/examples/ajax_form/ajaxform" :method :post}
-    ajaxform [req]
+  (defhandler ajaxform
+    {:path "/examples/ajax_form/ajaxform" :method :post}
+    [req]
     (json-success-message "" (:params req)))
 
-  (defhandler-meta {:path "/examples/ajax_form/ajaxfileupload" :method :post}
-    ajaxfileupload [req]
+  (defhandler ajaxfileupload
+    {:path "/examples/ajax_form/ajaxfileupload" :method :post}
+    [req]
     (let [p (:params req)
           file (:file p)
           filename (:filename file)
@@ -40,21 +44,24 @@
                                 :content-type (:content-type file)
                                 :tempfile (some-> tempfile .getName)})))
 
-  (defhandler-meta {:path "/examples/ansj" :method :get}
-    ansj [source]
+  (defhandler ansj
+    {:path "/examples/ansj" :method :get}
+    [source]
     (->> (ToAnalysis/paser source)
          str
          (json-success-message "操作完成")))
 
-  (defhandler-meta {:path "/examples/fileupload" :fp-name "example fileupload" :method :get}
-    fileupload-index []
+  (defhandler fileupload-index
+    {:path "/examples/fileupload" :fp-name "example fileupload" :method :get}
+    []
     (view "examples/fileupload"
           {:noir-flash @*noir-flash*
            :noir-session @*noir-session*
            :mem @mem}))
 
-  (defhandler-meta {:path "/examples/fileupload" :method :post}
-    fileupload [req]
+  (defhandler  fileupload
+    {:path "/examples/fileupload" :method :post}
+    [req]
     (Thread/sleep (rand-nth (range 500 1600 100))) ;; mock
     (debug (:params req))
     (debug (pr-str (:multipart-params req)))
@@ -70,15 +77,17 @@
                                    :user (get-in req [:params :user])})
             (redirect "/examples/fileupload"))))))
 
-  (defhandler-meta {:path "/examples/va-captcha" :method :post}
-    va-captcha [captcha req]
+  (defhandler va-captcha
+    {:path "/examples/va-captcha" :method :post}
+    [captcha req]
     (let [correc? (captcha-response-correc? captcha)]
       (json-message correc?
                     (if correc? "验证码填写正确" "验证码填写有误")
                     {:is-response-correc correc?})))
 
-  (defhandler-meta {:path "/examples/match" :method :get}
-    match-demo []
+  (defhandler match-demo
+    {:path "/examples/match" :method :get}
+    []
     (->> (for [n (range 1 101)]
            (match [(mod n 3) (mod n 5)]
                   [0 0] [n "FizzBuzz"]
@@ -87,23 +96,4 @@
                   :else [n "NON"]))
          (filter #(not= "NON" (second %)))
          (into {})
-         (json-message true "" )))
-
-  )
-
-#_(defroutes examples-routes
-    (context "/examples" []
-             (GET "/perf/def" [] perf-def)
-             (GET "/perf/delay" [] perf-delay)
-             (GET "/" [] index)
-             (GET "/ft" [] ft)
-             (GET "/show" [] show)
-             (GET "/ajax" [] ajax)
-             (POST "/ajax_form/ajaxform" [] ajaxform)
-             (POST "/ajax_form/ajaxsubmit" [] ajaxform)
-             (POST "/ajax_form/ajaxfileupload" [] ajaxfileupload)
-             (GET "/ansj" [] ansj)
-             (GET "/fileupload" [] fileupload-index)
-             (POST "/fileupload" [] fileupload)
-             (POST "/va-captcha" [] va-captcha)
-             (GET "/match" [] match-demo)))
+         (json-message true "" ))))

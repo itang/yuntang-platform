@@ -45,7 +45,7 @@
     (view "signin"
       {:captcha-enabled? (captcha-enabled?)
        :ori-active-form active-form
-       :active-form (case active-form 
+       :active-form (case active-form
                           "second" "eq(1)"
                           "three" "eq(2)"
                           nil)
@@ -59,24 +59,41 @@
     (not (:account_non_locked  user))  {:username ["帐户已经被锁定"]}))
 
 ;; 登录
-(defhandler-with-validates signin [username password req]
-  [signin-form-validator
-   (fn-* (when (and (captcha-enabled?)
-                 (not (captcha-response-correc?)))
-           {:captcha ["验证码填写有误"]}))
-   (fn-*
-     (if-let [user (check-user username password)]
-       (check-user-status user)
-       {:username ["用户不存在或者密码不正确"]}))]
-  :success
+(require 'clojure.pprint)
+(require 'clojure.tools.macro)
+(clojure.pprint/pprint (clojure.tools.macro/mexpand-all '(defhandler signin
+  {:validates-fn [signin-form-validator
+                  (fn-* (when (and (captcha-enabled?)
+                                   (not (captcha-response-correc?)))
+                          {:captcha ["验证码填写有误"]}))
+                  (fn-*
+                   (if-let [user (check-user username password)]
+                     (check-user-status user)
+                     {:username ["用户不存在或者密码不正确"]}))]
+   :failture (do (log/warn username "登录失败!")
+                 (redirect-signin-page))}
+  [username password req]
   (let [user (find-user-in-uid-username-email-for-session username)]
     (log/info username "登录成功!")
     (set-current-user! user)
-    (redirect "/"))
-  :failture
-  (do
-    (log/warn username "登录失败!")
-    (redirect-signin-page)))
+    (redirect "/")))))
+
+(defhandler signin
+  {:validates-fn [signin-form-validator
+                  (fn-* (when (and (captcha-enabled?)
+                                   (not (captcha-response-correc?)))
+                          {:captcha ["验证码填写有误"]}))
+                  (fn [m]
+                   (if-let [user (check-user (:username m) (:password m))]
+                     (check-user-status user)
+                     {:username ["用户不存在或者密码不正确"]}))]
+   :failture (do (log/warn #_(username) "登录失败!")
+                 (redirect-signin-page))}
+  [username password req]
+  (let [user (find-user-in-uid-username-email-for-session username)]
+    (log/info username "登录成功!")
+    (set-current-user! user)
+    (redirect "/")))
 
 ;; 注销
 (defhandler logout []
@@ -99,9 +116,10 @@
   [:email :email?])
 
 ;; 注册
-(defhandler-with-validates signup [username email password realname type req]
-  [signup-form-validator]
-  :success 
+(defhandler signup
+  {:validates-fn [signup-form-validator]
+   :failture (redirect-signin-page "second")}
+  [username email password realname type req]
   (let [email (trim email)
         activation-mode (user-regist-activation-mode)
         activation-mode-by-email (= :by-email activation-mode)
@@ -121,18 +139,16 @@
             (str (activation-url-prefix) "?code=" activation-code)]
         (log/info "发送用户注册激活邮件")
         (send-mail-by-template
-          {:to email :subject (str "欢迎注册wapp(wapp.com)，请激活你的帐号")}
-          "mail-activation-template"
-          {:activation-url activation-url
-           :email email})))
-    (view "signup-submit-finish" 
-                      {:email email
-                       :mail-vendor (mail-vendor-by-email-account email)
-                       :by-email activation-mode-by-email
-                       :auto activation-mode-auto
-                       :by-manual activation-mode-by-manual}))
-  :failture
-  (redirect-signin-page "second"))
+         {:to email :subject (str "欢迎注册wapp(wapp.com)，请激活你的帐号")}
+         "mail-activation-template"
+         {:activation-url activation-url
+          :email email})))
+    (view "signup-submit-finish"
+          {:email email
+           :mail-vendor (mail-vendor-by-email-account email)
+           :by-email activation-mode-by-email
+           :auto activation-mode-auto
+           :by-manual activation-mode-by-manual})))
 
 ;; 用户注册邮件激活
 (defhandler activation [code]
@@ -154,9 +170,10 @@
            :email {:message "邮件格式不对"}]]
   [:email :check-email?])
 
-(defhandler-with-validates forget-password [email]
-  [forget-password-form-validator]
-  :success
+(defhandler forget-password
+  {:validates-fn [forget-password-form-validator]
+   :failture (redirect-signin-page "three")}
+  [email]
   (let [password-reset-code
         (uuid2)
         reset-url
@@ -164,16 +181,12 @@
              "?email=" email
              "&code=" password-reset-code)]
     (set-password-reset-code! email password-reset-code)
-    (send-mail-by-template
-          {:to email
-           :subject (str "[wapp]-" "申请重置密码邮件")}
-          "forget-password-template"
-          {:reset-url reset-url})
-    (view 
-      "forget-password-result"
-      {:mail-vendor (mail-vendor-by-email-account email)}))
-  :failture
-  (redirect-signin-page "three"))
+    (send-mail-by-template {:to email
+                            :subject (str "[wapp]-" "申请重置密码邮件")}
+                           "forget-password-template"
+                           {:reset-url reset-url})
+    (view "forget-password-result"
+          {:mail-vendor (mail-vendor-by-email-account email)})))
 
 (defhandler reset-password [email code]
   (if-not (= 32 (count code))
@@ -202,22 +215,21 @@
    {:message "This field is required."}]
   [[:current_password :password :user_password_confirmation] :password?])
 
-(defhandler-with-validates settings-change-password
-  [current_password password user_password_confirmation]
-  [settings-change-password-form-validator
-   (fn-* 
+(defhandler settings-change-password
+  {:validates-fn
+   [settings-change-password-form-validator
+    (fn [m]
      (cond
-       (not (is-current-user-password current_password))
-       {:current_password ["当前用户密码不对"]}
-       (not= password user_password_confirmation)
-       {:password ["两次输入的密码不一致"]}))]
-  :success
-  (do
-    (change-current-user-password! password)
-    (flash-msg (success-message "更改用户密码成功!"))
-    (redirect "/settings/password"))
-  :failture
-  (redirect "/settings/password"))
+      (not (is-current-user-password (:current_password m)))
+      {:current_password ["当前用户密码不对"]}
+      (not= (:password m) (:user_password_confirmation m))
+      {:password ["两次输入的密码不一致"]}))]
+   :failture
+   (redirect "/settings/password")}
+  [current_password password user_password_confirmation]
+   (change-current-user-password! password)
+   (flash-msg (success-message "更改用户密码成功!"))
+   (redirect "/settings/password"))
 
 ;; 用户管理
 (defhandler admin-users []

@@ -2,6 +2,14 @@
   (:require [clojure.string :as str]
             [cljwtang.lib :refer :all]))
 
+(require 'clojure.pprint)
+(require 'clojure.tools.macro)
+
+(clojure.pprint/pprint
+ (clojure.tools.macro/mexpand-all
+                        '(defhandler welcome [req]
+                           (view "welcome" ))))
+
 (defhandler welcome [req]
   (view "welcome" ))
 
