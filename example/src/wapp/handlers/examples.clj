@@ -9,27 +9,27 @@
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]))
 
-(with-routes examples-routes
-  (defhandler  examples-index
-    {:path "/examples" :fp-name "examples index" :method :get}
+(with-routes examples-routes "/examples"
+  (defhandler examples-index
+    {:path "/" :fp-name "examples index" :method :get}
     [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)
            :locale (get-in req [:headers "accept-language"])}))
 
   (defhandler ajax
-    {:path "/examples/ajax" :method :get}
+    {:path "/ajax" :method :get}
     [age]
     (json-success-message "Hello, World!"
                           {:age (inc (coerce age Integer)) :now (moment-format)}))
 
   (defhandler ajaxform
-    {:path "/examples/ajax_form/ajaxform" :method :post}
+    {:path "/ajax_form/ajaxform" :method :post}
     [req]
     (json-success-message "" (:params req)))
 
   (defhandler ajaxfileupload
-    {:path "/examples/ajax_form/ajaxfileupload" :method :post}
+    {:path "/ajax_form/ajaxfileupload" :method :post}
     [req]
     (let [p (:params req)
           file (:file p)
@@ -45,14 +45,14 @@
                                 :tempfile (some-> tempfile .getName)})))
 
   (defhandler ansj
-    {:path "/examples/ansj" :method :get}
+    {:path "/ansj" :method :get}
     [source]
     (->> (ToAnalysis/paser source)
          str
          (json-success-message "操作完成")))
 
   (defhandler fileupload-index
-    {:path "/examples/fileupload" :fp-name "example fileupload" :method :get}
+    {:path "/fileupload" :fp-name "example fileupload" :method :get}
     []
     (view "examples/fileupload"
           {:noir-flash @*noir-flash*
@@ -60,7 +60,7 @@
            :mem @mem}))
 
   (defhandler  fileupload
-    {:path "/examples/fileupload" :method :post}
+    {:path "/fileupload" :method :post}
     [req]
     (Thread/sleep (rand-nth (range 500 1600 100))) ;; mock
     (debug (:params req))
@@ -78,7 +78,7 @@
             (redirect "/examples/fileupload"))))))
 
   (defhandler va-captcha
-    {:path "/examples/va-captcha" :method :post}
+    {:path "/va-captcha" :method :post}
     [captcha req]
     (let [correc? (captcha-response-correc? captcha)]
       (json-message correc?
@@ -86,7 +86,7 @@
                     {:is-response-correc correc?})))
 
   (defhandler match-demo
-    {:path "/examples/match" :method :get}
+    {:path "/match" :method :get}
     []
     (->> (for [n (range 1 101)]
            (match [(mod n 3) (mod n 5)]
