@@ -31,6 +31,7 @@
       <section id="login-form" class="login-inner-form">
         <h1>Login</h1>
         <form class="form-vertical" action="/signin" method="post">
+          {% anti-forgery-field %}
           <div class="control-group-merged">
             <div class="control-group">
               <input type="text" placeholder="用户名" name="username"
@@ -55,6 +56,7 @@
       <section id="register-form" class="login-inner-form">
         <h1>Register</h1>
         <form class="form-vertical" action="/signup" method="POST">
+          {% anti-forgery-field %}
           <div class="control-group">
             <label class="control-label">Username</label>
             <div class="controls">
@@ -98,6 +100,7 @@
       <section id="forget-form" class="login-inner-form">
         <h1>Forget Password?</h1>
         <form class="form-vertical" action="/forget_password" method="POST">
+          {% anti-forgery-field %}
           <div class="control-group">
             <div class="controls">
               <input type="text" name="email" class="big required email"
