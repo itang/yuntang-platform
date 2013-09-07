@@ -9,15 +9,18 @@
             [yuntang.modules.common.module :as common-module]
             [wapp.module :as wapp]))
 
-(set-db-config! wappcofig/db-config)
-
-(regist-modules!
- layout-module/module
- captcha-module/module
- user-module/module
- wapp/module
- admin-module/module
- common-module/module)
+(create-app
+  (fn []
+    (info "set db-config...")
+    (set-db-config! wappcofig/db-config)
+    (info "regist modules...")
+    (regist-modules!
+       layout-module/module
+       captcha-module/module
+       user-module/module
+       wapp/module
+       admin-module/module
+       common-module/module)))
 
 (require '[cljwtang.server :as server])
 

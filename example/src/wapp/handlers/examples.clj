@@ -10,8 +10,9 @@
             [cljwtang.lib :refer :all]))
 
 (with-routes examples-routes "/examples"
+
   (defhandler examples-index
-    {:path "/" :fp-name "examples index" :method :get}
+    {:path "" :fp-name "examples index" :method :get}
     [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)
