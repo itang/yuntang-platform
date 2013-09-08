@@ -7,7 +7,8 @@
             [yuntang.admin.module :as admin-module]
             [yuntang.modules.captcha.module :as captcha-module]
             [yuntang.modules.common.module :as common-module]
-            [wapp.module :as wapp]))
+            [wapp.module :as wapp])
+  (:gen-class))
 
 (create-app
   (fn []
@@ -28,5 +29,7 @@
 
 (def init server/init)
 
-(defn -main [& args]
+(defn -main
+  "Application entry point"
+  [& args]
   (server/start-server))

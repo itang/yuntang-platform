@@ -28,6 +28,7 @@
             "migrate" ["run" "-m" "cljwtang.tools.migrate"]
             "dev" ["run" "-m" "cljwtang.tools.dev"]
             "http-kit" ["run"]}
+  ;:aot [wapp.server]
   :main ^{:skip-aot true} wapp.server
   :ring {:handler wapp.server/app
          :init wapp.server/init
