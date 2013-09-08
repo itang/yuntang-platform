@@ -39,8 +39,51 @@
   (redirect
     (when-> "/signin" active-form #(str % "?active-form=" active-form))))
 
+(defn- check-user-status [user]
+  (cond
+    (not (:enabled user))  {:username ["帐户未激活或帐户未启用"]}
+    (not (:account_non_expired user))  {:username ["帐户已经过期"]}
+    (not (:credentials_non_expired user))  {:username ["帐户认证信息已经过期"]}
+    (not (:account_non_locked  user))  {:username ["帐户已经被锁定"]}))
+
+(defvalidator signup-form-validator
+  [:username [:presence {:message "Please input your username."}
+              :length {:less-than-or-equal-to 30
+                       :greater-than-or-equal-to 5
+                       :message "用户名长度5-20"}]]
+  [:email [:presence {:message "Please input your email."}
+           :email {:message "邮件格式不对"}]]
+  [:password [:presence {:message "Please input your password."}
+              :length {:less-than-or-equal-to 20
+                       :greater-than-or-equal-to 6
+                       :message "密码长度6-20"}]]
+  [:password :password?]
+  [:username :username?]
+  [:email :email?])
+
+(defn- check-email? [map key options]
+  (if-let [email (some-> (get map key) trim)]
+    (cond
+      (not (exists-user-by-email? email)) (str email "不存在")
+      :else nil)
+    "email为空"))
+
+(defvalidator forget-password-form-validator
+  [:email [:presence {:message "Please input your email."}
+           :email {:message "邮件格式不对"}]]
+  [:email :check-email?])
+
+(defvalidator settings-change-password-form-validator
+  [[:current_password :password :user_password_confirmation]
+   :presence
+   {:message "This field is required."}]
+  [[:current_password :password :user_password_confirmation] :password?])
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 登录页面
-(defhandler signin-page [active-form req]
+(defhandler signin-page
+  {:anti-forgery true}
+  [active-form req]
   (let [postback-params (postback-params)]
     (view "signin"
       {:captcha-enabled? (captcha-enabled?)
@@ -51,16 +94,10 @@
                           nil)
        :params postback-params})))
 
-(defn- check-user-status [user]
-  (cond
-    (not (:enabled user))  {:username ["帐户未激活或帐户未启用"]}
-    (not (:account_non_expired user))  {:username ["帐户已经过期"]}
-    (not (:credentials_non_expired user))  {:username ["帐户认证信息已经过期"]}
-    (not (:account_non_locked  user))  {:username ["帐户已经被锁定"]}))
-
 ;; 登录
 (defhandler signin
-  {:validates-fn '[signin-form-validator
+  {:anti-forgery true
+   :validates-fn '[signin-form-validator
                    (fn-* (when (and (captcha-enabled?)
                                     (not (captcha-response-correc?)))
                            {:captcha ["验证码填写有误"]}))
@@ -80,24 +117,10 @@
   (session-remove! :user)
   (redirect-signin-page))
 
-(defvalidator signup-form-validator
-  [:username [:presence {:message "Please input your username."}
-              :length {:less-than-or-equal-to 30
-                       :greater-than-or-equal-to 5
-                       :message "用户名长度5-20"}]]
-  [:email [:presence {:message "Please input your email."}
-           :email {:message "邮件格式不对"}]]
-  [:password [:presence {:message "Please input your password."}
-              :length {:less-than-or-equal-to 20
-                       :greater-than-or-equal-to 6
-                       :message "密码长度6-20"}]]
-  [:password :password?]
-  [:username :username?]
-  [:email :email?])
-
 ;; 注册
 (defhandler signup
-  {:validates-fn [signup-form-validator]
+  {:anti-forgery true
+   :validates-fn [signup-form-validator]
    :failture (redirect-signin-page "second")}
   [username email password realname type req]
   (let [email (trim email)
@@ -137,21 +160,9 @@
     (let [user (activation-user! code)]
       (view "activation-result" {:user user }))))
 
-
-(defn- check-email? [map key options]
-  (if-let [email (some-> (get map key) trim)]
-    (cond
-      (not (exists-user-by-email? email)) (str email "不存在")
-      :else nil)
-    "email为空"))
-
-(defvalidator forget-password-form-validator
-  [:email [:presence {:message "Please input your email."}
-           :email {:message "邮件格式不对"}]]
-  [:email :check-email?])
-
 (defhandler forget-password
-  {:validates-fn [forget-password-form-validator]
+  {:anti-forgery true
+   :validates-fn [forget-password-form-validator]
    :failture (redirect-signin-page "three")}
   [email]
   (let [password-reset-code
@@ -186,17 +197,14 @@
 (defhandler settings-profile []
   (view "settings/profile" {:channel "profile"}))
 
-(defhandler settings-password []
+(defhandler settings-password
+  {:anti-forgery true}
+  []
   (view "settings/password" {:channel "password"}))
 
-(defvalidator settings-change-password-form-validator
-  [[:current_password :password :user_password_confirmation]
-   :presence
-   {:message "This field is required."}]
-  [[:current_password :password :user_password_confirmation] :password?])
-
 (defhandler settings-change-password
-  {:validates-fn '[settings-change-password-form-validator
+  {:anti-forgery true
+   :validates-fn '[settings-change-password-form-validator
                    (fn-* (cond
                            (not (is-current-user-password current_password))
                            {:current_password ["当前用户密码不对"]}
@@ -217,16 +225,30 @@
     (view "admin/users" {:users users})))
 
 (defroutes account-routes
-  (wrap-anti-forgery
-    (routes (GET "/signin" [] signin-page)
-            (POST "/signin" [] signin)
-            (GET "/logout" [] logout)
-            (POST "/signup" [] signup)
-            (GET "/activation" [] activation)
-            (POST "/forget_password" [] forget-password)
-            (GET "/reset_password" [] reset-password)
-            (GET "/settings" [] settings)
-            (GET "/settings/password" [] settings-password)
-            (POST "/settings/password" [] settings-change-password)
-            (GET "/settings/profile" [] settings-profile)
-            (GET "/admin/users" [] admin-users))))
+ (GET "/signin" [] signin-page)
+ (POST "/signin" [] signin)
+ (GET "/logout" [] logout)
+ (POST "/signup" [] signup)
+ (GET "/activation" [] activation)
+ (POST "/forget_password" [] forget-password)
+ (GET "/reset_password" [] reset-password)
+ (GET "/settings" [] settings)
+ (GET "/settings/password" [] settings-password)
+ (POST "/settings/password" [] settings-change-password)
+ (GET "/settings/profile" [] settings-profile)
+ (GET "/admin/users" [] admin-users))
+
+#_(defroutes account-routes
+   (wrap-anti-forgery
+     (routes (GET "/signin" [] signin-page)
+             (POST "/signin" [] signin)
+             (GET "/logout" [] logout)
+             (POST "/signup" [] signup)
+             (GET "/activation" [] activation)
+             (POST "/forget_password" [] forget-password)
+             (GET "/reset_password" [] reset-password)
+             (GET "/settings" [] settings)
+             (GET "/settings/password" [] settings-password)
+             (POST "/settings/password" [] settings-change-password)
+             (GET "/settings/profile" [] settings-profile)
+             (GET "/admin/users" [] admin-users))))

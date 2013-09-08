@@ -1,3 +1,6 @@
-(ns wapp.views.snippets)
+(ns wapp.views.snippets
+  (:require [cljtang.core :refer :all]))
 
-(defn hello-snippet [a c] "Hello snippet!")
+(defn hello-snippet
+  [a c]
+  (str "Hello snippet!" (moment-format)))

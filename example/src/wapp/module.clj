@@ -9,10 +9,10 @@
      :fps [examples-index-fp fileupload-index-fp]
      :menus (maps->menus
               [{:id "examples"
-                :name "Examples"
+                :name "示 例"
                 :funcpoint examples-index-fp
                 :parent "dashboard"}
-               {:name "File Upload"
+               {:name "文件上传"
                 :funcpoint fileupload-index-fp
                 :parent "dashboard"}])
      :snippets-ns ['wapp.views.snippets]}))

@@ -43,3 +43,13 @@
 </div>
 {% endblock %}
 
+{% block more-js %}
+<script src="/public/libs/jquery.MultiFile.pack.js"></script>
+<script>
+  $(function() {
+    example.fileupload.init();
+  });
+</script>
+{% endblock %}
+
+
