@@ -1,27 +1,20 @@
 (ns wapp.server
   (:require [cljwtang.lib :refer :all]
             [wapp.config :as wappcofig]
-            [yuntang.user.core :as user-core]
-            [yuntang.user.module :as user-module]
-            [yuntang.layout.module :as layout-module]
-            [yuntang.admin.module :as admin-module]
-            [yuntang.modules.captcha.module :as captcha-module]
-            [yuntang.modules.common.module :as common-module]
-            [wapp.module :as wapp])
+            [yuntang.user.core :as user-core])
+#_(:require
+             [yuntang.user.module :as user-module]
+             [yuntang.layout.module :as layout-module]
+             [yuntang.admin.module :as admin-module]
+             [yuntang.modules.captcha.module :as captcha-module]
+             [yuntang.modules.common.module :as common-module]
+             [wapp.module :as wapp])
   (:gen-class))
 
 (create-app
   (fn []
     (info "set db-config...")
-    (set-db-config! wappcofig/db-config)
-    (info "regist modules...")
-    (regist-modules!
-       layout-module/module
-       captcha-module/module
-       user-module/module
-       wapp/module
-       admin-module/module
-       common-module/module)))
+    (set-db-config! wappcofig/db-config)))
 
 (require '[cljwtang.server :as server])
 
