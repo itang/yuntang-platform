@@ -1,11 +1,11 @@
 (ns wapp.server
-  (:require [cljwtang.lib :as cljwtang :refer [info set-db-config!]]
+  (:require [cljwtang.lib :as cljwtang :refer :all]
             [wapp.config :as wappcofig])
   (:gen-class))
 
 (cljwtang/create-app
   (fn []
-    (info "set db-config...")
+    (log-info "set db-config...")
     (set-db-config! wappcofig/db-config)))
 
 (require '[cljwtang.server :as server])
