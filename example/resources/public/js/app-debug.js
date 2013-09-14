@@ -3554,16 +3554,16 @@ cljs.core.with_meta = function with_meta(b, c) {
     c && (b ? (c = (c = b.cljs$lang$protocol_mask$partition0$ & 262144) ? c : b.cljs$core$IWithMeta$, c = c ? !0 : b.cljs$lang$protocol_mask$partition0$ ? !1 : cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b)) : c = cljs.core.type_satisfies_.call(null, cljs.core.IWithMeta, b), c = !c);
     return c
   }() ? with_meta.call(null, function() {
-    "undefined" === typeof cljs.core.t4598 && (cljs.core.t4598 = {}, cljs.core.t4598 = function(b, c, f, g) {
+    "undefined" === typeof cljs.core.t4604 && (cljs.core.t4604 = {}, cljs.core.t4604 = function(b, c, f, g) {
       this.meta = b;
       this.o = c;
       this.with_meta = f;
-      this.meta4599 = g;
+      this.meta4605 = g;
       this.cljs$lang$protocol_mask$partition1$ = 0;
       this.cljs$lang$protocol_mask$partition0$ = 393217
-    }, cljs.core.t4598.cljs$lang$type = !0, cljs.core.t4598.cljs$lang$ctorStr = "cljs.core/t4598", cljs.core.t4598.cljs$lang$ctorPrWriter = function(b, c, f) {
-      return cljs.core._write.call(null, c, "cljs.core/t4598")
-    }, cljs.core.t4598.prototype.call = function() {
+    }, cljs.core.t4604.cljs$lang$type = !0, cljs.core.t4604.cljs$lang$ctorStr = "cljs.core/t4604", cljs.core.t4604.cljs$lang$ctorPrWriter = function(b, c, f) {
+      return cljs.core._write.call(null, c, "cljs.core/t4604")
+    }, cljs.core.t4604.prototype.call = function() {
       var b = function(b, c) {
         return cljs.core.apply.call(null, b.o, c)
       }, c = function(c, e) {
@@ -3580,17 +3580,17 @@ cljs.core.with_meta = function with_meta(b, c) {
       };
       c.cljs$core$IFn$_invoke$arity$variadic = b;
       return c
-    }(), cljs.core.t4598.prototype.apply = function(b, c) {
+    }(), cljs.core.t4604.prototype.apply = function(b, c) {
       b = this;
       return b.call.apply(b, [b].concat(c.slice()))
-    }, cljs.core.t4598.prototype.cljs$core$Fn$ = !0, cljs.core.t4598.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
-      return this.meta4599
-    }, cljs.core.t4598.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
-      return new cljs.core.t4598(this.meta, this.o, this.with_meta, c)
-    }, cljs.core.__GT_t4598 = function(b, c, f, g) {
-      return new cljs.core.t4598(b, c, f, g)
+    }, cljs.core.t4604.prototype.cljs$core$Fn$ = !0, cljs.core.t4604.prototype.cljs$core$IMeta$_meta$arity$1 = function(b) {
+      return this.meta4605
+    }, cljs.core.t4604.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(b, c) {
+      return new cljs.core.t4604(this.meta, this.o, this.with_meta, c)
+    }, cljs.core.__GT_t4604 = function(b, c, f, g) {
+      return new cljs.core.t4604(b, c, f, g)
     });
-    return new cljs.core.t4598(c, b, with_meta, null)
+    return new cljs.core.t4604(c, b, with_meta, null)
   }(), c) : cljs.core._with_meta.call(null, b, c)
 };
 cljs.core.meta = function(a) {
@@ -13826,6 +13826,34 @@ cljs.core.special_symbol_QMARK_ = function(a) {
   new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), null, new cljs.core.Symbol(null, ".", ".", -1640531481, null), null, new cljs.core.Symbol(null, "ns", "ns", -1640528002, null), null, new cljs.core.Symbol(null, "do", "do", -1640528316, null), null, new cljs.core.Symbol(null, "fn*", "fn*", -1640430053, null), null, new cljs.core.Symbol(null, "throw", "throw", -1530191713, null), null, new cljs.core.Symbol(null, "letfn*", "letfn*", 1548249632, null), null, new cljs.core.Symbol(null, 
   "js*", "js*", -1640426054, null), null, new cljs.core.Symbol(null, "defrecord*", "defrecord*", 774272013, null), null, new cljs.core.Symbol(null, "let*", "let*", -1637213400, null), null, new cljs.core.Symbol(null, "loop*", "loop*", -1537374273, null), null, new cljs.core.Symbol(null, "if", "if", -1640528170, null), null, new cljs.core.Symbol(null, "def", "def", -1640432194, null), null], !0), a)
 };
+var cljstang = {core:{}};
+cljstang.core.ends_with = function(a, b) {
+  return cljs.core.not_EQ_.call(null, -1, a.indexOf(b, a.length - b.length))
+};
+goog.exportSymbol("cljstang.core.ends_with", cljstang.core.ends_with);
+var jayq = {util:{}};
+jayq.util.wait = function(a, b) {
+  return setTimeout(b, a)
+};
+jayq.util.log = function() {
+  var a = function(a, b) {
+    var e = cljs.core.string_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.str, a, b) : a;
+    console.log(e);
+    return a
+  }, b = function(b, d) {
+    var e = null;
+    1 < arguments.length && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
+    return a.call(this, b, e)
+  };
+  b.cljs$lang$maxFixedArity = 1;
+  b.cljs$lang$applyTo = function(b) {
+    var d = cljs.core.first(b);
+    b = cljs.core.rest(b);
+    return a(d, b)
+  };
+  b.cljs$core$IFn$_invoke$arity$variadic = a;
+  return b
+}();
 var clojure = {string:{}};
 clojure.string.seq_reverse = function(a) {
   return cljs.core.reduce.call(null, cljs.core.conj, cljs.core.List.EMPTY, a)
@@ -14515,7 +14543,7 @@ cljs.reader.deregister_default_tag_parser_BANG_ = function() {
   });
   return a
 };
-var jayq = {core:{}};
+jayq.core = {};
 jayq.core.crate_meta = function(a) {
   return a.prototype._crateGroup
 };
@@ -15589,71 +15617,8 @@ jayq.core.deferred_m = cljs.core.PersistentArrayMap.fromArray([new cljs.core.Key
 jayq.core.ajax_m = cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "return", "return", 4374474914), cljs.core.identity, new cljs.core.Keyword(null, "bind", "bind", 1016928175), function(a, b) {
   return jayq.core.done.call(null, jayq.core.ajax.call(null, a), b)
 }, new cljs.core.Keyword(null, "zero", "zero", 1017639450), cljs.core.identity], !0);
-var example = {hello:{}};
-example.hello.hello = function() {
-  return alert("Hello, ClojureScript!")
-};
-goog.exportSymbol("example.hello.hello", example.hello.hello);
-example.hello.init = function() {
-  jayq.core.html.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#cljs-info", "#cljs-info", 2049746136)), "\x3cb\x3eFrom ClojureScript\x3c/b\x3e");
-  return jayq.core.bind.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#btn-sayhello", "#btn-sayhello", 3545783085)), new cljs.core.Keyword(null, "click", "click", 1108654330), example.hello.hello)
-};
-goog.exportSymbol("example.hello.init", example.hello.init);
-jayq.util = {};
-jayq.util.wait = function(a, b) {
-  return setTimeout(b, a)
-};
-jayq.util.log = function() {
-  var a = function(a, b) {
-    var e = cljs.core.string_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.str, a, b) : a;
-    console.log(e);
-    return a
-  }, b = function(b, d) {
-    var e = null;
-    1 < arguments.length && (e = cljs.core.array_seq(Array.prototype.slice.call(arguments, 1), 0));
-    return a.call(this, b, e)
-  };
-  b.cljs$lang$maxFixedArity = 1;
-  b.cljs$lang$applyTo = function(b) {
-    var d = cljs.core.first(b);
-    b = cljs.core.rest(b);
-    return a(d, b)
-  };
-  b.cljs$core$IFn$_invoke$arity$variadic = a;
-  return b
-}();
-example.fileupload = {};
-example.fileupload.ajaxsubmit_handler = function(a) {
-  return jayq.core.$.call(null, new cljs.core.Keyword(null, "#f-fileuplaod", "#f-fileuplaod", 3129010813)).ajaxSubmit({dataType:"json", success:function(a) {
-    return alert([cljs.core.str("\u6765\u81ea\u670d\u52a1\u5668\u7aef:"), cljs.core.str(JSON.stringify(a))].join(""))
-  }})
-};
-example.fileupload.init = function() {
-  return jayq.core.bind.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#btn-ajaxsubmit", "#btn-ajaxsubmit", 1904275614)), new cljs.core.Keyword(null, "click", "click", 1108654330), example.fileupload.ajaxsubmit_handler)
-};
-goog.exportSymbol("example.fileupload.init", example.fileupload.init);
 var yuntang = {layout:{}};
 yuntang.layout.client = {};
-yuntang.layout.client.util = {};
-yuntang.layout.client.util.moment_format = function() {
-  return wappjs.momentFormat()
-};
-goog.exportSymbol("yuntang.layout.client.util.moment_format", yuntang.layout.client.util.moment_format);
-yuntang.layout.client.controllers = {};
-yuntang.layout.client.controllers.ClientMomentTimeCtrl = function(a, b) {
-  a.moment = yuntang.layout.client.util.moment_format.call(null);
-  return a.$watch("moment", function(c) {
-    return b.call(null, function() {
-      return a.moment = yuntang.layout.client.util.moment_format.call(null)
-    }, 2E3)
-  })
-};
-yuntang.layout.client.controllers.ClientMomentTimeCtrl.$inject = ["$scope", "$timeout"];
-var cljstang = {core:{}};
-cljstang.core.ends_with = function(a, b) {
-  return cljs.core.not_EQ_.call(null, -1, a.indexOf(b, a.length - b.length))
-};
-goog.exportSymbol("cljstang.core.ends_with", cljstang.core.ends_with);
 yuntang.layout.client.main = {};
 yuntang.layout.client.main.text_from = function(a) {
   var b = a.lastIndexOf("\x3e");
@@ -15768,6 +15733,21 @@ $(document).ajaxComplete(function(a, b, c) {
 $(document).ajaxSend(function() {
   return jayq.core.show.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#ajax-preload", "#ajax-preload", 2832972401)))
 });
+yuntang.layout.client.util = {};
+yuntang.layout.client.util.moment_format = function() {
+  return wappjs.momentFormat()
+};
+goog.exportSymbol("yuntang.layout.client.util.moment_format", yuntang.layout.client.util.moment_format);
+yuntang.layout.client.controllers = {};
+yuntang.layout.client.controllers.ClientMomentTimeCtrl = function(a, b) {
+  a.moment = yuntang.layout.client.util.moment_format.call(null);
+  return a.$watch("moment", function(c) {
+    return b.call(null, function() {
+      return a.moment = yuntang.layout.client.util.moment_format.call(null)
+    }, 2E3)
+  })
+};
+yuntang.layout.client.controllers.ClientMomentTimeCtrl.$inject = ["$scope", "$timeout"];
 yuntang.layout.client.wapp = {};
 yuntang.layout.client.wapp.wapp = function() {
   var a = angular.module("wapp", []);
@@ -15787,3 +15767,23 @@ app.main.init = function() {
   return yuntang.layout.client.main.init.call(null)
 };
 goog.exportSymbol("app.main.init", app.main.init);
+var example = {fileupload:{}};
+example.fileupload.ajaxsubmit_handler = function(a) {
+  return jayq.core.$.call(null, new cljs.core.Keyword(null, "#f-fileuplaod", "#f-fileuplaod", 3129010813)).ajaxSubmit({dataType:"json", success:function(a) {
+    return alert([cljs.core.str("\u6765\u81ea\u670d\u52a1\u5668\u7aef:"), cljs.core.str(JSON.stringify(a))].join(""))
+  }})
+};
+example.fileupload.init = function() {
+  return jayq.core.bind.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#btn-ajaxsubmit", "#btn-ajaxsubmit", 1904275614)), new cljs.core.Keyword(null, "click", "click", 1108654330), example.fileupload.ajaxsubmit_handler)
+};
+goog.exportSymbol("example.fileupload.init", example.fileupload.init);
+example.hello = {};
+example.hello.hello = function() {
+  return alert("Hello, ClojureScript!")
+};
+goog.exportSymbol("example.hello.hello", example.hello.hello);
+example.hello.init = function() {
+  jayq.core.html.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#cljs-info", "#cljs-info", 2049746136)), "\x3cb\x3eFrom ClojureScript\x3c/b\x3e");
+  return jayq.core.bind.call(null, jayq.core.$.call(null, new cljs.core.Keyword(null, "#btn-sayhello", "#btn-sayhello", 3545783085)), new cljs.core.Keyword(null, "click", "click", 1108654330), example.hello.hello)
+};
+goog.exportSymbol("example.hello.init", example.hello.init);

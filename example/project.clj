@@ -16,19 +16,19 @@
                              [codox "0.6.4"]         ;$ lein doc
                              [lein-ring "0.8.7"]     ;$ lein ring server
                              [lein-pprint "1.1.1"]   ;$ lein pprint | lein with-profile 1.4 pprint
-                             [lein-cljsbuild "0.3.2"];$ lein cljsbuild [once auto clean repl-listen repl-rhino]
+                             [lein-cljsbuild "0.3.3"];$ lein cljsbuild [once auto clean repl-listen repl-rhino]
                              [lein-environ "0.4.0"]
                              [lein-localrepo "0.5.2"]
                              [lein-checkall "0.1.1"]]
                    :dependencies [[ring-mock "0.1.5"]
-                                  [org.clojure/clojurescript "0.0-1877"]]}
+                                  [org.clojure/clojurescript "0.0-1878"]]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}}
   :aliases {"run-tests" ["with-profile" "1.4:1.5" "test"]
             "migrate" ["run" "-m" "cljwtang.tools.migrate"]
             "dev" ["run" "-m" "cljwtang.tools.dev"]
             "http-kit" ["run"]}
-  ;:aot [wapp.server]
+                                        ;:aot [wapp.server]
   :main ^{:skip-aot true} wapp.server
   :ring {:handler wapp.server/app
          :init wapp.server/init
@@ -44,28 +44,23 @@
   ;; include arbitrary xml in generated pom.xml file
   :pom-addition [:developers [:developer [:name "itang"]]]
   :min-lein-version "2.0.0"
-  :cljsbuild {
-              :builds {
-                       :app-debug
-                       {
-                        :source-paths ["src-cljs"],
-                        :compiler {
-                                   :pretty-print true,
-                                   :output-to "resources/public/js/app-debug.js",
-                                   :optimizations :simple #_(:whitespace),
-                                   :externs ["src-cljs/externs/jquery-1.8.js",
-                                             "src-cljs/externs/angular.js"
-                                             "src-cljs/externs/externs.js"]},
-                        :jar true}
-                       :app
-                       {
-                        :source-paths ["src-cljs"],
-                        :compiler {
-                                   :pretty-print false,
-                                   :output-to "resources/public/js/app.js",
-                                   :optimizations :advanced,
-                                   :externs ["src-cljs/externs/jquery-1.8.js",
-                                             "src-cljs/externs/angular.js"
-                                             "src-cljs/externs/externs.js"]},
-                        :jar true}}}
-  )
+  :cljsbuild
+  {:builds
+   {:app-debug
+    {:source-paths ["src-cljs"],
+     :compiler {:pretty-print true,
+                :output-to "resources/public/js/app-debug.js",
+                :optimizations :simple #_(:whitespace),
+                :externs ["src-cljs/externs/jquery-1.8.js",
+                          "src-cljs/externs/angular.js"
+                          "src-cljs/externs/externs.js"]},
+     :jar true}
+    :app
+    {:source-paths ["src-cljs"],
+     :compiler {:pretty-print false,
+                :output-to "resources/public/js/app.js",
+                :optimizations :advanced,
+                :externs ["src-cljs/externs/jquery-1.8.js",
+                          "src-cljs/externs/angular.js"
+                          "src-cljs/externs/externs.js"]},
+     :jar true}}})
