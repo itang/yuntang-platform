@@ -19,26 +19,24 @@
   (if-let [username (some-> username trim)]
     (let [check-result (check-username-pattern username)]
       (cond
-        (not-nil? check-result) check-result
-        (exists-user? username) (str username "已经被注册")))
+       (not-nil? check-result) check-result
+       (exists-user? username) (str username "已经被注册")))
     "用户名为空"))
 
-(defn- email? [map key options]
-  (if-let [email (some-> (get map key) trim)]
+(defn- email? [email]
+  (if-let [email (some-> email trim)]
     (cond
-      (exists-user-by-email? email) (str email "已经被注册")
-      :else nil)
+     (exists-user-by-email? email) (str email "已经被注册")
+     :else nil)
     "email为空"))
 
 (defn- check-email? [email]
-  (cond
-    (not (exists-user-by-email? email)) (str email "不存在")
-    :else nil)
-  "email为空")
+  (when (not (exists-user-by-email? email))
+    (str email "不存在")))
 
 (defn- redirect-signin-page [& [active-form]]
   (redirect
-    (when-> "/signin" active-form #(str % "?active-form=" active-form))))
+   (when-> "/signin" active-form #(str % "?active-form=" active-form))))
 
 (defn- validate-username-input-rules [username]
   (let [username (some-> username trim)]
@@ -49,18 +47,18 @@
 (defn- validate-password-input-rules [password]
   (let [password (some-> password trim)]
     (and (validate-rule (has-value? password) [:password "Please input your password."])
-             (validate-rule (and (min-length? password 6) (max-length? password 20))
-                            [:username "用户名长度5-20"]))))
+         (validate-rule (and (min-length? password 6) (max-length? password 20))
+                        [:username "用户名长度5-20"]))))
 
 (defn- validate-email-input-rules [email]
- (let [email (some-> email trim)]
-   (and (validate-rule (has-value? email) [:email "Please input your email."])
-        (validate-rule (is-email? email) [:email "邮件帐号格式不正确!"]))))
+  (let [email (some-> email trim)]
+    (and (validate-rule (has-value? email) [:email "Please input your email."])
+         (validate-rule (is-email? email) [:email "邮件帐号格式不正确!"]))))
 
 (defn- validate-signin-form-rules [username password]
   (and
-    (validate-username-input-rules username)
-    (validate-username-input-rules password)))
+   (validate-username-input-rules username)
+   (validate-username-input-rules password)))
 
 (defn- validate-user-status-rules [user]
   (and (validate-rule (not-nil? user) [:username "用户不存在或者密码不正确"])
@@ -88,163 +86,174 @@
        (validate-email-input-rules email)
        (let [err (email? email)]
          (validate-rule (not err) [:email err]))))
-  
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 登录页面
-(defhandler signin-page
-  {:anti-forgery true}
-  [active-form req]
-  (let [postback-params (postback-params)]
-    (view "signin"
-      {:captcha-enabled? (captcha-enabled?)
-       :ori-active-form active-form
-       :active-form (case active-form
-                          "second" "eq(1)"
-                          "three" "eq(2)"
-                          nil)
-       :params postback-params})))
+(with-routes account-routes ""
 
-;; 登录
-(defhandler signin
-  {:anti-forgery true
-   :validation {:validate
-                '(and
-                   (validate-signin-form-rules username password)
-                   (validate-rule (or (not (captcha-enabled?)) (captcha-response-correc?))
-                                  [:captcha "验证码填写有误"])
-                   (validate-user-status-rules (check-user username password)))
-                :on-error
-                '(do (log/warn username "登录失败!")
-                   (redirect-signin-page))}}
-  [username password req]
-  (let [user (find-user-in-uid-username-email-for-session username)]
-    (log/info username "登录成功!")
-    (set-current-user! user)
-    (redirect "/")))
+  (defhandler signin-page
+    "登录页"
+    {:get "/signin"
+     :anti-forgery true}
+    [active-form req]
+    (let [postback-params (postback-params)]
+      (view "signin"
+            {:captcha-enabled? (captcha-enabled?)
+             :ori-active-form active-form
+             :active-form (case active-form
+                            "second" "eq(1)"
+                            "three" "eq(2)"
+                            nil)
+             :params postback-params})))
 
-;; 注销
-(defhandler logout []
-  (session-remove! :user)
-  (redirect-signin-page))
+  (defhandler signin
+    "登录"
+    {:post "/signin"
+     :anti-forgery true
+     :validate
+     '(and
+       (validate-signin-form-rules username password)
+       (validate-rule (or (not (captcha-enabled?)) (captcha-response-correc?))
+                      [:captcha "验证码填写有误"])
+       (validate-user-status-rules (check-user username password)))
+     :on-validate-error
+     '(do (log/warn username "登录失败!")
+          (redirect-signin-page))}
+    [username password req]
+    (let [user (find-user-in-uid-username-email-for-session username)]
+      (log/info username "登录成功!")
+      (set-current-user! user)
+      (redirect "/")))
 
-;; 注册
-(defhandler signup
-  {:anti-forgery true
-   :validation {:validate '(validate-signup-form-rules username password email)
-                :on-error (redirect-signin-page "second")}}
-  [username password email realname type req]
-  (let [email (trim email)
-        activation-mode (user-regist-activation-mode)
-        activation-mode-by-email (= :by-email activation-mode)
-        activation-mode-auto (= :auto activation-mode)
-        activation-mode-by-manual (= :by-manual activation-mode)
-        activation-code (uuid2)]
-    (create-user! {:username (trim username)
-                   :email email
-                   :password (trim password)
-                   :realname (trim realname)
-                   :type (trim type)
-                   :enabled activation-mode-auto
-                   :activation_code activation-code
-                   :activation_code_created_at (moment)})
-    (when activation-mode-by-email ;; 邮件激活模式
-      (let [activation-url
-            (str (activation-url-prefix) "?code=" activation-code)]
-        (log/info "发送用户注册激活邮件")
+  (defhandler logout
+    "注销"
+    {:get "/logout"}
+    []
+    (session-remove! :user)
+    (redirect-signin-page))
+
+  (defhandler signup
+    "注册"
+    {:post "/signup"
+     :anti-forgery true
+     :validate '(validate-signup-form-rules username password email)
+     :on-validate-error (redirect-signin-page "second")}
+    [username password email realname type req]
+    (let [email (trim email)
+          activation-mode (user-regist-activation-mode)
+          activation-mode-by-email (= :by-email activation-mode)
+          activation-mode-auto (= :auto activation-mode)
+          activation-mode-by-manual (= :by-manual activation-mode)
+          activation-code (uuid2)]
+      (create-user! {:username (trim username)
+                     :email email
+                     :password (trim password)
+                     :realname (trim realname)
+                     :type (trim type)
+                     :enabled activation-mode-auto
+                     :activation_code activation-code
+                     :activation_code_created_at (moment)})
+      (when activation-mode-by-email ;; 邮件激活模式
+        (let [activation-url
+              (str (activation-url-prefix) "?code=" activation-code)]
+          (log/info "发送用户注册激活邮件")
+          (send-mail-by-template
+           {:to email :subject (str "欢迎注册wapp(wapp.com)，请激活你的帐号")}
+           "mail-activation-template"
+           {:activation-url activation-url
+            :email email})))
+      (view "signup-submit-finish"
+            {:email email
+             :mail-vendor (mail-vendor-by-email-account email)
+             :by-email activation-mode-by-email
+             :auto activation-mode-auto
+             :by-manual activation-mode-by-manual})))
+
+  (defhandler activation
+    "用户注册邮件激活"
+    {:get "/activation"}
+    [code]
+    (if-not (= 32 (count code))
+      (not-found "")
+      (let [user (activation-user! code)]
+        (view "activation-result" {:user user }))))
+
+  (defhandler forget-password
+    "提交忘记密码请求"
+    {:post "/forget-password"
+     :anti-forgery true
+     :validate '(validate-forget-password-form-rules email)
+     :on-validate-error (redirect-signin-page "three")}
+    [email]
+    (let [password-reset-code
+          (uuid2)
+          reset-url
+          (str (reset-password-url-prefix)
+               "?email=" email
+               "&code=" password-reset-code)]
+      (set-password-reset-code! email password-reset-code)
+      (send-mail-by-template {:to email
+                              :subject (str "[wapp]-" "申请重置密码邮件")}
+                             "forget-password-template"
+                             {:reset-url reset-url})
+      (view "forget-password-result"
+            {:mail-vendor (mail-vendor-by-email-account email)})))
+
+  (defhandler reset-password
+    "重置密码"
+    {:get "/reset-password"}
+    [email code]
+    (if-not (= 32 (count code))
+      (not-found "")
+      (let [p (reset-password! email code)
+            ctx {:new-password p}]
+        (log/debug email)
         (send-mail-by-template
-         {:to email :subject (str "欢迎注册wapp(wapp.com)，请激活你的帐号")}
-         "mail-activation-template"
-         {:activation-url activation-url
-          :email email})))
-    (view "signup-submit-finish"
-          {:email email
-           :mail-vendor (mail-vendor-by-email-account email)
-           :by-email activation-mode-by-email
-           :auto activation-mode-auto
-           :by-manual activation-mode-by-manual})))
+         {:to email :subject (str "[wapp]-" "重置密码邮件通知")}
+         "reset-password-notice-template"
+         ctx)
+        (view "reset-password-result" ctx))))
 
-;; 用户注册邮件激活
-(defhandler activation [code]
-  (if-not (= 32 (count code))
-    (not-found "")
-    (let [user (activation-user! code)]
-      (view "activation-result" {:user user }))))
+  (defhandler settings
+    "个人设置页"
+    {:get "/settings"}
+    []
+    (redirect "/settings/password"))
 
-(defhandler forget-password
-  {:anti-forgery true
-   :validation {
-   :validate '(validate-forget-password-form-rules email)
-   :on-error (redirect-signin-page "three")}}
-  [email]
-  (let [password-reset-code
-        (uuid2)
-        reset-url
-        (str (reset-password-url-prefix)
-             "?email=" email
-             "&code=" password-reset-code)]
-    (set-password-reset-code! email password-reset-code)
-    (send-mail-by-template {:to email
-                            :subject (str "[wapp]-" "申请重置密码邮件")}
-                           "forget-password-template"
-                           {:reset-url reset-url})
-    (view "forget-password-result"
-          {:mail-vendor (mail-vendor-by-email-account email)})))
+  (defhandler settings-profile
+    "个人设置-帐户"
+    {:get "/settings/profile"}
+    []
+    (view "settings/profile" {:channel "profile"}))
 
-(defhandler reset-password [email code]
-  (if-not (= 32 (count code))
-    (not-found "")
-    (let [p (reset-password! email code)
-          ctx {:new-password p}]
-      (log/debug email)
-      (send-mail-by-template
-        {:to email :subject (str "[wapp]-" "重置密码邮件通知")}
-        "reset-password-notice-template"
-        ctx)
-      (view "reset-password-result" ctx))))
+  (defhandler settings-password
+    "个人设置-密码"
+    {:get "/settings/password"
+     :anti-forgery true}
+    []
+    (view "settings/password" {:channel "password"}))
 
-(defhandler settings []
-  (redirect "/settings/password"))
+  (defhandler settings-change-password
+    "修改密码"
+    {:post "/settings/password"
+     :anti-forgery true
+     :validate '(and (validate-settings-change-password-form-rules
+                      current_password password user_password_confirmation)
+                     (validate-rule (is-current-user-password current_password)
+                                    [:current_password "当前用户密码不对"])
+                     (validate-rule (= password user_password_confirmation)
+                                    [:password "两次输入的密码不一致"]))
+     :on-validate-error (redirect "/settings/password")}
+    [current_password password user_password_confirmation]
+    (change-current-user-password! password)
+    (flash-msg (success-message "更改用户密码成功!"))
+    (redirect "/settings/password"))
 
-(defhandler settings-profile []
- (view "settings/profile" {:channel "profile"}))
-
-(defhandler settings-password
- {:anti-forgery true}
- []
- (view "settings/password" {:channel "password"}))
-
-(defhandler settings-change-password
- {:anti-forgery true
-  :validation {:validate '(and (validate-settings-change-password-form-rules
-                                 current_password password user_password_confirmation)
-                            (validate-rule (is-current-user-password current_password)
-                                           [:current_password "当前用户密码不对"])
-                            (validate-rule (= password user_password_confirmation)
-                                           [:password "两次输入的密码不一致"]))
-               :on-error (redirect "/settings/password")}}
- [current_password password user_password_confirmation]
-  (change-current-user-password! password)
-  (flash-msg (success-message "更改用户密码成功!"))
-  (redirect "/settings/password"))
-
-;; 用户管理
-(defhandler admin-users []
-  (let [today (moment-format "yyyy-MM-dd")
-        users (map #(-> %
-                      (assoc :type-name (user-types-map (:type %))))
-                    (all-users))]
-    (view "admin/users" {:users users})))
-
-(defroutes account-routes
- (GET "/signin" [] signin-page)
- (POST "/signin" [] signin)
- (GET "/logout" [] logout)
- (POST "/signup" [] signup)
- (GET "/activation" [] activation)
- (POST "/forget_password" [] forget-password)
- (GET "/reset_password" [] reset-password)
- (GET "/settings" [] settings)
- (GET "/settings/password" [] settings-password)
- (POST "/settings/password" [] settings-change-password)
- (GET "/settings/profile" [] settings-profile)
- (GET "/admin/users" [] admin-users))
+  ;; 用户管理
+  (defhandler admin-users
+    {:get "/admin/users"}
+    []
+    (let [today (moment-format "yyyy-MM-dd")
+          users (map #(-> %
+                          (assoc :type-name (user-types-map (:type %))))
+                     (all-users))]
+      (view "admin/users" {:users users}))))

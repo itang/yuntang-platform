@@ -5,7 +5,7 @@
 (def module
   (new-ui-module
     {:name "example app"
-     :routes [@examples-routes]
+     :routes [examples-routes]
      :fps [examples-index-fp fileupload-index-fp]
      :menus (maps->menus
               [{:id "examples"

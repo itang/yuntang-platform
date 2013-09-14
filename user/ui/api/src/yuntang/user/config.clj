@@ -11,4 +11,4 @@
   (*app-config-fn* :user-regist-activation-mode :by-email))
 
 (defn reset-password-url-prefix []
-  (str "http://" (hostaddr) "/reset_password"))
+  (str "http://" (hostaddr) "/reset-password"))
