@@ -3,21 +3,20 @@
             [clojure.tools.logging :as log]
             [cljtang.core :refer :all]
             [cljtang.util :refer :all]
-            [metis.core :refer :all]
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]
             [yuntang.user.core :refer :all]
             [yuntang.user.util :refer [check-username-pattern]]
             [yuntang.user.config :refer :all]))
 
-(defn- password? [map key options]
-  (if-let [password (some-> (get map key) trim)]
+(defn- password? [password]
+  (if-let [password (some-> password trim)]
     (when (< (count password) 6 )
       "密码至少6位")
     "密码为空"))
 
-(defn- username? [map key options]
-  (if-let [username (some-> (get map key) trim)]
+(defn- username? [username]
+  (if-let [username (some-> username trim)]
     (let [check-result (check-username-pattern username)]
       (cond
         (not-nil? check-result) check-result
@@ -31,55 +30,66 @@
       :else nil)
     "email为空"))
 
-(defvalidator signin-form-validator
-  [[:username :password] :presence {:message "This field is required."}]
-  [:password :password?])
+(defn- check-email? [email]
+  (cond
+    (not (exists-user-by-email? email)) (str email "不存在")
+    :else nil)
+  "email为空")
 
 (defn- redirect-signin-page [& [active-form]]
   (redirect
     (when-> "/signin" active-form #(str % "?active-form=" active-form))))
 
-(defn- check-user-status [user]
-  (cond
-    (not (:enabled user))  {:username ["帐户未激活或帐户未启用"]}
-    (not (:account_non_expired user))  {:username ["帐户已经过期"]}
-    (not (:credentials_non_expired user))  {:username ["帐户认证信息已经过期"]}
-    (not (:account_non_locked  user))  {:username ["帐户已经被锁定"]}))
+(defn- validate-username-input-rules [username]
+  (let [username (some-> username trim)]
+    (and (validate-rule (has-value? username) [:username "Please input your username."])
+         (validate-rule (and (min-length? username 5) (max-length? username 20))
+                        [:username "用户名长度5-20"]))))
 
-(defvalidator signup-form-validator
-  [:username [:presence {:message "Please input your username."}
-              :length {:less-than-or-equal-to 30
-                       :greater-than-or-equal-to 5
-                       :message "用户名长度5-20"}]]
-  [:email [:presence {:message "Please input your email."}
-           :email {:message "邮件格式不对"}]]
-  [:password [:presence {:message "Please input your password."}
-              :length {:less-than-or-equal-to 20
-                       :greater-than-or-equal-to 6
-                       :message "密码长度6-20"}]]
-  [:password :password?]
-  [:username :username?]
-  [:email :email?])
+(defn- validate-password-input-rules [password]
+  (let [password (some-> password trim)]
+    (and (validate-rule (has-value? password) [:password "Please input your password."])
+             (validate-rule (and (min-length? password 6) (max-length? password 20))
+                            [:username "用户名长度5-20"]))))
 
-(defn- check-email? [map key options]
-  (if-let [email (some-> (get map key) trim)]
-    (cond
-      (not (exists-user-by-email? email)) (str email "不存在")
-      :else nil)
-    "email为空"))
+(defn- validate-email-input-rules [email]
+ (let [email (some-> email trim)]
+   (and (validate-rule (has-value? email) [:email "Please input your email."])
+        (validate-rule (is-email? email) [:email "邮件帐号格式不正确!"]))))
 
-(defvalidator forget-password-form-validator
-  [:email [:presence {:message "Please input your email."}
-           :email {:message "邮件格式不对"}]]
-  [:email :check-email?])
+(defn- validate-signin-form-rules [username password]
+  (and
+    (validate-username-input-rules username)
+    (validate-username-input-rules password)))
 
-(defvalidator settings-change-password-form-validator
-  [[:current_password :password :user_password_confirmation]
-   :presence
-   {:message "This field is required."}]
-  [[:current_password :password :user_password_confirmation] :password?])
+(defn- validate-user-status-rules [user]
+  (and (validate-rule (not-nil? user) [:username "用户不存在或者密码不正确"])
+       (validate-rule (:enabled user) [:username "帐户未激活或帐户未启用"])
+       (validate-rule (:account_non_expired user) [:username "帐户已经过期"])
+       (validate-rule (:credentials_non_expired user) [:username "帐户认证信息已经过期"])
+       (validate-rule (:account_non_locked user) [:username "帐户已经被锁定"])))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defn- validate-forget-password-form-rules [email]
+  (and (validate-email-input-rules email)
+       (let [err (check-email? email)]
+         (validate-rule (not err) [:email err]))))
+
+(defn- validate-settings-change-password-form-rules
+  [current_password password user_password_confirmation]
+  (and (validate-password-input-rules current_password)
+       (validate-password-input-rules password)
+       (validate-password-input-rules user_password_confirmation)))
+
+(defn- validate-signup-form-rules [username password email]
+  (and (validate-username-input-rules username)
+       (let [err (username? username)]
+         (validate-rule (not err) [:username err]))
+       (validate-password-input-rules password)
+       (validate-email-input-rules email)
+       (let [err (email? email)]
+         (validate-rule (not err) [:email err]))))
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 登录页面
 (defhandler signin-page
   {:anti-forgery true}
@@ -97,15 +107,15 @@
 ;; 登录
 (defhandler signin
   {:anti-forgery true
-   :validates-fn '[signin-form-validator
-                   (fn-* (when (and (captcha-enabled?)
-                                    (not (captcha-response-correc?)))
-                           {:captcha ["验证码填写有误"]}))
-                   (fn-* (if-let [user (check-user username password)]
-                           (check-user-status user)
-                           {:username ["用户不存在或者密码不正确"]}))]
-   :failture '(do (log/warn username "登录失败!")
-                  (redirect-signin-page))}
+   :validation {:validate
+                '(and
+                   (validate-signin-form-rules username password)
+                   (validate-rule (or (not (captcha-enabled?)) (captcha-response-correc?))
+                                  [:captcha "验证码填写有误"])
+                   (validate-user-status-rules (check-user username password)))
+                :on-error
+                '(do (log/warn username "登录失败!")
+                   (redirect-signin-page))}}
   [username password req]
   (let [user (find-user-in-uid-username-email-for-session username)]
     (log/info username "登录成功!")
@@ -120,9 +130,9 @@
 ;; 注册
 (defhandler signup
   {:anti-forgery true
-   :validates-fn [signup-form-validator]
-   :failture (redirect-signin-page "second")}
-  [username email password realname type req]
+   :validation {:validate '(validate-signup-form-rules username password email)
+                :on-error (redirect-signin-page "second")}}
+  [username password email realname type req]
   (let [email (trim email)
         activation-mode (user-regist-activation-mode)
         activation-mode-by-email (= :by-email activation-mode)
@@ -162,8 +172,9 @@
 
 (defhandler forget-password
   {:anti-forgery true
-   :validates-fn [forget-password-form-validator]
-   :failture (redirect-signin-page "three")}
+   :validation {
+   :validate '(validate-forget-password-form-rules email)
+   :on-error (redirect-signin-page "three")}}
   [email]
   (let [password-reset-code
         (uuid2)
@@ -195,26 +206,26 @@
   (redirect "/settings/password"))
 
 (defhandler settings-profile []
-  (view "settings/profile" {:channel "profile"}))
+ (view "settings/profile" {:channel "profile"}))
 
 (defhandler settings-password
-  {:anti-forgery true}
-  []
-  (view "settings/password" {:channel "password"}))
+ {:anti-forgery true}
+ []
+ (view "settings/password" {:channel "password"}))
 
 (defhandler settings-change-password
-  {:anti-forgery true
-   :validates-fn '[settings-change-password-form-validator
-                   (fn-* (cond
-                           (not (is-current-user-password current_password))
-                           {:current_password ["当前用户密码不对"]}
-                           (not= password user_password_confirmation)
-                           {:password ["两次输入的密码不一致"]}))]
-   :failture (redirect "/settings/password")}
-  [current_password password user_password_confirmation]
-   (change-current-user-password! password)
-   (flash-msg (success-message "更改用户密码成功!"))
-   (redirect "/settings/password"))
+ {:anti-forgery true
+  :validation {:validate '(and (validate-settings-change-password-form-rules
+                                 current_password password user_password_confirmation)
+                            (validate-rule (is-current-user-password current_password)
+                                           [:current_password "当前用户密码不对"])
+                            (validate-rule (= password user_password_confirmation)
+                                           [:password "两次输入的密码不一致"]))
+               :on-error (redirect "/settings/password")}}
+ [current_password password user_password_confirmation]
+  (change-current-user-password! password)
+  (flash-msg (success-message "更改用户密码成功!"))
+  (redirect "/settings/password"))
 
 ;; 用户管理
 (defhandler admin-users []
@@ -237,18 +248,3 @@
  (POST "/settings/password" [] settings-change-password)
  (GET "/settings/profile" [] settings-profile)
  (GET "/admin/users" [] admin-users))
-
-#_(defroutes account-routes
-   (wrap-anti-forgery
-     (routes (GET "/signin" [] signin-page)
-             (POST "/signin" [] signin)
-             (GET "/logout" [] logout)
-             (POST "/signup" [] signup)
-             (GET "/activation" [] activation)
-             (POST "/forget_password" [] forget-password)
-             (GET "/reset_password" [] reset-password)
-             (GET "/settings" [] settings)
-             (GET "/settings/password" [] settings-password)
-             (POST "/settings/password" [] settings-change-password)
-             (GET "/settings/profile" [] settings-profile)
-             (GET "/admin/users" [] admin-users))))
