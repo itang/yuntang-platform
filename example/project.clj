@@ -23,24 +23,25 @@
                    :dependencies [[ring-mock "0.1.5"]
                                   [org.clojure/clojurescript "0.0-1878"]]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
-             :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}}
+             :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}
+             :uberjar {:aot [wapp.server]
+                       :main wapp.server}}
   :aliases {"run-tests" ["with-profile" "1.4:1.5" "test"]
             "migrate" ["run" "-m" "cljwtang.tools.migrate"]
             "dev" ["run" "-m" "cljwtang.tools.dev"]
             "http-kit" ["run"]}
-                                        ;:aot [wapp.server]
   :main ^{:skip-aot true} wapp.server
   :ring {:handler wapp.server/app
          :init wapp.server/init
          :auto-refresh? true}
   :jvm-opts ["-Xms392m" "-Xmx1g"]
   ;;:bootclasspath true
-                                        ;:hooks [leiningen.cljsbuild]
+  ;:hooks [leiningen.cljsbuild]
   ;; Forms to prepend to every form that is evaluated inside your project.
   ;; Allows working around the Gilardi Scenario: http://technomancy.us/143
   :injections [(require 'clojure.pprint)]
   ;; Emit warnings on all reflection calls.
-                                        ;:warn-on-reflection true
+  ;:warn-on-reflection true
   ;; include arbitrary xml in generated pom.xml file
   :pom-addition [:developers [:developer [:name "itang"]]]
   :min-lein-version "2.0.0"
