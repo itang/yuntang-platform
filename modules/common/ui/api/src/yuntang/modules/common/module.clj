@@ -14,6 +14,7 @@
      :init (fn [m]
              (info "set app-config fn...")
              (set-app-config-fn! app-config))
+     :sort -1
      :routes [common-routes]
      :fps [fp-admin-appconfigs]
      :menus (maps->menus
