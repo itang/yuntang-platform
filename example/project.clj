@@ -51,7 +51,7 @@
     {:source-paths ["src-cljs"]
      :compiler {:pretty-print true
                 :output-to "resources/public/js/app-debug.js"
-                :source-map "app-debug.js.map"
+                ;:source-map "app-debug.js.map"
                 :optimizations :simple #_(:whitespace)
                 :externs ["src-cljs/externs/jquery-1.8.js"
                           "src-cljs/externs/angular.js"
@@ -61,7 +61,7 @@
     {:source-paths ["src-cljs"]
      :compiler {:pretty-print false
                 :output-to "resources/public/js/app.js"
-                :source-map "app.js.map"
+                ;:source-map "app.js.map"
                 :optimizations :advanced
                 :externs ["src-cljs/externs/jquery-1.8.js"
                           "src-cljs/externs/angular.js"

@@ -34,22 +34,11 @@
     {:post "/ajax_form/ajaxform"}
     [req]
     (json-success-message "" (:params req)))
-
-  (defhandler ajaxfileupload
-    {:post "/ajax_form/ajaxfileupload"}
+  
+  (defhandler ajaxsubmit
+    {:post "/ajax_form/ajaxsubmit"}
     [req]
-    (let [p (:params req)
-          file (:file p)
-          filename (:filename file)
-          ^java.io.File tempfile (:tempfile file)]
-      (debug p)
-      (when tempfile
-        (upload-file tempfile filename))
-      (json-success-message "" {:user (:username p)
-                                :filesize (:size file)
-                                :filename filename
-                                :content-type (:content-type file)
-                                :tempfile (some-> tempfile .getName)})))
+    (json-success-message "" (:params req)))
 
   (defhandler ansj
     {:get "/ansj"}
@@ -70,10 +59,10 @@
     {:post "/fileupload"}
     [req]
     (Thread/sleep (rand-nth (range 500 1600 100))) ;; mock
-    (debug (:params req))
-    (debug (pr-str (:multipart-params req)))
+    (log-debug :params (:params req))
+    (log-debug :multipart-params (pr-str (:multipart-params req)))
     (let [files (get-in req [:multipart-params "file"])]
-      (debug "files" files)
+      (debug ":multipart-params/files" files)
       (if-not (or (map? files) (sequential? files))
         (json-error-message "no files")
         (let [fmap (if (sequential? files) files [files])]
@@ -83,6 +72,19 @@
                                   {:files (map #(dissoc % :tempfile) fmap)
                                    :user (get-in req [:params :user])})
             (redirect "/examples/fileupload"))))))
+  
+  (defhandler ajaxfileupload
+    {:post "/ajax_form/ajaxfileupload"}
+    [username req]
+    (log-debug :params (:params req))
+    (let [file (multipart-file "file")]
+      (if file
+        (do 
+          (upload-file! (:tempfile file) (:filename file))
+          (json-success-message ""
+                                (merge {:user username}
+                                       (assoc file :tempfile (some-> (:tempfile file) .getName)))))
+        (json-error-message "没有选择文件"))))
 
   (defhandler va-captcha
     {:post "/va-captcha"}

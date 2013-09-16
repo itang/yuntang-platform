@@ -75,8 +75,9 @@ $(function() {
     }
   };
   $('#ajaxform').ajaxForm(options);
-  $('#btn-ajaxsubmit').click(function(){
+  $('#btn-validate').click(function(){
     $('#ajaxsubmit').ajaxSubmit(options);
+    return false;
   });
   
   $('#ajaxfileupload').ajaxForm(options);
