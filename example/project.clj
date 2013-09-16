@@ -21,7 +21,7 @@
                              [lein-localrepo "0.5.2"]
                              [lein-checkall "0.1.1"]]
                    :dependencies [[ring-mock "0.1.5"]
-                                  [org.clojure/clojurescript "0.0-1878"]]}
+                                  [org.clojure/clojurescript "0.0-1889"]]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}
              :uberjar {:aot [wapp.server]
@@ -48,20 +48,22 @@
   :cljsbuild
   {:builds
    {:app-debug
-    {:source-paths ["src-cljs"],
-     :compiler {:pretty-print true,
-                :output-to "resources/public/js/app-debug.js",
-                :optimizations :simple #_(:whitespace),
-                :externs ["src-cljs/externs/jquery-1.8.js",
+    {:source-paths ["src-cljs"]
+     :compiler {:pretty-print true
+                :output-to "resources/public/js/app-debug.js"
+                :source-map "app-debug.js.map"
+                :optimizations :simple #_(:whitespace)
+                :externs ["src-cljs/externs/jquery-1.8.js"
                           "src-cljs/externs/angular.js"
-                          "src-cljs/externs/externs.js"]},
+                          "src-cljs/externs/externs.js"]}
      :jar true}
     :app
-    {:source-paths ["src-cljs"],
-     :compiler {:pretty-print false,
-                :output-to "resources/public/js/app.js",
-                :optimizations :advanced,
-                :externs ["src-cljs/externs/jquery-1.8.js",
+    {:source-paths ["src-cljs"]
+     :compiler {:pretty-print false
+                :output-to "resources/public/js/app.js"
+                :source-map "app.js.map"
+                :optimizations :advanced
+                :externs ["src-cljs/externs/jquery-1.8.js"
                           "src-cljs/externs/angular.js"
-                          "src-cljs/externs/externs.js"]},
+                          "src-cljs/externs/externs.js"]}
      :jar true}}})
