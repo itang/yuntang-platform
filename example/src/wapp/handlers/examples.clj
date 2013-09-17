@@ -77,14 +77,14 @@
     {:post "/ajax_form/ajaxfileupload"}
     [username req]
     (log-debug :params (:params req))
-    (let [file (multipart-file "file")]
-      (if file
-        (do 
-          (upload-file! (:tempfile file) (:filename file))
-          (json-success-message ""
-                                (merge {:user username}
-                                       (assoc file :tempfile (some-> (:tempfile file) .getName)))))
-        (json-error-message "没有选择文件"))))
+    (if-let [file (multipart-file "file")]
+      (do 
+        (upload-file! (:tempfile file) (:filename file))
+        (json-success-message
+          "上传成功!"
+          (merge {:user username}
+           (assoc file :tempfile (some-> (:tempfile file) .getName)))))
+      (json-error-message "没有选择文件")))
 
   (defhandler va-captcha
     {:post "/va-captcha"}
