@@ -12,7 +12,10 @@
 (defsnippet flash-msgs
   (flash-msg)
   (let [msg ctx
-        messages (-> (:data msg) vals flatten)
+        data (:data msg)
+        messages (if (map? data)
+                   (-> (:data msg) vals flatten)
+                   [])
         messages (if (empty? messages)
                    (conj messages (:message msg))
                    messages)

@@ -59,19 +59,16 @@
     {:post "/fileupload"}
     [req]
     (Thread/sleep (rand-nth (range 500 1600 100))) ;; mock
-    (log-debug :params (:params req))
-    (log-debug :multipart-params (pr-str (:multipart-params req)))
-    (let [files (get-in req [:multipart-params "file"])]
-      (debug ":multipart-params/files" files)
-      (if-not (or (map? files) (sequential? files))
-        (json-error-message "no files")
-        (let [fmap (if (sequential? files) files [files])]
-          (session/flash-put! :msg (success-message "上传成功!"))
-          (if (ajax? req)
-            (json-success-message ""
-                                  {:files (map #(dissoc % :tempfile) fmap)
-                                   :user (get-in req [:params :user])})
-            (redirect "/examples/fileupload"))))))
+    (let [files (multipart-files "file")
+          _ (do #_()) ; 上传操作
+          msg (if files
+                 (success-message "上传成功!" (map :filename files))
+                 (error-message "没有选择上传的文件!"))]
+      (if (ajax? req)
+        (json msg)
+        (do 
+          (flash-msg msg)
+          (redirect "/examples/fileupload")))))
   
   (defhandler ajaxfileupload
     {:post "/ajax_form/ajaxfileupload"}
@@ -83,7 +80,7 @@
         (json-success-message
           "上传成功!"
           (merge {:user username}
-           (assoc file :tempfile (some-> (:tempfile file) .getName)))))
+           (update-in file [:tempfile] #(some-> % .getName)))))
       (json-error-message "没有选择文件")))
 
   (defhandler va-captcha
