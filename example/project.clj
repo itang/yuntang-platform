@@ -12,13 +12,13 @@
                  [clj-captcha "0.1.1-SNAPSHOT"]
                  [ansj_seg/ansj_seg "1.0"]]
   :repositories [["itang-repo" "http://itang.github.io/maven-repo"]]
-  :profiles {:dev {:plugins [[lein-ancient "0.4.4"]  ;$ lein ancient > check your project for outdated dependencies and plugins
-                             [codox "0.6.4"]         ;$ lein doc
+  :profiles {:dev {:plugins [#_[lein-ancient "0.4.4"]  ;$ lein ancient > check your project for outdated dependencies and plugins
+                             #_[codox "0.6.6"]         ;$ lein doc
                              [lein-ring "0.8.7"]     ;$ lein ring server
-                             [lein-pprint "1.1.1"]   ;$ lein pprint | lein with-profile 1.4 pprint
+                             #_[lein-pprint "1.1.1"]   ;$ lein pprint | lein with-profile 1.4 pprint
                              [lein-cljsbuild "0.3.3"];$ lein cljsbuild [once auto clean repl-listen repl-rhino]
                              [lein-environ "0.4.0"]
-                             [lein-localrepo "0.5.2"]
+                             #_[lein-localrepo "0.5.2"]
                              [lein-checkall "0.1.1"]]
                    :dependencies [[ring-mock "0.1.5"]
                                   [org.clojure/clojurescript "0.0-1889"]]}
