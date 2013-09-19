@@ -1,6 +1,6 @@
 (ns yuntang.user.module
   (:require [cljwtang.lib :refer :all]
-            [yuntang.user.core :refer :all]
+            [yuntang.user.core :as user]
             [yuntang.user.handlers :refer [account-routes]]
             [yuntang.user.bootstrap :refer [bootstrap-tasks]]))
 
@@ -13,9 +13,11 @@
     {:name "user"
      :init (fn [m]
              (info "set user-logined?-fn...")
-             (set-user-logined?-fn! user-logined?)
+             (set-user-logined?-fn! user/user-logined?)
              (info "set current-user-fn...")
-             (set-current-user-fn! current-user))
+             (set-current-user-fn! user/current-user)
+             (log-info "set load-credentials-fn...")
+             (set-load-credentials-fn! user/load-credentials))
      :routes [account-routes]
      :menus (maps->menus
               [{:id "amdin.users"

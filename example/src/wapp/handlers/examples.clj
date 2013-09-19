@@ -12,7 +12,8 @@
 (with-routes examples-routes "/examples"
 
   (defhandler examples-index
-    {:get "" :fp-name "examples index"}
+    {:get "" :fp-name "examples index"
+     :authenticated true}
     [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)
@@ -48,7 +49,8 @@
          (json-success-message "操作完成")))
 
   (defhandler fileupload-index
-    {:get "/fileupload" :fp-name "example fileupload"}
+    {:get "/fileupload" :fp-name "example fileupload"
+     :authenticated true}
     []
     (view "examples/fileupload"
           {:noir-flash @*noir-flash*

@@ -2,6 +2,8 @@
   (:require [cljtang.core :refer :all]
             [cljtang.util :refer [uuid->hash->id]]
             [noir.session :as session]
+            [noir.request :refer [*request*]]
+            [cemerick.friend :as friend]
             [korma.core :refer :all]
             [korma.db :refer [transaction]]
             [cljwtang.utils.scrypt :as scrypt]
@@ -73,6 +75,26 @@
 
 (defn find-user-by-username [username]
   (find-user-by-property :username username))
+
+;; TODO 
+(defn find-user-roles-by-username
+  "获取用户的权限列表"
+  [username]
+  [])
+
+(defn user-type-name [user-type]
+  (get user-types-map
+       (if (map? user-type) (:type user-type) user-type)))
+
+(defn load-credentials
+  "获取用户认证信息, 通过用户名"
+  [username]
+  (when-let [user (find-user-by-username username)]
+    (-> user
+      (assoc :roles (find-user-roles-by-username (:username user))
+             :password (:crypted_password user)
+             :type-name (user-type-name user))
+      (dissoc :crypted_password))))
 
 (defn find-user-by-email [email]
   (find-user-by-property :email email))
@@ -147,14 +169,11 @@
 (defn set-current-user! [user]
   (session/put! user-session-key user))
 
-(defn user-type-name [user-type]
-  (get user-types-map
-       (if (map? user-type) (:type user-type) user-type)))
-
 (defn current-user
   "当前登录用户"
   []
-  (session/get user-session-key))
+  (some-> (friend/identity *request*) friend/current-authentication)
+  #_(session/get user-session-key))
 
 (defn user-logined?
   "用户是否登入?"
@@ -162,10 +181,7 @@
   (not-nil? (current-user)))
 
 (defn find-user-in-uid-username-email-for-session [login-name]
-  (let [user (find-user-in-uid-username-email login-name)
-        keys [:id :username :realname :nickname :email :type :crypted_password]
-        user (select-keys user keys)]
-    (assoc user :type-name (user-type-name user))))
+  (load-credentials login-name))
 
 (defn is-current-user-password [password]
   (scrypt/verify password (:crypted_password (current-user))))

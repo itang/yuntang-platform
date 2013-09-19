@@ -1,6 +1,7 @@
 (ns yuntang.user.handlers
   (:require [clojure.string :refer [trim]]
             [clojure.tools.logging :as log]
+            [cemerick.friend :as friend]
             [cljtang.core :refer :all]
             [cljtang.util :refer :all]
             [clj-captcha.core :refer [captcha-response-correc?]]
@@ -121,15 +122,17 @@
     [username password req]
     (let [user (find-user-in-uid-username-email-for-session username)]
       (log/info username "登录成功!")
-      (set-current-user! user)
-      (redirect "/")))
+      #_(set-current-user! user)
+      (friend/merge-authentication
+        (redirect "/")
+        user)))
 
   (defhandler logout
     "注销"
     {:get "/logout"}
     []
-    (session-remove! :user)
-    (redirect-signin-page))
+    #_(session-remove! :user)
+    (friend/logout* (redirect-signin-page)))
 
   (defhandler signup
     "注册"
