@@ -4,6 +4,10 @@
 
 ## Install
 
+    $ git clone https://github.com/itang/cljwtang.git
+    $ cd cljwtang && lein install
+    $ cd ../
+
     $ git clone https://github.com/itang/yuntang-platform.git
     $ cd yuntang-platform && chmod +x install.sh
     $ ./install.sh

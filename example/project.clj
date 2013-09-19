@@ -9,7 +9,6 @@
                  [yuntang-platform/yuntang-admin-ui-res "0.1.0-SNAPSHOT"]
                  [yuntang-platform/yuntang-layout-ui-res "0.1.0-SNAPSHOT"]
                  [yuntang-platform/yuntang-modules-captcha-ui-api "0.1.0-SNAPSHOT"]
-                 [clj-captcha "0.1.1-SNAPSHOT"]
                  [ansj_seg/ansj_seg "1.0"]]
   :repositories [["itang-repo" "http://itang.github.io/maven-repo"]]
   :profiles {:dev {:plugins [#_[lein-ancient "0.4.4"]  ;$ lein ancient > check your project for outdated dependencies and plugins
