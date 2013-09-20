@@ -5,7 +5,9 @@
             [cljwtang.lib :refer :all]
             [yuntang.modules.common.appconfig.core :as appconfigs]))
 
-(defhandler index []
+(defhandler index 
+  {:perm "admin"}
+  []
   (let [items (map #(assoc %
                       :created-at (format-date (:created_at %))
                       :updated-at (some-> (:updated_at %) format-date))

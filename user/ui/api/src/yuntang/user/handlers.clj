@@ -89,6 +89,7 @@
          (validate-rule (not err) [:email err]))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (with-routes account-routes ""
 
   (defhandler signin-page
@@ -253,7 +254,8 @@
 
   ;; 用户管理
   (defhandler admin-users
-    {:get "/admin/users"}
+    {:get "/admin/users"
+     :perm "admin"}
     []
     (let [today (moment-format "yyyy-MM-dd")
           users (map #(-> %

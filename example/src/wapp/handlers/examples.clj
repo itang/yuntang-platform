@@ -9,11 +9,11 @@
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]))
 
-(with-routes examples-routes "/examples"
+(with-routes examples-routes {:path "/examples" :authenticated true}
 
   (defhandler examples-index
     {:get "" :fp-name "examples index"
-     :authenticated true}
+     :authenticated false}
     [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)
@@ -49,8 +49,7 @@
          (json-success-message "操作完成")))
 
   (defhandler fileupload-index
-    {:get "/fileupload" :fp-name "example fileupload"
-     :authenticated true}
+    {:get "/fileupload" :fp-name "example fileupload"}
     []
     (view "examples/fileupload"
           {:noir-flash @*noir-flash*

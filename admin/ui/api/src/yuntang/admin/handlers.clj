@@ -30,21 +30,25 @@
      :free-memory (.freeMemory runtime)
      :total-memory (.totalMemory runtime)}))
 
-(defhandler env
-  "环境信息"
-  {:perm "admin"}
-  [req]
-  (view "admin/envinfo"
-        {:req (for [[k v] req] {:key k :value v})
-         :env (memo-map->info :env)
-         :prop (memo-map->info :prop)
-         :system (map->kv-pairs (system-info))
-         :sub-modules (app-sub-modules)}))
+(with-routes admin-routes {:path "/admin" :perm "user"}
+  (defhandler env
+    "环境信息"
+    {:get "/envinfo"
+     :perm "admin"}
+    [req]
+    (view "admin/envinfo"
+          {:req (for [[k v] req] {:key k :value v})
+           :env (memo-map->info :env)
+           :prop (memo-map->info :prop)
+           :system (map->kv-pairs (system-info))
+           :sub-modules (app-sub-modules)}))
 
-(defhandler server-time []
-  (json-success-message "" {:server_time (moment-format)}))
+  (defhandler server-time
+    {:get "/server-time"}
+    []
+    (json-success-message "" {:server_time (moment-format)}))
 
-(defroutes admin-routes
-  (GET "/admin/envinfo" [] env)
-  (GET "/admin/server-time" [] server-time)
-  (GET "/admin/server-time/polling" [] server-time))
+  (defhandler server-time-polling
+    {:get "/server-time/polling"}
+    []
+    (json-success-message "" {:server_time (moment-format)})))
