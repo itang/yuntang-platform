@@ -30,7 +30,10 @@
      :free-memory (.freeMemory runtime)
      :total-memory (.totalMemory runtime)}))
 
-(defhandler env [req]
+(defhandler env
+  "环境信息"
+  {:perm "admin"}
+  [req]
   (view "admin/envinfo"
         {:req (for [[k v] req] {:key k :value v})
          :env (memo-map->info :env)

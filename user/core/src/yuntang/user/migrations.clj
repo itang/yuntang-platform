@@ -1,7 +1,7 @@
 (ns yuntang.user.migrations
   (:refer-clojure :exclude [alter drop
                             bigint boolean char double float time])
-  (:use (lobos [migration :only [defmigration]] core schema config))
+  (:use (lobos [migration :only [defmigration]] core schema))
   (:use cljwtang.tools.lobos-helpers))
 
 (defmigration add-users-table
@@ -35,3 +35,18 @@
                (varchar :email_change_code 32)
                (check :username (> (length :username) 4)))))
   (down [] (drop (table :users))))
+
+(defmigration add-permits-table
+  (up [] (create
+          (tbl :permits
+               (varchar :name 200 :unique)
+               (varchar :description 500))))
+  (down [] (drop (table :permits))))
+
+(defmigration add-permits_targets-table
+  (up [] (create
+          (tbl :permits_targets
+               (integer :permits_id)
+               (integer :targets_id)
+               (varchar :targets_type 50))))
+  (down [] (drop (table :permits_targets))))

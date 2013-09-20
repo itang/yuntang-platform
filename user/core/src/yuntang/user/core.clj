@@ -62,25 +62,63 @@
                    )
   )
 
-(def user-session-key :user)
+(defentity permits
+  #_(entity-fields :id                             ; id 
+                  :name                           ;
+                  :description                    ;
+                  )
+)
+
+(defentity permits_targets
+  
+  )
 
 ;;;; PUBLIC API
+
+(defmacro get-by-property [entity p v]
+  `(first (select ~entity
+       (where {~p ~v}))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; permits api
+(defn create-permit! [m]
+  (transaction
+    (insert permits (values m))))
+
+(defn find-permit-by-property [p v]
+  (get-by-property permits p v))
+
+(defn bind-user-permit [user permit]
+  (let [m {:permits_id (:id permit)
+           :targets_id (:id user)
+           :targets_type "user"}]
+    (transaction
+      (insert permits_targets (values m)))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn all-users []
   (select users))
 
 (defn find-user-by-property [p v]
-   (first (select users
-          (where {p v}))))
+  (get-by-property users p v))
 
 (defn find-user-by-username [username]
   (find-user-by-property :username username))
 
-;; TODO 
+(defn find-user-permits-by-username
+  [username]
+  (select permits
+          (join permits_targets (= :permits_targets.permits_id :id))
+          (join users (= :users.id :permits_targets.targets_id))
+          (where {:users.username username
+                  :permits_targets.targets_type "user"})))
+
 (defn find-user-roles-by-username
   "获取用户的权限列表"
   [username]
-  [])
+  (->> (find-user-permits-by-username username)
+    (map :name)
+    set))
 
 (defn user-type-name [user-type]
   (get user-types-map
@@ -165,9 +203,6 @@
 
 (defn exists-user-by-email? [email]
   (not-nil? (find-user-by-email email)))
-
-(defn set-current-user! [user]
-  (session/put! user-session-key user))
 
 (defn current-user
   "当前登录用户"
