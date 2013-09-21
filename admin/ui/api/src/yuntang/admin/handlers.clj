@@ -31,6 +31,7 @@
      :total-memory (.totalMemory runtime)}))
 
 (with-routes admin-routes {:path "/admin" :perm "user"}
+
   (defhandler env
     "环境信息"
     {:get "/envinfo"

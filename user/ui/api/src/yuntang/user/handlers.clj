@@ -89,7 +89,6 @@
          (validate-rule (not err) [:email err]))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (with-routes account-routes ""
 
   (defhandler signin-page
