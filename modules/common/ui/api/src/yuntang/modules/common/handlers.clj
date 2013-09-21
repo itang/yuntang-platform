@@ -5,8 +5,6 @@
             [cljwtang.lib :refer :all]
             [yuntang.modules.common.appconfig.core :as appconfigs]))
 
-
-
 (defonce ignored-namespaces (atom #{}))
 
 (defn reload-all []

@@ -4,7 +4,6 @@
   (:require [clojure.core.match :refer [match]]
             [cljtang.core :refer :all]
             [coercer.core :refer [coerce]]
-            [noir.session :refer [*noir-flash* *noir-session* mem] :as session]
             [taoensso.tower :as tower]
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]))
@@ -49,10 +48,7 @@
   (defhandler fileupload-index
     {:get "/fileupload" :fp-name "example fileupload"}
     []
-    (view "examples/fileupload"
-          {:noir-flash @*noir-flash*
-           :noir-session @*noir-session*
-           :mem @mem}))
+    (view "examples/fileupload"))
 
   (defhandler fileupload
     {:post "/fileupload"}
