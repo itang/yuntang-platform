@@ -219,7 +219,7 @@
   (load-credentials login-name))
 
 (defn is-current-user-password [password]
-  (scrypt/verify password (:crypted_password (current-user))))
+  (scrypt/verify password (:password (current-user))))
 
 (defn change-current-user-password! [new-pwd]
   (update users

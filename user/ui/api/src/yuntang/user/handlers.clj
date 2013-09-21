@@ -90,7 +90,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (with-routes account-routes ""
-
   (defhandler signin-page
     "登录页"
     {:get "/signin"
@@ -218,20 +217,21 @@
 
   (defhandler settings
     "个人设置页"
-    {:get "/settings"}
+    {:get "/settings" :authenticated true}
     []
     (redirect "/settings/password"))
 
   (defhandler settings-profile
     "个人设置-帐户"
-    {:get "/settings/profile"}
+    {:get "/settings/profile" :authenticated true}
     []
     (view "settings/profile" {:channel "profile"}))
 
   (defhandler settings-password
     "个人设置-密码"
     {:get "/settings/password"
-     :anti-forgery true}
+     :anti-forgery true
+     :authenticated true}
     []
     (view "settings/password" {:channel "password"}))
 
@@ -239,6 +239,7 @@
     "修改密码"
     {:post "/settings/password"
      :anti-forgery true
+     :authenticated true
      :validate '(and (validate-settings-change-password-form-rules
                       current_password password user_password_confirmation)
                      (validate-rule (is-current-user-password current_password)

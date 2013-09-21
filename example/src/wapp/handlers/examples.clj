@@ -10,10 +10,8 @@
             [cljwtang.lib :refer :all]))
 
 (with-routes examples-routes {:path "/examples" :authenticated true}
-
   (defhandler examples-index
-    {:get "" :fp-name "examples index"
-     :authenticated false}
+    {:get "" :fp-name "examples index" }
     [req]
     (view "examples/index"
           {:foo (tower/t :example/foo)

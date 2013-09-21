@@ -3,7 +3,7 @@
   (:require [cljwtang.lib :refer :all]
             [clj-captcha.core :refer [captcha-challenge-as-jpeg]]))
 
-(defhandler captcha[req]
+(defhandler captcha [req]
   (let [bytes (captcha-challenge-as-jpeg)
         body (ByteArrayInputStream. bytes)
         length (count bytes)]

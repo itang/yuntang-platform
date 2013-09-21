@@ -30,12 +30,13 @@
      :free-memory (.freeMemory runtime)
      :total-memory (.totalMemory runtime)}))
 
-(with-routes admin-routes {:path "/admin" :perm "user"}
+(defn- render-server-time []
+  (json-success-message "" {:server_time (moment-format)}))
 
+(with-routes admin-routes {:path "/admin" :perm "admin"}
   (defhandler env
     "环境信息"
-    {:get "/envinfo"
-     :perm "admin"}
+    {:get "/envinfo"}
     [req]
     (view "admin/envinfo"
           {:req (for [[k v] req] {:key k :value v})
@@ -47,9 +48,9 @@
   (defhandler server-time
     {:get "/server-time"}
     []
-    (json-success-message "" {:server_time (moment-format)}))
+    (render-server-time))
 
   (defhandler server-time-polling
     {:get "/server-time/polling"}
     []
-    (json-success-message "" {:server_time (moment-format)})))
+    (render-server-time)))
