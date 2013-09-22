@@ -2,11 +2,6 @@
   (:require [cljwtang.lib :refer :all]
             [yuntang.admin.handlers :refer :all]))
 
-(def fp-admin-envinfo 
-  (new-funcpoint {:name "admin.envinfo"
-                  :url "/admin/envinfo"
-                  :perm "admin.envinfo"}))
-
 (def module
   (new-ui-module 
     {:name "admin"
