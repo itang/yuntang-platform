@@ -12,7 +12,7 @@
   (new-ui-module 
     {:name "common"
      :init (fn [m]
-             (info "set app-config fn...")
+             (log-info "set app-config fn...")
              (set-app-config-fn! app-config))
      :sort -1
      :routes [common-routes]

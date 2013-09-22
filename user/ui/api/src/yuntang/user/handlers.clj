@@ -1,6 +1,5 @@
 (ns yuntang.user.handlers
   (:require [clojure.string :refer [trim]]
-            [clojure.tools.logging :as log]
             [cemerick.friend :as friend]
             [cljtang.core :refer :all]
             [cljtang.util :refer :all]
@@ -116,11 +115,11 @@
                       [:captcha "验证码填写有误"])
        (validate-user-status-rules (check-user username password)))
      :on-validate-error
-     '(do (log/warn username "登录失败!")
+     '(do (log-warn username "登录失败!")
           (redirect-signin-page))}
     [username password req]
     (let [user (find-user-in-uid-username-email-for-session username)]
-      (log/info username "登录成功!")
+      (log-info username "登录成功!")
       #_(set-current-user! user)
       (friend/merge-authentication
         (redirect "/")
@@ -157,7 +156,7 @@
       (when activation-mode-by-email ;; 邮件激活模式
         (let [activation-url
               (str (activation-url-prefix) "?code=" activation-code)]
-          (log/info "发送用户注册激活邮件")
+          (log-info "发送用户注册激活邮件")
           (send-mail-by-template
            {:to email :subject (str "欢迎注册wapp(wapp.com)，请激活你的帐号")}
            "mail-activation-template"
@@ -208,7 +207,7 @@
       (not-found "")
       (let [p (reset-password! email code)
             ctx {:new-password p}]
-        (log/debug email)
+        (log-debug email)
         (send-mail-by-template
          {:to email :subject (str "[wapp]-" "重置密码邮件通知")}
          "reset-password-notice-template"

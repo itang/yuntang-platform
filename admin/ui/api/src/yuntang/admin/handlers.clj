@@ -36,14 +36,22 @@
 (with-routes admin-routes {:path "/admin" :perm "admin"}
   (defhandler env
     "环境信息"
-    {:get "/envinfo"}
+    {:get "/envinfo"
+     :fp-name "环境信息"}
     [req]
     (view "admin/envinfo"
-          {:req (for [[k v] req] {:key k :value v})
-           :env (memo-map->info :env)
+          {:env (memo-map->info :env)
            :prop (memo-map->info :prop)
            :system (map->kv-pairs (system-info))
            :sub-modules (app-sub-modules)}))
+  
+  (defhandler debug
+    "调试页面"
+    {:get "/debug"
+     :fp-name "调试"}
+    [req]
+    (view "admin/debug"
+          {:req (for [[k v] req] {:key k :value v})}))
 
   (defhandler server-time
     {:get "/server-time"}

@@ -12,9 +12,9 @@
   (new-ui-module 
     {:name "user"
      :init (fn [m]
-             (info "set user-logined?-fn...")
+             (log-info "set user-logined?-fn...")
              (set-user-logined?-fn! user/user-logined?)
-             (info "set current-user-fn...")
+             (log-info "set current-user-fn...")
              (set-current-user-fn! user/current-user)
              (log-info "set load-credentials-fn...")
              (set-load-credentials-fn! user/load-credentials))
