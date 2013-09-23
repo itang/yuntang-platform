@@ -55,15 +55,16 @@
             <td>{{item.description|safe}}
             </td>
             <td>
-            FPS:
-            {% for fp in item.fps %}
-              {{fp.name}}, 
-            {% endfor %}
-            <br/>
-            MENUS:
-            {% for menus in item.menus %}
-              {{menus.name}}, 
-            {% endfor %}
+              <table><tr>
+                <td>FPS:</td><td>
+                {% for fp in item.fps %}
+                  {{fp.name}}, {{fp.url}}, {{fp.perm}}, {{fp.description}}<br/>
+                {% endfor %}
+                </td></tr>
+                <tr><td>MENUS:</td><td>
+                {% for menus in item.menus %}
+                  {{menus.name}}, 
+                {% endfor %}</td></tr></table>
             </td>
           </tr>
           {% endfor %}

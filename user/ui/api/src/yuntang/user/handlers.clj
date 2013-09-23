@@ -216,13 +216,13 @@
 
   (defhandler settings
     "个人设置页"
-    {:get "/settings" :authenticated true}
+    {:get "/settings" :auth true}
     []
     (redirect "/settings/password"))
 
   (defhandler settings-profile
     "个人设置-帐户"
-    {:get "/settings/profile" :authenticated true}
+    {:get "/settings/profile" :auth true}
     []
     (view "settings/profile" {:channel "profile"}))
 
@@ -230,7 +230,7 @@
     "个人设置-密码"
     {:get "/settings/password"
      :anti-forgery true
-     :authenticated true}
+     :auth true}
     []
     (view "settings/password" {:channel "password"}))
 
@@ -238,7 +238,7 @@
     "修改密码"
     {:post "/settings/password"
      :anti-forgery true
-     :authenticated true
+     :auth true
      :validate '(and (validate-settings-change-password-form-rules
                       current_password password user_password_confirmation)
                      (validate-rule (is-current-user-password current_password)

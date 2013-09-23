@@ -12,7 +12,7 @@
                 :name "系统管理"
                 :attrs {:classname "icon-gift"}}
                {:name "运行环境"
-                :funcpoint fp-admin-envinfo
+                :funcpoint env-fp
                 :attrs {:classname "icol-user"}
                 :parent "admin"}
                {:name "调试"

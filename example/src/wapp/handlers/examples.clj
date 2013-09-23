@@ -8,7 +8,7 @@
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]))
 
-(with-routes examples-routes {:path "/examples" :authenticated true}
+(with-routes examples-routes {:path "/examples" :auth true}
   (defhandler examples-index
     {:get "" :fp-name "examples index" }
     [req]
