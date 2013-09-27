@@ -7,6 +7,7 @@
             [korma.core :refer :all]
             [korma.db :refer [transaction]]
             [cljwtang.utils.scrypt :as scrypt]
+            [plumbing.core :refer [for-map]]
             [crypto.random :as random]))
 
 ;; 用户类型
@@ -21,7 +22,8 @@
     :name "组织"}])
 
 (def user-types-map
-  (into {} (for [{:keys [name value]} user-types] [value name])))
+  (for-map [{:keys [name value]} user-types] value name)
+  #_(into {} (for [{:keys [name value]} user-types] [value name])))
 
 ;; 注册激活（审核）模式
 (def user-regist-activation-modes-map
