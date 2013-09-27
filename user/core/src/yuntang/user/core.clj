@@ -22,8 +22,8 @@
     :name "组织"}])
 
 (def user-types-map
-  (for-map [{:keys [name value]} user-types] value name)
-  #_(into {} (for [{:keys [name value]} user-types] [value name])))
+  (for-map [{:keys [name value]} user-types]
+           value name))
 
 ;; 注册激活（审核）模式
 (def user-regist-activation-modes-map
@@ -126,16 +126,6 @@
   (get user-types-map
        (if (map? user-type) (:type user-type) user-type)))
 
-(defn load-credentials
-  "获取用户认证信息, 通过用户名"
-  [username]
-  (when-let [user (find-user-by-username username)]
-    (-> user
-      (assoc :roles (find-user-roles-by-username (:username user))
-             :password (:crypted_password user)
-             :type-name (user-type-name user))
-      (dissoc :crypted_password))))
-
 (defn find-user-by-email [email]
   (find-user-by-property :email email))
 
@@ -147,6 +137,16 @@
           (where (or {:uid s}
                      {:username s}
                      {:email s})))))
+
+(defn load-credentials
+  "获取用户认证信息, 通过用户标识"
+  [user-id]
+  (when-let [user (find-user-in-uid-username-email user-id)]
+    (-> user
+      (select-keys [:id :uid :username :realname :nickname :email :picture])
+      (assoc :roles (find-user-roles-by-username (:username user))
+             :password (:crypted_password user)
+             :type-name (user-type-name user)))))
 
 (defn find-user-by-activation-code [code]
   (find-user-by-property :activation_code code))

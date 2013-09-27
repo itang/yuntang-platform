@@ -254,7 +254,8 @@
   ;; 用户管理
   (defhandler admin-users
     {:get "/admin/users"
-     :perm "admin"}
+     :perm "admin"
+     :fp "用户管理"}
     []
     (let [today (moment-format "yyyy-MM-dd")
           users (map #(-> %

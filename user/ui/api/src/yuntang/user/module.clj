@@ -1,12 +1,8 @@
 (ns yuntang.user.module
   (:require [cljwtang.lib :refer :all]
             [yuntang.user.core :as user]
-            [yuntang.user.handlers :refer [account-routes]]
+            [yuntang.user.handlers :refer :all]
             [yuntang.user.bootstrap :refer [bootstrap-tasks]]))
-
-(def fp-admin-users
-  (new-funcpoint {:name "admin users"
-                  :url "/admin/users"}))
 
 (def module
   (new-ui-module 
@@ -19,10 +15,11 @@
              (log-info "set load-credentials-fn...")
              (set-load-credentials-fn! user/load-credentials))
      :routes [account-routes]
+     :fps [admin-users-fp]
      :menus (maps->menus
               [{:id "amdin.users"
                 :name "用户管理"
-                :funcpoint fp-admin-users
+                :funcpoint admin-users-fp
                 :parent "admin"}])
      :snippets-ns ['yuntang.user.snippets]
      :bootstrap-tasks bootstrap-tasks}))
