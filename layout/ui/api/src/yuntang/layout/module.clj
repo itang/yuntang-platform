@@ -9,8 +9,11 @@
 (def module
   (new-ui-module
     {:name "layout"
-     :init (fn [m]
-             (set-not-found-content! (render-file "common/404" nil)))
+     :init (fn [_]
+             (log-info "set not found content ...")
+             (set-not-found-content! (render-file "common/404" nil))
+             (log-info "set-unauthorized-handler ...")
+             (set-unauthorized-handler! (fn [req] (view "common/401" {:req req}))))
      :routes [layout-routes]
      :fps [fp-dashboard]
      :menus (maps->menus
