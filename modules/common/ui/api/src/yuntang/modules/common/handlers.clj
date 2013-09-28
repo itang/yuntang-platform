@@ -17,7 +17,7 @@
         (log/warn (str e))))))
 
 (defhandler admin-appconfigs 
-  {:perm "admin"}
+  {:perm "platform.admin"}
   []
   (let [items (map #(assoc %
                       :created-at (format-date (:created_at %))

@@ -90,12 +90,14 @@
 (defn find-permit-by-property [p v]
   (get-by-property permits p v))
 
-(defn bind-user-permit [user permit]
-  (let [m {:permits_id (:id permit)
-           :targets_id (:id user)
-           :targets_type "user"}]
-    (transaction
-      (insert permits_targets (values m)))))
+(defn bind-user-permits! [user & permits]
+  (if (and user (seq permits))
+    (let [m {:targets_id (:id user)
+             :targets_type "user"}
+          ms (map #(assoc m :permits_id (:id %)) permits)]
+      (transaction
+        (doseq [m ms]
+          (insert permits_targets (values m)))))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn all-users []

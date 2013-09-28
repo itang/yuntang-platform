@@ -33,7 +33,7 @@
 (defn- render-server-time []
   (json-success-message "" {:server_time (moment-format)}))
 
-(with-routes admin-routes {:path "/admin" :perm "admin"}
+(with-routes admin-routes {:path "/admin" :perm "platform.admin"}
   (defhandler env
     "环境信息"
     {:get "/envinfo"
@@ -48,7 +48,8 @@
   (defhandler debug
     "调试页面"
     {:get "/debug"
-     :fp-name "调试"}
+     :fp-name "调试"
+     :perm "platform.dev"}
     [req]
     (view "admin/debug"
           {:req (for [[k v] req] {:key k :value v})}))

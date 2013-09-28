@@ -2,6 +2,10 @@
   (:require [cljwtang.lib :refer [new-bootstrap-task]]
             [yuntang.user.core :refer :all]))
 
+(def ^:const p-admin-permit-name "platform.admin")
+
+(def ^:const p-dev-permit-name "platform.dev")
+
 (defn- init-data []
   (let [_ (create-user!
             {:username "admin"
@@ -15,15 +19,14 @@
               :email "livetang@qq.com"
               :realname "堂堂"
               :enabled true})
-        _ (create-permit! {:name "admin"})
-        _ (create-permit! {:name "user"})
+        _ (create-permit! {:name p-admin-permit-name})
+        _ (create-permit! {:name p-dev-permit-name})
         admin (find-user-by-username "admin")
         user (find-user-by-username "itang")
-        admin-permit (find-permit-by-property :name "admin")
-        user-permit (find-permit-by-property :name "user")]
-    (bind-user-permit admin user-permit)
-    (bind-user-permit admin admin-permit)
-    (bind-user-permit user user-permit)))
+        admin-permit (find-permit-by-property :name p-admin-permit-name)
+        dev-permit (find-permit-by-property :name p-dev-permit-name)]
+    (bind-user-permits! admin dev-permit admin-permit)
+    (bind-user-permits! user dev-permit)))
 
 (def bootstrap-tasks
   (map
