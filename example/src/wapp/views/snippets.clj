@@ -1,5 +1,5 @@
 (ns wapp.views.snippets
-  (:require [cljtang.core :refer :all]))
+  (:require [cljtang.lib :refer :all]))
 
 (defn hello-snippet
   [a c]

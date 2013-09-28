@@ -2,8 +2,7 @@
   :description "clojure web platform"
   :url "http://yuntang-platform.deftype.com"
   :plugins [[lein-sub "0.2.4"]]
-  :sub ["tools"
-        "user"
+  :sub ["user"
         "admin"
         "layout"
         "modules"

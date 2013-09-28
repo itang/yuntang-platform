@@ -1,5 +1,5 @@
 (ns yuntang.layout.tools.concats
-  (:require [cljtang.core :refer :all]
+  (:require [cljtang.lib :refer :all]
             [cljtang.io :refer [concatenating]]))
 
 (defn- full-path [prefix src]

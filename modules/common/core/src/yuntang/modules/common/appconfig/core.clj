@@ -1,7 +1,7 @@
 (ns yuntang.modules.common.appconfig.core
   (:require [korma.core :refer :all]
             [clojure.core.memoize :as memoize]
-            [cljtang.core :refer :all]
+            [cljtang.lib :refer :all]
             [cljwtang.utils.env :refer [env-config]]))
 
 ;; 定义应用配置实体

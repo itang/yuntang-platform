@@ -2,7 +2,7 @@
   (:import org.ansj.splitWord.analysis.ToAnalysis
            java.util.Date)
   (:require [clojure.core.match :refer [match]]
-            [cljtang.core :refer :all]
+            [cljtang.lib :refer :all]
             [coercer.core :refer [coerce]]
             [taoensso.tower :as tower]
             [clj-captcha.core :refer [captcha-response-correc?]]

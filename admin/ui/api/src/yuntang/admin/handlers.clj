@@ -1,7 +1,7 @@
 (ns yuntang.admin.handlers
   (:require [clojure.string :as str]
             [clojure.core.memoize :as memoize]
-            [cljtang.core :refer :all]
+            [cljtang.lib :refer :all]
             [cljtang.runtime :as runtime]
             [cljwtang.lib :refer :all]))
 

@@ -1,6 +1,6 @@
 (ns yuntang.layout.snippets
   (:import java.util.Calendar)
-  (:require [cljtang.core :refer :all]
+  (:require [cljtang.lib :refer :all]
             [hiccup.core :as hiccup]
             [cljwtang.lib :refer :all]))
 

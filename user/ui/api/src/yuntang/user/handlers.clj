@@ -1,8 +1,8 @@
 (ns yuntang.user.handlers
   (:require [clojure.string :refer [trim]]
             [cemerick.friend :as friend]
-            [cljtang.core :refer :all]
-            [cljtang.util :refer :all]
+            [cljtang.lib :refer :all]
+            #_[cljtang.util :refer :all]
             [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]
             [yuntang.user.core :refer :all]
@@ -144,7 +144,7 @@
           activation-mode-by-email (= :by-email activation-mode)
           activation-mode-auto (= :auto activation-mode)
           activation-mode-by-manual (= :by-manual activation-mode)
-          activation-code (uuid2)]
+          activation-code (uuid)]
       (create-user! {:username (trim username)
                      :email email
                      :password (trim password)
@@ -176,7 +176,7 @@
     (if-not (= 32 (count code))
       (not-found "")
       (let [user (activation-user! code)]
-        (view "activation-result" {:user user }))))
+        (view "activation-result" {:user user}))))
 
   (defhandler forget-password
     "提交忘记密码请求"
@@ -186,7 +186,7 @@
      :on-validate-error (redirect-signin-page "three")}
     [email]
     (let [password-reset-code
-          (uuid2)
+          (uuid)
           reset-url
           (str (reset-password-url-prefix)
                "?email=" email

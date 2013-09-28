@@ -1,7 +1,7 @@
 (ns yuntang.modules.common.handlers
   (:require [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [cljtang.core :refer :all]
+            [cljtang.lib :refer :all]
             [cljwtang.lib :refer :all]
             [yuntang.modules.common.appconfig.core :as appconfigs]))
 

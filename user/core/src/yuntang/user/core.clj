@@ -1,5 +1,5 @@
 (ns yuntang.user.core
-  (:require [cljtang.core :refer :all]
+  (:require [cljtang.lib :refer :all]
             [cljtang.util :refer [uuid->hash->id]]
             [noir.session :as session]
             [noir.request :refer [*request*]]
@@ -7,7 +7,6 @@
             [korma.core :refer :all]
             [korma.db :refer [transaction]]
             [cljwtang.utils.scrypt :as scrypt]
-            [plumbing.core :refer [for-map]]
             [crypto.random :as random]))
 
 ;; 用户类型
