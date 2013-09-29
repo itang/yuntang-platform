@@ -144,7 +144,7 @@
           activation-mode-by-email (= :by-email activation-mode)
           activation-mode-auto (= :auto activation-mode)
           activation-mode-by-manual (= :by-manual activation-mode)
-          activation-code (uuid)]
+          activation-code (uuid :simplify true)]
       (create-user! {:username (trim username)
                      :email email
                      :password (trim password)
@@ -186,7 +186,7 @@
      :on-validate-error (redirect-signin-page "three")}
     [email]
     (let [password-reset-code
-          (uuid)
+          (uuid :simplify true)
           reset-url
           (str (reset-password-url-prefix)
                "?email=" email
