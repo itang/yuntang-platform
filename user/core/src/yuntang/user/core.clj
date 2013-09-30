@@ -1,6 +1,5 @@
 (ns yuntang.user.core
   (:require [cljtang.lib :refer :all]
-            [cljtang.util :refer [uuid->hash->id]]
             [noir.session :as session]
             [noir.request :refer [*request*]]
             [cemerick.friend :as friend]
@@ -162,7 +161,7 @@
     (let [m (when-not-> m :crypted_password
               (assoc m :crypted_password (scrypt/encrypt (:password m))))
           m (dissoc m :password)
-          m (assoc m :uid (uuid->hash->id))]
+          m (assoc m :uid (uuid :hash->id))]
       (insert users (values m)))))
 
 (defn activation-user! [activation-code]
