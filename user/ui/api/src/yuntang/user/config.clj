@@ -1,9 +1,6 @@
 (ns yuntang.user.config
   (:require [cljwtang.lib :refer :all]))
 
-(defn captcha-enabled? []
-  (*app-config-fn* :platform.captcha-enabled? false))
-
 (defn activation-url-prefix []
   (str "http://" (hostaddr) "/activation"))
 

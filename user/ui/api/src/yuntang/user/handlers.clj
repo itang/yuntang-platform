@@ -2,12 +2,12 @@
   (:require [clojure.string :refer [trim]]
             [cemerick.friend :as friend]
             [cljtang.lib :refer :all]
-            #_[cljtang.util :refer :all]
-            [clj-captcha.core :refer [captcha-response-correc?]]
             [cljwtang.lib :refer :all]
             [yuntang.user.core :refer :all]
             [yuntang.user.util :refer [check-username-pattern]]
-            [yuntang.user.config :refer :all]))
+            [yuntang.user.config :refer :all]
+            [yuntang.modules.captcha.config :refer [captcha-enabled?]]
+            [yuntang.modules.captcha.validates :refer [validate-captcha]]))
 
 (defn- password? [password]
   (if-let [password (some-> password trim)]
@@ -111,8 +111,7 @@
      :validate
      '(and
        (validate-signin-form-rules username password)
-       (validate-rule (or (not (captcha-enabled?)) (captcha-response-correc?))
-                      [:captcha "验证码填写有误"])
+       (validate-captcha)
        (validate-user-status-rules (check-user username password)))
      :on-validate-error
      '(do (log-warn username "登录失败!")
