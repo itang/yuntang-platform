@@ -33,7 +33,7 @@
   :ring {:handler wapp.server/app
          :init wapp.server/init
          :auto-refresh? true}
-  :jvm-opts ["-Xms392m" "-Xmx1g"]
+  :jvm-opts ["-Xms392m" "-Xmx1g" "-Xverify:none" "-XX:+TieredCompilation" "-XX:TieredStopAtLevel=1"]
   ;;:bootclasspath true
   ;:hooks [leiningen.cljsbuild]
   ;; Forms to prepend to every form that is evaluated inside your project.

@@ -1,12 +1,10 @@
 (ns yuntang.user.core
   (:require [cljtang.lib :refer :all]
-            [noir.session :as session]
-            [noir.request :refer [*request*]]
             [cemerick.friend :as friend]
             [korma.core :refer :all]
             [korma.db :refer [transaction]]
-            [cljwtang.utils.scrypt :as scrypt]
-            [crypto.random :as random]))
+            [crypto.random :as random]
+            [cljwtang.lib :refer :all]))
 
 ;; 用户类型
 (def user-types
@@ -159,9 +157,9 @@
   [m]
   (transaction
     (let [m (when-not-> m :crypted_password
-              (assoc m :crypted_password (scrypt/encrypt (:password m))))
+              (assoc m :crypted_password (scrypt-encrypt (:password m))))
           m (dissoc m :password)
-          m (assoc m :uid (uuid :hash->id))]
+          m (assoc m :uid (uuid :hash-id))]
       (insert users (values m)))))
 
 (defn activation-user! [activation-code]
@@ -187,7 +185,7 @@
   (when-let [user (find-user-by-password-reset-code code)]
     (let [new-pwd (random/hex 4)]
       (update users
-        (set-fields {:crypted_password (scrypt/encrypt new-pwd)
+        (set-fields {:crypted_password (scrypt-encrypt new-pwd)
                      :password_reset_code nil
                      :password_reset_code_created_at nil})
         (where {:email email}))
@@ -197,7 +195,7 @@
   "检查用户是否存在."
   [login-name password]
   (when-let [user (find-user-in-uid-username-email login-name)]
-    (when (scrypt/verify password (:crypted_password user))
+    (when (scrypt-verify password (:crypted_password user))
       user)))
 
 (defn exists-user? [username]
@@ -209,8 +207,7 @@
 (defn current-user
   "当前登录用户"
   []
-  (some-> (friend/identity *request*) friend/current-authentication)
-  #_(session/get user-session-key))
+  (some-> (friend/identity (req)) friend/current-authentication))
 
 (defn user-logined?
   "用户是否登入?"
@@ -221,9 +218,9 @@
   (load-credentials login-name))
 
 (defn is-current-user-password [password]
-  (scrypt/verify password (:password (current-user))))
+  (scrypt-verify password (:password (current-user))))
 
 (defn change-current-user-password! [new-pwd]
   (update users
-          (set-fields {:crypted_password (scrypt/encrypt new-pwd)})
+          (set-fields {:crypted_password (scrypt-encrypt new-pwd)})
           (where {:id (:id (current-user))})))
