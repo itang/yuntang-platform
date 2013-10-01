@@ -41,14 +41,14 @@
 (defn- validate-username-input-rules [username]
   (let [username (some-> username trim)]
     (and (validate-rule (has-value? username) [:username "Please input your username."])
-         (validate-rule (and (min-length? username 5) (max-length? username 20))
-                        [:username "用户名长度5-20"]))))
+         (validate-rule (and (min-length? username 4) (max-length? username 20))
+                        [:username "用户名长度4-20"]))))
 
 (defn- validate-password-input-rules [password]
   (let [password (some-> password trim)]
     (and (validate-rule (has-value? password) [:password "Please input your password."])
          (validate-rule (and (min-length? password 6) (max-length? password 20))
-                        [:username "用户名长度5-20"]))))
+                        [:username "密码长度6-20"]))))
 
 (defn- validate-email-input-rules [email]
   (let [email (some-> email trim)]

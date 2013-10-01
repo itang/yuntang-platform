@@ -33,7 +33,7 @@
                (timestamp :password_reset_code_created_at)
                (varchar :new_requested_email 100)
                (varchar :email_change_code 32)
-               (check :username (> (length :username) 4)))))
+               #_(check :username (> (length :username) 4)))))
   (down [] (drop (table :users))))
 
 (defmigration add-permits-table

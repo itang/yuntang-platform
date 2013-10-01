@@ -10,19 +10,19 @@
   (let [_ (create-user!
             {:username "admin"
              :password "admin123"
-             :email "live.tang@gmail.com"
+             :email "cljwtang@qq.com"
              :realname "系统管理员"
              :enabled true})
         _ (create-user!
-             {:username "itang"
-              :password "computer"
-              :email "livetang@qq.com"
-              :realname "堂堂"
+             {:username "user"
+              :password "user123"
+              :email "cljwtang.user@qq.com"
+              :realname "普通用户"
               :enabled true})
         _ (create-permit! {:name p-admin-permit-name})
         _ (create-permit! {:name p-dev-permit-name})
         admin (find-user-by-username "admin")
-        user (find-user-by-username "itang")
+        user (find-user-by-username "user")
         admin-permit (find-permit-by-property :name p-admin-permit-name)
         dev-permit (find-permit-by-property :name p-dev-permit-name)]
     (bind-user-permits! admin dev-permit admin-permit)
