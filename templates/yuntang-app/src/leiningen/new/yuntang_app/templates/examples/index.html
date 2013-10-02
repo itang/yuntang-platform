@@ -1,0 +1,86 @@
+{% extends "templates/layouts/layout-main.html" %}
+
+{% block content %}
+<div id="main-content">
+  <ul class="nav nav-tabs" id="myTab">
+    <li class="active"><a href="#ajax" data-toggle="tab">Ajax</a></li>
+    <li><a href="#cljs" data-toggle="tab">ClojureScript</a></li>
+    <li><a href="#snippet" data-toggle="tab">Snippet</a></li>
+    <li><a href="#ansj" data-toggle="tab">分词</a></li>
+    <li><a href="#captcha" data-toggle="tab">验证码</a></li>
+    <li><a href="#i18n" data-toggle="tab">i18n</a></li>
+    <li><a href="#match" data-toggle="tab">match</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="ajax">{% include "templates/examples/_ajax.html" %}</div>
+    <div class="tab-pane" id="cljs">{% include "templates/examples/_cljs.html" %}</div>
+    <div class="tab-pane" id="ansj">{% include "templates/examples/_ansj.html" %}</div>
+    <div class="tab-pane" id="snippet">{% snippet-hello-snippet %}</div>
+    <div class="tab-pane" id="captcha">{% include "templates/examples/_captcha.html" %}</div>
+    <div class="tab-pane" id="i18n">{% include "templates/examples/_i18n.html" %}</div>
+    <div class="tab-pane" id="match">{% include "templates/examples/_match.html" %}</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block more-js %}
+<script type="text/javascript" src="/public/js/examples/ajax.js"></script>
+
+<script>
+  $(function() {
+    $('#btnOk').click(function() {
+      $.getJSON('/examples/ansj?source=' + $('#source').val(), function(result) {
+        $('#ansj-info').html(result.message + "<br/>" + result.data);
+      });
+    });
+  });
+</script>
+
+<script>
+  $(function() {
+    function refresh_captcha() {
+      var $captcha = $("#i-captcha");
+      var url = "/captcha";
+      $captcha.attr("src", url + "?" + new Date().getTime());
+    }
+
+    $('#btn-refresh-captcha').click(refresh_captcha);
+
+    $('#form-captcha').ajaxForm({
+      dataType : 'json',
+      success : function(result) {
+        alert(JSON.stringify(result));
+        refresh_captcha();
+        $('#input-captcha').val('');
+      }
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  function sayHello() {
+    example.hello.hello();
+  }
+
+  $(function() {
+    example.hello.init();
+  });
+</script>
+
+<script type="text/javascript">
+$(function(){
+  $('#btn-click').click(function(){
+    $.ajax({
+      method:'get',
+      url:'/examples/match',
+      dataType: 'json',
+      success: function(result){
+        alert(JSON.stringify(result));
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
+

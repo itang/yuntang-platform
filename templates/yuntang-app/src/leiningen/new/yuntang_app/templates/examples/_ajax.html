@@ -1,0 +1,106 @@
+<div class="container-fluid">
+  <div id="ajax_start" class="alert alert-info" style="display: none"></div>
+  <div id="ajax_result" class="alert" style="display: none"></div>
+  <div>
+    <label for="age">Age:</label> <input type="text" value="20" id="age"
+      name="age" />
+  </div>
+  <button onclick="doAjax();" class="btn btn-small">ajax</button>
+  <button onclick="doAjaxJSON();" class="btn btn-small">ajax getJSON</button>
+  <button onclick="doAjaxPOST();" class="btn btn-small">ajax post</button>
+  <hr />
+  <h3>
+    Ajax Form <small><a href="http://malsup.com/jquery/form/"
+      target="_blank">http://malsup.com/jquery/form/</a></small>
+  </h3>
+  <div class="row-fluid">
+    <div class="span6">
+      <p>
+        <b>.ajaxForm</b>
+      </p>
+      <form id="ajaxform" method="post" action="/examples/ajax_form/ajaxform">
+        <p>
+          User: <input type="text" name="username" value="user1" />
+        </p>
+        <p>
+          Password: <input type="text" name="password" value="pwd1" />
+        </p>
+        <p>
+          Sex: <select name="sex"><option value="m">男</option>
+            <option value="f">女</option></select>
+        </p>
+        <p>
+          <input id="btn-ajaxform" type="submit" value="提交" />
+        </p>
+      </form>
+    </div>
+    <div class="span6">
+      <p>
+        <b>.ajaxSubmit</b>
+      </p>
+      <form id="ajaxsubmit" method="post"
+        action="/examples/ajax_form/ajaxsubmit">
+        <p>
+          User: <input type="text" name="username" value="user1" />
+        </p>
+        <p>
+          Password: <input type="text" name="password" value="pwd1" />
+        </p>
+        <p>
+          <input id="btn-ajaxsubmit" type="button" value="提交" />
+        </p>
+      </form>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget">
+        <div class="widget-header">
+          <span class="title">文件上传</span>
+        </div>
+        <div class="widget-content form-container">
+          <form class="form-horizontal" id="ajaxfileupload" method="post"
+            action="/examples/ajax_form/ajaxfileupload"
+            enctype="multipart/form-data">
+            <div class="control-group">
+              <label class="control-label">User:</label>
+              <div class="controls">
+                <input type="text" name="username" value="user1" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Picture:</label>
+              <div class="controls">
+                <input type="file" name="file" data-provide="fileinput" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-fileupload">Save
+                changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <p>
+        <b>整合验证</b>
+      </p>
+      <form id="ajaxsubmit" method="post"
+        action="/examples/ajax_form/ajaxsubmit">
+        <p>
+          User: <input type="text" name="username" value="user1" />
+        </p>
+        <p>
+          Password: <input type="text" name="password" value="pwd1" />
+        </p>
+        <p>
+          <input id="btn-validate" type="submit" value="提交" />
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

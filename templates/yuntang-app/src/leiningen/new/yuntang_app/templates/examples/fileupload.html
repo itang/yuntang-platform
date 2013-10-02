@@ -1,0 +1,50 @@
+{% extends "templates/layouts/layout-main.html" %}
+
+{% block content %}
+<div id="main-content">
+  <div class="widget">
+    <div class="widget-header">
+      <span class="title">文件上传 <small>File Upload Example</small></span>
+      <div class="toolbar">
+        <div class="btn-group">
+          <span class="btn"> <a href="http://www.fyneworks.com/jquery/multiple-file-upload/" target="_blank">http://www.fyneworks.com/jquery/multiple-file-upload/</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content form-container">
+      {% snippet-flash-msgs %}
+      <form id="f-fileuplaod" action="/examples/fileupload" method="post" enctype="multipart/form-data"
+        class="form-vertical">
+        <div class="control-group">
+          <label class="control-label">User： </label>
+          <div class="controls">
+            <input type="text" name="user" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Pic：<small>(格式: gif|jpg|doc, 最多选择两个文件)</small><span class="required">*</span></label>
+          <div class="controls">
+            <input type="file" name="file" class="multi" maxlength="2" accept="gif|jpg|doc" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <input type="submit" class="btn btn-primary" /> <input type="button" id="btn-ajaxsubmit" class="btn"
+            value="Ajax Upload" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block more-js %}
+<script src="/public/libs/jquery.MultiFile.pack.js"></script>
+<script>
+  $(function() {
+    example.fileupload.init();
+  });
+</script>
+{% endblock %}
+
+
