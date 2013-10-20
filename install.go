@@ -41,6 +41,7 @@ var (
 		{filepath.Join(wd, "admin/ui"), true, false},
 		{filepath.Join(wd, "user/ui"), true, false},
 		{filepath.Join(wd, "layout/ui"), true, false},
+		{filepath.Join(wd, "templates"), true, true},
 	}
 	install_info    = &InstallInfo{StoreFile: ".install-info"}
 	installed       = false
@@ -48,7 +49,7 @@ var (
 )
 
 func init() {
-	runtime.GOMAXPROCS(runtime.NumCPU()*2 - 1)
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	flag.BoolVar(&force_reinstall, "f", false, "force reinstall all")
 }
 

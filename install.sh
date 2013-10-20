@@ -36,4 +36,7 @@ else
 
     cd $ph/layout/ui
     lein sub install
+
+    cd $ph/templates
+    lein sub install
 fi
