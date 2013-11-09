@@ -13,19 +13,21 @@
   :repositories [["itang-repo" "http://itang.github.io/maven-repo"]]
   :profiles {:dev {:plugins [#_[lein-ancient "0.4.4"]  ;$ lein ancient > check your project for outdated dependencies and plugins
                              #_[codox "0.6.6"]         ;$ lein doc
-                             [lein-ring "0.8.7"]     ;$ lein ring server
+                             [lein-ring "0.8.8"]     ;$ lein ring server
                              #_[lein-pprint "1.1.1"]   ;$ lein pprint | lein with-profile 1.4 pprint
-                             [lein-cljsbuild "0.3.4"];$ lein cljsbuild [once auto clean repl-listen repl-rhino]
+                             [lein-cljsbuild "1.0.0-alpha2"];$ lein cljsbuild [once auto clean repl-listen repl-rhino]
                              [lein-environ "0.4.0"]
                              #_[lein-localrepo "0.5.2"]
                              [lein-checkall "0.1.1"]]
                    :dependencies [[ring-mock "0.1.5"]
-                                  [org.clojure/clojurescript "0.0-1978"]]}
-             :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
-             :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}
+                                  [org.clojure/clojurescript "0.0-2030"]]}
+             :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]
+                                  [ring-mock "0.1.5"]]}
+             :1.6 {:dependencies [[org.clojure/clojure "1.6.0-alpha2"]
+                                  [ring-mock "0.1.5"]]}
              :uberjar {:aot [wapp.server]
                        :main wapp.server}}
-  :aliases {"run-tests" ["with-profile" "1.4:1.5" "test"]
+  :aliases {"run-tests" ["with-profile" "1.5:1.6" "test"]
             "migrate" ["run" "-m" "cljwtang.tools.migrate"]
             "dev" ["run" "-m" "cljwtang.tools.dev"]
             "http-kit" ["run"]}
