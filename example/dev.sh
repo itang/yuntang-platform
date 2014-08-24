@@ -5,4 +5,4 @@ echo "drip kill ..."
 drip kill
 
 echo "lein dev ..."
-lein dev
+lein with-profile 1.6 dev

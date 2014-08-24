@@ -2,6 +2,6 @@
 
 ./clean-db.sh
 
-lein migrate
+lein with-profile 1.6 migrate
 
-lein ring server
+lein with-profile 1.6 ring server

@@ -2,4 +2,4 @@
 
 rm -rf ~/wapp_*.db
 
-lein migrate
+lein with-profile 1.6 migrate
